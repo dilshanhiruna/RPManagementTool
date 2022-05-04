@@ -1,22 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import { Switch, BrowserRouter } from "react-router-dom";
+import { Switch, BrowserRouter as Router } from "react-router-dom";
 import Student from "./routes/Student";
 import Staff from "./routes/Staff";
 import Admin from "./routes/Admin";
 
 function App() {
-  // const [userType, setuserType] = useState("student");
+  const [userType, setuserType] = useState("student");
   return (
     <div className="App">
-      <BrowserRouter>
+      <Router>
         <Switch>
-          <Student />
-          {/* {userType === "student" ? <Student /> : ""}
+          {userType === "student" ? <Student /> : ""}
           {userType === "admin" ? <Staff /> : ""}
-          {userType === "staff" ? <Admin /> : ""} */}
+          {userType === "staff" ? <Admin /> : ""}
         </Switch>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

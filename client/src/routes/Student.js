@@ -14,7 +14,6 @@ export default function Student() {
         </Route>
         <Route exact path="/student/creategroup">
           <CreateGroup />
-          <NewStudentMenu />
         </Route>
         <Redirect to="/student/404" />
       </Switch>
