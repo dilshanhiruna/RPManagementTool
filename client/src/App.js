@@ -1,15 +1,22 @@
 import React from "react";
 import "./App.css";
-import Header from "./components/view/Header";
-import Footer from "./components/view/Footer";
+import { Switch, BrowserRouter } from "react-router-dom";
 import Student from "./routes/Student";
+import Staff from "./routes/Staff";
+import Admin from "./routes/Admin";
 
 function App() {
+  // const [userType, setuserType] = useState("student");
   return (
     <div className="App">
-      <Header />
-      <Student />
-      <Footer />
+      <BrowserRouter>
+        <Switch>
+          <Student />
+          {/* {userType === "student" ? <Student /> : ""}
+          {userType === "admin" ? <Staff /> : ""}
+          {userType === "staff" ? <Admin /> : ""} */}
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }

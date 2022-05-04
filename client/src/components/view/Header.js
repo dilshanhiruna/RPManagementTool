@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import "./Header.css";
 
-export default function Header() {
-  const [userType, setUserType] = useState("Student");
+export default function Header({ userType }) {
   return (
     <>
       <header>
