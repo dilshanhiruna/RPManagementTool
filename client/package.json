@@ -4,7 +4,8 @@
   "description": "Client-Side of RPManagementTool",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --open --hot --mode development",
+    "build": "webpack --mode production"
   },
   "author": "",
   "license": "ISC",
