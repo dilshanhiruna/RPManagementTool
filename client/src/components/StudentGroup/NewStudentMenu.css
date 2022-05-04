@@ -1,0 +1,13 @@
+.student__dashboard {
+  /* this is in student route */
+  margin: 10px 40px;
+}
+.newstudent__dashboard {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  text-align: center;
+}
+.newstudent__dashboard MediaCard {
+  margin: 30px;
+}

@@ -1,10 +1,15 @@
 import React from "react";
 import "./App.css";
+import Header from "./components/view/Header";
+import Footer from "./components/view/Footer";
+import Student from "./routes/Student";
 
 function App() {
   return (
-    <div>
-      <h1>Research Project Management Tool</h1>
+    <div className="App">
+      <Header />
+      <Student />
+      <Footer />
     </div>
   );
 }

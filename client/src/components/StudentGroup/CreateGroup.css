@@ -1,0 +1,35 @@
+.creategroup__component {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 5%;
+  /* align-items: center; */
+}
+.creategroup__addstudents {
+  /* background-color: aqua; */
+  padding: 20px 30px;
+}
+.creategroup__addstudents h1 {
+  font-size: 50px;
+  font-weight: bold;
+}
+.creategroup__addstudents h3 {
+  font-weight: 400;
+}
+.creategroup__addedstudents {
+  /* background-color: orange; */
+  margin-top: 75px;
+  max-width: 600px;
+  text-align: center;
+}
+.creategroup__groupmembers {
+  /* display: flex; */
+}
+.creategroup__groupmembers_chips {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.creategroup__button {
+  margin-top: 100px;
+}
