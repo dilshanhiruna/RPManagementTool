@@ -212,3 +212,14 @@ exports.deleteStudentGroup = async (req, res) => {
     res.status(400).json({ success: false, error: err });
   }
 };
+
+//@desc get all student who does not have a group
+//@route GET /api/v1/studentgroups/addstudents
+exports.getAllStudentsWithoutAGroup = async (req, res) => {
+  try {
+    const students = await Students.find({ studentGrouped: null });
+    res.status(200).json({ success: true, data: students });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};

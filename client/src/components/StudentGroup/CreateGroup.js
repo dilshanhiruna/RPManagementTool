@@ -9,7 +9,7 @@ export default function CreateGroup() {
       <div className="creategroup__addstudents">
         <div>
           <h1>Let's create a new group</h1>
-          <h3>Add members to your group</h3>
+          <h3>Search members to your group</h3>
           <div>
             <TextField
               id="outlined-basic"
