@@ -4,6 +4,7 @@ import CreateGroup from "../components/StudentGroup/CreateGroup";
 import Header from "../components/view/Header";
 import { Switch, Route, Redirect } from "react-router-dom";
 import ChatMenu from "../components/StudentGroup/ChatMenu";
+import TopicReg from "../components/StudentGroup/TopicReg";
 
 export default function Student() {
   return (
@@ -15,6 +16,9 @@ export default function Student() {
         </Route>
         <Route exact path="/student/creategroup">
           <CreateGroup />
+        </Route>
+        <Route exact path="/student/topicreg">
+          <TopicReg />
         </Route>
         <Route exact path="/student/chat">
           <ChatMenu />
