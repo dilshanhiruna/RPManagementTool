@@ -19,8 +19,10 @@ app.use(cookieParser());
 
 // Route files
 const studentGroups = require("./routes/StudentGroups");
+const user = require("./routes/User");
 // Mount routers
 app.use("/api/v1/studentgroups", studentGroups);
+app.use("/api/v1/users", user);
 
 // Socket.io server
 const io = new Server(server, {
