@@ -5,11 +5,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CreateGroup.css";
 
-export default function CreateGroup() {
+export default function CreateGroup({ user }) {
   const API = process.env.REACT_APP_API;
   const [Student, setStudent] = useState([]);
   const [SelectedStudent, setSelectedStudent] = useState("");
-  const [GroupMembers, setGroupMembers] = useState([]);
+  const [GroupMembers, setGroupMembers] = useState([
+    { id: user._id, name: user.name },
+  ]);
 
   const fetchStudentsByKeyword = async (keyword) => {
     if (keyword.length < 3) {
@@ -102,7 +104,12 @@ export default function CreateGroup() {
                 <Chip
                   key={member.id}
                   label={member.name}
+                  color={member.id === user._id ? "primary" : "default"}
                   onDelete={() => {
+                    //you cant delete yourself
+                    if (member.id === user._id) {
+                      return;
+                    }
                     setGroupMembers(
                       GroupMembers.filter((m) => m.id !== member.id)
                     );

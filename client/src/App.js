@@ -9,13 +9,9 @@ function App() {
   const [userType, setuserType] = useState("student");
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          {userType === "student" ? <Student /> : ""}
-          {userType === "admin" ? <Staff /> : ""}
-          {userType === "staff" ? <Admin /> : ""}
-        </Switch>
-      </Router>
+      {userType === "student" ? <Student /> : ""}
+      {userType === "admin" ? <Staff /> : ""}
+      {userType === "staff" ? <Admin /> : ""}
     </div>
   );
 }
