@@ -7,6 +7,7 @@ exports.createSubmission = async (req, res) => {
   const {
     submissionName,
     sType,
+    sDescription,
     sTemplate,
     sMarkingScheme,
     sDeadline,
@@ -16,6 +17,7 @@ exports.createSubmission = async (req, res) => {
     const submission = await Submissions.create({
       submissionName,
       sType,
+      sDescription,
       sTemplate,
       sMarkingScheme,
       sDeadline,

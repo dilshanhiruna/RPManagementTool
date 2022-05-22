@@ -10,6 +10,9 @@ const Submissions = new Schema({
   sType: {
     type: String,
   },
+  sDescription: {
+    type: String,
+  },
   sTemplate: {
     type: String,
   },
