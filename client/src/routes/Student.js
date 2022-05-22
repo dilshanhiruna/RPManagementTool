@@ -5,6 +5,7 @@ import Header from "../components/view/Header";
 import { Switch, Route, Redirect } from "react-router-dom";
 import ChatMenu from "../components/StudentGroup/ChatMenu";
 import TopicReg from "../components/StudentGroup/TopicReg";
+import SearchSupervisor from "../components/StudentGroup/SearchSupervisor";
 
 export default function Student() {
   return (
@@ -19,6 +20,9 @@ export default function Student() {
         </Route>
         <Route exact path="/student/topicreg">
           <TopicReg />
+        </Route>
+        <Route exact path="/student/searchsupervisor">
+          <SearchSupervisor />
         </Route>
         <Route exact path="/student/chat">
           <ChatMenu />
