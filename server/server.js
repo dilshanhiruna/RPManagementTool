@@ -17,8 +17,11 @@ app.use(cookieParser());
 
 // Route files
 const studentGroups = require("./routes/StudentGroups");
+const submissions = require("./routes/Submissions");
+
 // Mount routers
 app.use("/api/v1/studentgroups", studentGroups);
+app.use("/api/v1/AssignmentSubmissions", submissions);
 
 const PORT = process.env.PORT || 5000;
 
