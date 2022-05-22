@@ -1,4 +1,4 @@
-const SubmissionTypes = require("../models/SubmissionTypes");
+const Submissions = require("../models/Submissions");
 
 //@desc   Create new submission
 //@route  POST /api/v1/submission
@@ -13,7 +13,7 @@ exports.createSubmission = async (req, res) => {
     sVisibility,
   } = req.body;
   try {
-    const submission = await SubmissionTypes.create({
+    const submission = await Submissions.create({
       submissionName,
       sType,
       sTemplate,
@@ -39,7 +39,7 @@ exports.createSubmission = async (req, res) => {
 //@access Public
 exports.getSubmissions = async (req, res) => {
   try {
-    const submissions = await SubmissionTypes.find();
+    const submissions = await Submissions.find();
     return res.status(200).json({
       success: true,
       count: submissions.length,
@@ -58,7 +58,7 @@ exports.getSubmissions = async (req, res) => {
 //@access Public
 exports.getaSubmission = async (req, res) => {
   try {
-    const submission = await SubmissionTypes.findById(req.params.id);
+    const submission = await Submissions.findById(req.params.id);
     if (!submission) {
       return res.status(404).json({
         success: false,
@@ -88,7 +88,7 @@ exports.getaSubmission = async (req, res) => {
 //@access private
 exports.updateSubmission = async (req, res, next) => {
   try {
-    const submission = await SubmissionTypes.findByIdAndUpdate(
+    const submission = await Submissions.findByIdAndUpdate(
       req.params.id,
       req.body,
       {
@@ -121,7 +121,7 @@ exports.updateSubmission = async (req, res, next) => {
 //@access private
 exports.deleteSubmission = async (req, res, next) => {
   try {
-    const submission = await SubmissionTypes.findByIdAndDelete(req.params.id);
+    const submission = await Submissions.findByIdAndDelete(req.params.id);
 
     if (!submission) {
       return res.status(404).json({

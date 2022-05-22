@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const SubmissionTypes = new Schema({
+const Submissions = new Schema({
   submissionName: {
     type: String,
     require: true,
@@ -23,5 +23,5 @@ const SubmissionTypes = new Schema({
     type: Boolean,
   },
 });
-const submission = mongoose.model("SubmissionTypes", SubmissionTypes);
+const submission = mongoose.model("Submissions", Submissions);
 module.exports = submission;
