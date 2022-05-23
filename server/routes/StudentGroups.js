@@ -14,6 +14,7 @@ const {
   getAllStudentGroups,
   getStudentGroupById,
   deleteStudentGroup,
+  removeStudentFromGroup,
 } = require("../controllers/StudentGroups");
 
 router.post("/", createGroup);
@@ -28,5 +29,6 @@ router.put("/topicdetail/:id", updateTopicDetailDocument);
 router.get("/", getAllStudentGroups);
 router.get("/:id", getStudentGroupById);
 router.delete("/:id", deleteStudentGroup);
+router.delete("/:id/:studentId/:studentFeild", removeStudentFromGroup);
 
 module.exports = router;

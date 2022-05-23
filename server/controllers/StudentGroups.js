@@ -78,19 +78,59 @@ exports.createGroup = async (req, res) => {
 };
 
 //@desc update students group
-//@route PUT /api/v1/studentgroups/addstudents/:id
+//@route PUT /api/v1/studentgroups/:id
 exports.updateStudentsInGroup = async (req, res) => {
-  const { student } = req.body;
+  const { SelectedStudent } = req.body;
+
+  const studentGroup = await StudentGroups.findById(req.params.id);
+
+  const addStudent = async (std) => {
+    try {
+      const updatedStudentGroup = await StudentGroups.findByIdAndUpdate(
+        req.params.id,
+        { [std]: SelectedStudent },
+        { new: true }
+      );
+      await User.findByIdAndUpdate(SelectedStudent, {
+        studentGrouped: true,
+        studentGroupID: req.params.id,
+      });
+      res.status(200).json({ success: true, data: updatedStudentGroup });
+    } catch (err) {
+      res.status(400).json({ success: false, error: err });
+    }
+  };
+  if (studentGroup.student1 === null) {
+    addStudent("student1");
+    return;
+  }
+  if (studentGroup.student2 === null) {
+    addStudent("student2");
+    return;
+  }
+  if (studentGroup.student3 === null) {
+    addStudent("student3");
+    return;
+  }
+  if (studentGroup.student4 === null) {
+    addStudent("student4");
+    return;
+  }
+};
+
+//@desc remove student from group
+//@route DELETE /api/v1/studentgroups/removemember/:id
+exports.removeStudentFromGroup = async (req, res) => {
   try {
     const updatedStudentGroup = await StudentGroups.findByIdAndUpdate(
       req.params.id,
-      {
-        $push: {
-          students: student,
-        },
-      },
+      { [req.params.studentFeild]: null },
       { new: true }
     );
+    await User.findByIdAndUpdate(req.params.studentId, {
+      studentGrouped: false,
+      studentGroupID: null,
+    });
     res.status(200).json({ success: true, data: updatedStudentGroup });
   } catch (err) {}
 };

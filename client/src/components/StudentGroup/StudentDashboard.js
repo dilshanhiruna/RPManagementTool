@@ -18,12 +18,12 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const ItemStudent = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#1976d2",
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#c7c7c7",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   marginBottom: theme.spacing(1),
   textAlign: "center",
-  color: "#fff",
+  color: theme.palette.text.secondary,
 }));
 
 export default function StudentDashboard({ user }) {
@@ -33,18 +33,27 @@ export default function StudentDashboard({ user }) {
   const [Student, setStudent] = useState([]);
   const [SelectedStudent, setSelectedStudent] = useState("");
 
-  useEffect(() => {
-    axios.get(`${API}/studentgroups/${user.studentGroupID}`).then((res) => {
-      setStudentGroup(res.data);
-      let studentGroup = res.data.data;
+  const fetchStudentGroup = async () => {
+    try {
+      axios.get(`${API}/studentgroups/${user.studentGroupID}`).then((res) => {
+        setStudentGroup(res.data.data);
+        let studentGroup = res.data.data;
+        console.log(res.data.data.student1._id);
 
-      setStudents([
-        studentGroup.student1,
-        studentGroup.student2 ? studentGroup.student2 : "",
-        studentGroup.student3 ? studentGroup.student3 : "",
-        studentGroup.student4 ? studentGroup.student4 : "",
-      ]);
-    });
+        setStudents([
+          studentGroup.student1,
+          studentGroup.student2 ? studentGroup.student2 : "",
+          studentGroup.student3 ? studentGroup.student3 : "",
+          studentGroup.student4 ? studentGroup.student4 : "",
+        ]);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudentGroup();
   }, []);
 
   const fetchStudentsByKeyword = async (keyword) => {
@@ -60,18 +69,36 @@ export default function StudentDashboard({ user }) {
   };
 
   // add student to group
-  const addStudent = (student) => {
-    // check if student is already in group by id
-    if (GroupMembers.find((member) => member.id === student.id)) {
+  const addStudent = () => {
+    if (!SelectedStudent) {
       return;
     }
-    if (!student.id) {
-      return;
-    }
-
-    setGroupMembers([...GroupMembers, student]);
-    setSelectedStudent("");
+    axios
+      .put(`${API}/studentgroups/${user.studentGroupID}`, { SelectedStudent })
+      .then((res) => {
+        fetchStudentGroup();
+        setSelectedStudent("");
+        setStudent([]);
+      });
   };
+
+  const removeStudent = (studentID) => {
+    //get object number in array by the student id
+    let studentNo = Students.findIndex((student) => student._id === studentID);
+
+    axios
+      .delete(
+        `${API}/studentgroups/${user.studentGroupID}/${studentID}/student${
+          studentNo + 1
+        }`
+      )
+      .then((res) => {
+        console.log(res);
+        fetchStudentGroup();
+      });
+    console.log(studentNo);
+  };
+
   return (
     <div className="student__dashboard">
       <Box sx={{ flexGrow: 1 }}>
@@ -79,10 +106,15 @@ export default function StudentDashboard({ user }) {
           <Grid item xs={3}>
             <Item
               sx={{
-                height: "75vh",
+                height: "95vh",
               }}
             >
               <Autocomplete
+                disabled={
+                  Students.filter((stu) => {
+                    return stu !== "";
+                  }).length >= 4
+                }
                 disablePortal
                 id="combo-box-demo"
                 getOptionLabel={(option) => option.name}
@@ -91,10 +123,7 @@ export default function StudentDashboard({ user }) {
                 }}
                 onChange={(event, value) => {
                   if (value) {
-                    setSelectedStudent({
-                      name: value.name,
-                      id: value._id,
-                    });
+                    setSelectedStudent(value._id);
                   }
                 }}
                 //disable who are already in a group
@@ -108,21 +137,45 @@ export default function StudentDashboard({ user }) {
                 }}
               />
               <Button
+                disabled={
+                  Students.filter((stu) => {
+                    return stu !== "";
+                  }).length >= 4
+                }
                 variant="contained"
                 sx={{
                   marginTop: "5px",
                   marginBottom: "50px",
                   width: "100%",
                 }}
+                onClick={() => {
+                  addStudent();
+                }}
               >
                 Add Member
               </Button>
               {Students.filter((stu) => {
                 return stu !== "";
-              }).map((student) => (
-                <ItemStudent key={student._id} elevation={2}>
+              }).map((student, key) => (
+                <ItemStudent key={key} elevation={2}>
                   <h3>{student.name}</h3>
                   <p>{student.email}</p>
+                  <Button
+                    //hide the button if your are no the  leader
+                    hidden={studentGroup.student1._id !== user._id}
+                    disabled={student._id === user._id}
+                    size="small"
+                    // sx={{
+                    //   backgroundColor: "#fff",
+                    //   textTransform: "none",
+                    // }}
+                    color="error"
+                    onClick={() => {
+                      removeStudent(student._id);
+                    }}
+                  >
+                    Remove from group
+                  </Button>
                 </ItemStudent>
               ))}
             </Item>
@@ -130,7 +183,7 @@ export default function StudentDashboard({ user }) {
           <Grid item xs={9}>
             <Item
               sx={{
-                height: "75vh",
+                height: "95vh",
               }}
             ></Item>
           </Grid>
