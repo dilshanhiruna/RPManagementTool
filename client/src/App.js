@@ -6,14 +6,14 @@ import Staff from "./routes/Staff";
 import Admin from "./routes/Admin";
 
 function App() {
-  const [userType, setuserType] = useState("student");
+  const [userType, setuserType] = useState("admin");
   return (
     <div className="App">
       <Router>
         <Switch>
           {userType === "student" ? <Student /> : ""}
-          {userType === "admin" ? <Staff /> : ""}
-          {userType === "staff" ? <Admin /> : ""}
+          {userType === "staff" ? <Staff /> : ""}
+          {userType === "admin" ? <Admin /> : ""}
         </Switch>
       </Router>
     </div>
