@@ -38,6 +38,27 @@ export default function CreateGroup({ user }) {
     setSelectedStudent("");
   };
 
+  //function to create group
+  const createGroup = async () => {
+    if (GroupMembers.length < 2) {
+      alert("Please add at least 2 members to the group");
+      return;
+    }
+    const group = {
+      student1: GroupMembers[0].id,
+      student2: GroupMembers[1] ? GroupMembers[1].id : null,
+      student3: GroupMembers[2] ? GroupMembers[2].id : null,
+      student4: GroupMembers[3] ? GroupMembers[3].id : null,
+    };
+    try {
+      const response = await axios.post(`${API}/studentgroups`, group);
+      console.log(response);
+      alert("Group Created Successfully");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="creategroup__component">
       <div className="creategroup__addstudents">
@@ -61,6 +82,8 @@ export default function CreateGroup({ user }) {
                   });
                 }
               }}
+              //disable who are already in a group
+              getOptionDisabled={(option) => option.studentGrouped === true}
               options={Student}
               renderInput={(params) => (
                 <TextField {...params} label="Student" />
@@ -89,6 +112,9 @@ export default function CreateGroup({ user }) {
               height: "60px",
               width: "200px",
               borderRadius: "40px",
+            }}
+            onClick={() => {
+              createGroup();
             }}
           >
             Create Group

@@ -1,4 +1,5 @@
 const StudentGroups = require("../models/StudentGroups");
+const User = require("../models/User");
 
 //@desc create a student group
 //@route POST /api/v1/studentgroups
@@ -21,8 +22,31 @@ exports.createGroup = async (req, res) => {
     panelmember: null,
     createdDate: new Date(),
   });
+  //make studentGrouped true for students in group
+  try {
+    await User.findByIdAndUpdate(student1, {
+      studentGrouped: true,
+    });
+    if (student2) {
+      await User.findByIdAndUpdate(student2, {
+        studentGrouped: true,
+      });
+    }
+    if (student3) {
+      await User.findByIdAndUpdate(student3, {
+        studentGrouped: true,
+      });
+    }
+    if (student4) {
+      await User.findByIdAndUpdate(student4, {
+        studentGrouped: true,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
 
-  //insert data into database
+  //insert group data into database
   try {
     const savedStudentGroup = await newStudentGroup.save();
     res.status(200).json({ success: true, data: savedStudentGroup });

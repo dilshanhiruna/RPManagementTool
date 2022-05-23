@@ -22,7 +22,7 @@ export default function Student() {
     role: "student",
     interestedResearchField: null,
     staffType: null,
-    studentGrouped: false,
+    studentGrouped: true,
   };
 
   return (
@@ -31,7 +31,11 @@ export default function Student() {
       <Router>
         <Switch>
           <Route exact path="/student">
-            {!user.studentGrouped ? <NewStudentMenu /> : ""}
+            {!user.studentGrouped ? (
+              <NewStudentMenu />
+            ) : (
+              <CreateGroup user={user} />
+            )}
           </Route>
           <Route exact path="/student/creategroup">
             <CreateGroup user={user} />

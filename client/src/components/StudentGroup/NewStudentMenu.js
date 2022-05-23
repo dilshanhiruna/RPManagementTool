@@ -15,13 +15,6 @@ export default function NewStudentMenu() {
   return (
     <div className="newstudent__dashboard">
       <div>
-        {/* <MediaCard
-          title="Create Group"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tristique neque vel odio vulputate luctus. Nam id bibendum metus. Mauris id eros lacinia lorem condimentum blandit at tincidunt sem. In sodales mattis dolor"
-          btn1="Create"
-          btn2="Learn More"
-          image={require("../../assets/images/createGroup.png")}
-        /> */}
         <Card sx={{ maxWidth: 345 }}>
           <CardMedia
             component="img"
@@ -45,7 +38,7 @@ export default function NewStudentMenu() {
           <CardActions>
             <Button
               size="small"
-              onClick={() => history.push("/student/creategroup")}
+              onClick={() => (window.location.href = "/student/creategroup")}
             >
               {"Create"}
             </Button>
