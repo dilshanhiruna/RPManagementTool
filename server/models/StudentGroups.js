@@ -4,17 +4,21 @@ const Schema = mongoose.Schema;
 
 const StudentGroups = new Schema({
   student1: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
     require: true,
   },
   student2: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   student3: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   student4: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   groupClosed: {
     type: String,

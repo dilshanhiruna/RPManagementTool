@@ -49,6 +49,28 @@ exports.createGroup = async (req, res) => {
   //insert group data into database
   try {
     const savedStudentGroup = await newStudentGroup.save();
+
+    //add the group id to the students studentGroupID field
+    await User.findByIdAndUpdate(student1, {
+      studentGroupID: savedStudentGroup._id,
+    });
+
+    if (student2) {
+      await User.findByIdAndUpdate(student2, {
+        studentGroupID: savedStudentGroup._id,
+      });
+    }
+    if (student3) {
+      await User.findByIdAndUpdate(student3, {
+        studentGroupID: savedStudentGroup._id,
+      });
+    }
+    if (student4) {
+      await User.findByIdAndUpdate(student4, {
+        studentGroupID: savedStudentGroup._id,
+      });
+    }
+
     res.status(200).json({ success: true, data: savedStudentGroup });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
@@ -58,22 +80,19 @@ exports.createGroup = async (req, res) => {
 //@desc update students group
 //@route PUT /api/v1/studentgroups/addstudents/:id
 exports.updateStudentsInGroup = async (req, res) => {
-  const { student2, student3, student4 } = req.body;
-
+  const { student } = req.body;
   try {
     const updatedStudentGroup = await StudentGroups.findByIdAndUpdate(
       req.params.id,
       {
-        student2: student2 || null,
-        student3: student3 || null,
-        student4: student4 || null,
+        $push: {
+          students: student,
+        },
       },
       { new: true }
     );
     res.status(200).json({ success: true, data: updatedStudentGroup });
-  } catch (err) {
-    res.status(400).json({ success: false, error: err });
-  }
+  } catch (err) {}
 };
 
 //@desc close group
@@ -208,7 +227,10 @@ exports.getAllStudentGroups = async (req, res) => {
 //@route GET /api/v1/studentgroups/:id
 exports.getStudentGroupById = async (req, res) => {
   try {
-    const studentGroup = await StudentGroups.findById(req.params.id);
+    const studentGroup = await StudentGroups.findById(req.params.id).populate(
+      "student1 student2 student3 student4"
+    );
+
     res.status(200).json({ success: true, data: studentGroup });
   } catch (err) {
     res.status(400).json({ success: false, error: err });

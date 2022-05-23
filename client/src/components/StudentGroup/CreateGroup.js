@@ -99,6 +99,7 @@ export default function CreateGroup({ user }) {
               onClick={() => {
                 addStudent(SelectedStudent);
               }}
+              disabled={GroupMembers.length >= 4}
             >
               ADD
             </Button>
@@ -122,7 +123,7 @@ export default function CreateGroup({ user }) {
         </div>
       </div>
       <div className="creategroup__addedstudents">
-        <h3>Your group members</h3>
+        <h3>Your group members {GroupMembers.length}/4</h3>
         <div>
           <div className="creategroup__groupmembers">
             {GroupMembers.map((member) => {

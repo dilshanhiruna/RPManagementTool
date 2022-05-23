@@ -29,6 +29,9 @@ const User = new Schema({
   studentGrouped: {
     type: Boolean,
   },
+  studentGroupID: {
+    type: String,
+  },
 });
 const user = mongoose.model("User", User);
 
