@@ -12,8 +12,8 @@ function App() {
       <Router>
         <Switch>
           {userType === "student" ? <Student /> : ""}
-          {userType === "admin" ? <Staff /> : ""}
-          {userType === "staff" ? <Admin /> : ""}
+          {userType === "staff" ? <Staff /> : ""}
+          {userType === "admin" ? <Admin /> : ""}
         </Switch>
       </Router>
     </div>
