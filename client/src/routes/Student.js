@@ -45,7 +45,7 @@ export default function Student() {
             <CreateGroup user={user} />
           </Route>
           <Route exact path="/student/topicreg">
-            <TopicReg />
+            <TopicReg user={user} />
           </Route>
           <Route exact path="/student/searchsupervisor">
             <SearchSupervisor />

@@ -1,9 +1,30 @@
 import { Button, Chip } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import React from "react";
+import axios from "axios";
 import "./TopicReg.css";
 
-export default function TopicReg() {
+export default function TopicReg({ user }) {
+  const API = process.env.REACT_APP_API;
+  const [topic, setTopic] = React.useState("");
+
+  //TODO: check if a topic already registered
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    try {
+      axios
+        .put(`${API}/studentgroups/researchtopic/${user.studentGroupID}`, {
+          researchTopic: topic,
+        })
+        .then((res) => {
+          console.log(res.data);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="topicreg__component">
       <div className="topicreg__form">
@@ -16,6 +37,8 @@ export default function TopicReg() {
               label="Topic"
               variant="outlined"
               style={{ width: "140%" }}
+              value={topic}
+              onChange={(event) => setTopic(event.target.value)}
             />
           </div>
         </div>
@@ -27,6 +50,9 @@ export default function TopicReg() {
               height: "60px",
               width: "200px",
               borderRadius: "40px",
+            }}
+            onClick={(e) => {
+              onSubmit(e);
             }}
           >
             Submit Topic
