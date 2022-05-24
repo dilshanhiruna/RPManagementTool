@@ -11,6 +11,7 @@ exports.getStudentsByKeyword = async (req, res) => {
         { name: { $regex: keyword, $options: "i" } },
         { uid: { $regex: keyword, $options: "i" } },
       ],
+      role: "student",
     });
 
     return res.status(200).json({

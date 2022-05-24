@@ -47,7 +47,8 @@ const StudentGroups = new Schema({
     ref: "User",
   },
   panelmember: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   createdDate: {
     type: Date,
