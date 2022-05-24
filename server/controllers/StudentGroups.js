@@ -270,7 +270,7 @@ exports.getAllStudentGroups = async (req, res) => {
 exports.getStudentGroupById = async (req, res) => {
   try {
     const studentGroup = await StudentGroups.findById(req.params.id).populate(
-      "student1 student2 student3 student4"
+      "student1 student2 student3 student4 supervisor cosupervisor"
     );
 
     res.status(200).json({ success: true, data: studentGroup });

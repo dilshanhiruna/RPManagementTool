@@ -39,8 +39,14 @@ export default function SearchSupervisor({ user }) {
   const fetchGroupDetails = async () => {
     try {
       axios.get(`${API}/studentgroups/${user.studentGroupID}`).then((res) => {
-        setSupervisor(res.data.data.supervisor);
-        setCoSupervisor(res.data.data.cosupervisor);
+        //set the supervisor and cosupervisor
+        if (isNaN(res.data.data.supervisor)) {
+          setSupervisor(res.data.data.supervisor.name);
+        }
+        if (isNaN(res.data.data.cosupervisor)) {
+          setCoSupervisor(res.data.data.cosupervisor.name);
+        }
+        //set the supervisor status and cosupervisor status
         setSupervisorStatus(res.data.data.supervisorStatus);
         setCoSupervisorStatus(res.data.data.cosupervisorStatus);
       });
@@ -62,44 +68,11 @@ export default function SearchSupervisor({ user }) {
       });
   }, []);
 
-  function createData(name, researcharea) {
-    return { name, researcharea };
-  }
-
-  const rows = [
-    createData(" Nuwan Kodagoda (SE, HPC, PC,PL, ADD)", "Software Engineering"),
-    createData(" Anuththara Kuruppu (SE)", "Software Engineering"),
-    createData(" Udara Samaratunge (SE)", "Software Engineering"),
-    createData(" Dinuka R. Wijendra (SE,PL,ADD)", "Software Engineering"),
-    createData(" Disni Sriyaratna (SE, MC)", "Software Engineering"),
-    createData(" Dilani Lunugalage (SE)", "Software Engineering"),
-    createData(" Dilshan De Silva (SE)", "Software Engineering"),
-    createData(" Nalaka Dissanayake (SE, RAAD)", "Software Engineering"),
-    createData(" Shalini Rupasinghe (SE)", "Software Engineering"),
-    createData(
-      " Aruna Ishara Gamage (AR/VR)",
-      "Artificial Intelligence and Machine Learning"
-    ),
-    createData(" Samanthi Eranga Siriwardene(SE)", "Software Engineering"),
-    createData(
-      " Thilmi Anuththara Kuruppu(PL,ADD,A/VR,RAAD)",
-      "Distributed & Parallel Computing"
-    ),
-    createData(
-      " Amali Upekha Gunasinghe(A/VR)",
-      "Artificial Intelligence and Machine Learning"
-    ),
-    createData(" Vishan Jayasinghearachchi (SE, PL)", "Software Engineering"),
-  ];
-
   const onSelecteResearchArea = (event) => {
     event.preventDefault();
     setSelectedResearchArea(event.target.value);
   };
-  const onSelecteSupervisor = (event, name) => {
-    event.preventDefault();
-    setSelectedSupervisor(name);
-  };
+
   useEffect(() => {
     setSelectedSupervisor("");
   }, [selectedResearchArea]);
@@ -109,8 +82,12 @@ export default function SearchSupervisor({ user }) {
 
     if (SupervisorStatus === "accepted") {
     } else {
+      const data = {
+        supervisor: selectedSupervisor.id,
+        status: "pending",
+      };
       axios
-        .put(`${API}/studentgroups/${user.studentGroupID}`, {})
+        .put(`${API}/studentgroups/supervisor/${user.studentGroupID}`, data)
         .then((res) => {
           console.log(res);
         });
@@ -127,66 +104,74 @@ export default function SearchSupervisor({ user }) {
               : "Search Supervisor"}
           </h1>
 
-          <h3>Select your research interest area</h3>
-          <div>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Area</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={selectedResearchArea}
-                label="Area"
-                onChange={(e) => {
-                  onSelecteResearchArea(e);
-                }}
-              >
-                <MenuItem value={"Information Security"}>
-                  Information Security
-                </MenuItem>
-                <MenuItem
-                  value={"Artificial Intelligence and Machine Learning"}
+          <Collapse
+            in={
+              SupervisorStatus !== "pending" && CoSupervisorStatus !== "pending"
+            }
+          >
+            <h3>Select your research interest area</h3>
+            <div>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Area</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedResearchArea}
+                  label="Area"
+                  onChange={(e) => {
+                    onSelecteResearchArea(e);
+                  }}
                 >
-                  Artificial Intelligence and Machine Learning
-                </MenuItem>
-                <MenuItem value={"ICT for Development"}>
-                  ICT for Development
-                </MenuItem>
-                <MenuItem value={"Distributed & Parallel Computing"}>
-                  Distributed & Parallel Computing
-                </MenuItem>
-                <MenuItem value={"Software Engineering"}>
-                  Software Engineering
-                </MenuItem>
-                <MenuItem value={"Data Communication and Networking"}>
-                  Data Communication and Networking
-                </MenuItem>
-                <MenuItem value={"Visual Computing"}>Visual Computing</MenuItem>
-                <MenuItem value={"Robotics @ Intelligent Systems"}>
-                  Robotics & Intelligent Systems
-                </MenuItem>
-                <MenuItem value={"Data Science"}>Data Science</MenuItem>
-                <MenuItem value={"Design Lab"}>Design Lab</MenuItem>
-                <MenuItem value={"Assitive Technology"}>
-                  Assitive Technology
-                </MenuItem>
-                <MenuItem value={"Elearning and Education"}>
-                  Elearning and Education
-                </MenuItem>
-                <MenuItem value={"Computing Linguistics"}>
-                  Computing Linguistics
-                </MenuItem>
-                <MenuItem value={"Business Intelligence and Analytics"}>
-                  Business Intelligence and Analytics
-                </MenuItem>
-                <MenuItem value={"Human Computer Interaction"}>
-                  Human Computer Interaction
-                </MenuItem>
-                <MenuItem value={"Internet of Things"}>
-                  Internet of Things
-                </MenuItem>
-              </Select>
-            </FormControl>
-          </div>
+                  <MenuItem value={"Information Security"}>
+                    Information Security
+                  </MenuItem>
+                  <MenuItem
+                    value={"Artificial Intelligence and Machine Learning"}
+                  >
+                    Artificial Intelligence and Machine Learning
+                  </MenuItem>
+                  <MenuItem value={"ICT for Development"}>
+                    ICT for Development
+                  </MenuItem>
+                  <MenuItem value={"Distributed & Parallel Computing"}>
+                    Distributed & Parallel Computing
+                  </MenuItem>
+                  <MenuItem value={"Software Engineering"}>
+                    Software Engineering
+                  </MenuItem>
+                  <MenuItem value={"Data Communication and Networking"}>
+                    Data Communication and Networking
+                  </MenuItem>
+                  <MenuItem value={"Visual Computing"}>
+                    Visual Computing
+                  </MenuItem>
+                  <MenuItem value={"Robotics @ Intelligent Systems"}>
+                    Robotics & Intelligent Systems
+                  </MenuItem>
+                  <MenuItem value={"Data Science"}>Data Science</MenuItem>
+                  <MenuItem value={"Design Lab"}>Design Lab</MenuItem>
+                  <MenuItem value={"Assitive Technology"}>
+                    Assitive Technology
+                  </MenuItem>
+                  <MenuItem value={"Elearning and Education"}>
+                    Elearning and Education
+                  </MenuItem>
+                  <MenuItem value={"Computing Linguistics"}>
+                    Computing Linguistics
+                  </MenuItem>
+                  <MenuItem value={"Business Intelligence and Analytics"}>
+                    Business Intelligence and Analytics
+                  </MenuItem>
+                  <MenuItem value={"Human Computer Interaction"}>
+                    Human Computer Interaction
+                  </MenuItem>
+                  <MenuItem value={"Internet of Things"}>
+                    Internet of Things
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </Collapse>
         </div>
         <Collapse
           in={
@@ -228,7 +213,11 @@ export default function SearchSupervisor({ user }) {
             Your previous request for co-supervisor has been rejected!
           </Alert>
         </Collapse>
-        <Collapse in={selectedSupervisor}>
+        <Collapse
+          in={
+            SupervisorStatus === "pending" || CoSupervisorStatus === "pending"
+          }
+        >
           <div
             style={{
               maxWidth: "500px",
@@ -237,10 +226,28 @@ export default function SearchSupervisor({ user }) {
             }}
           >
             <span>
-              Do you want to send a request
-              <b>{selectedSupervisor}</b> as the{" "}
-              {SupervisorStatus === "accepted" ? "co-" : ""}supervisor of your
-              research group under the research area
+              Your have already send a supervisor request to{" "}
+              <b>
+                {SupervisorStatus === "accepted" ? CoSupervisor : Supervisor}
+              </b>{" "}
+              as the {SupervisorStatus === "accepted" ? "co-" : ""}supervisor of
+              your research group. You won't be able to send another request
+              while the previous one is still pending.
+            </span>
+          </div>
+        </Collapse>
+        <Collapse in={selectedSupervisor.name}>
+          <div
+            style={{
+              maxWidth: "500px",
+              marginTop: "20px",
+              textAlign: "justify",
+            }}
+          >
+            <span>
+              Do you want to send a request <b>{selectedSupervisor.name}</b> as
+              the {SupervisorStatus === "accepted" ? "co-" : ""}supervisor of
+              your research group under the research area
               <b> {selectedResearchArea}</b>? Please not that after sending the
               request, you will not be able to request a another supervisor
               while the request is still pending.
@@ -262,6 +269,9 @@ export default function SearchSupervisor({ user }) {
               SupervisorStatus === "pending" ||
               CoSupervisorStatus === "pending"
             }
+            onClick={(e) => {
+              handleSubmit(e);
+            }}
           >
             Request
           </Button>
@@ -299,7 +309,10 @@ export default function SearchSupervisor({ user }) {
                       <Button
                         variant="outlined"
                         onClick={(e) => {
-                          onSelecteSupervisor(e, row.name);
+                          setSelectedSupervisor({
+                            name: row.name,
+                            id: row._id,
+                          });
                         }}
                         disabled={selectedSupervisor === row.name}
                       >
