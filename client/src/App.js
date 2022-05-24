@@ -1,17 +1,19 @@
-import React, { useState } from "react";
-import "./App.css";
-import { Switch, BrowserRouter as Router } from "react-router-dom";
-import Student from "./routes/Student";
-import Staff from "./routes/Staff";
-import Admin from "./routes/Admin";
+import React, { useState } from 'react';
+import './App.css';
+import { Switch, BrowserRouter as Router } from 'react-router-dom';
+import Student from './routes/Student';
+import Staff from './routes/Staff';
+import Admin from './routes/Admin';
+import Supervisor from './routes/Supervisor';
 
 function App() {
-  const [userType, setuserType] = useState("student");
+  const [userType, setuserType] = useState('supervisor');
   return (
     <div className="App">
-      {userType === "student" ? <Student /> : ""}
-      {userType === "admin" ? <Staff /> : ""}
-      {userType === "staff" ? <Admin /> : ""}
+      {userType === 'student' ? <Student /> : ''}
+      {userType === 'staff' ? <Staff /> : ''}
+      {userType === 'admin' ? <Admin /> : ''}
+      {userType === 'supervisor' ? <Supervisor /> : ''}
     </div>
   );
 }
