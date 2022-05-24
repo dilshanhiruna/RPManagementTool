@@ -1,4 +1,4 @@
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, Skeleton } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -33,8 +33,7 @@ export default function SearchSupervisor({ user }) {
   const [selectedResearchArea, setSelectedResearchArea] = useState("");
   const [selectedSupervisor, setSelectedSupervisor] = useState("");
 
-  //alearts
-  const [showRejectedAlert, setShowRejectedAlert] = useState(true);
+  const [Loading, setLoading] = useState(true);
 
   const fetchGroupDetails = async () => {
     try {
@@ -49,6 +48,7 @@ export default function SearchSupervisor({ user }) {
         //set the supervisor status and cosupervisor status
         setSupervisorStatus(res.data.data.supervisorStatus);
         setCoSupervisorStatus(res.data.data.cosupervisorStatus);
+        setLoading(false);
       });
     } catch (err) {
       console.log(err);
@@ -103,9 +103,9 @@ export default function SearchSupervisor({ user }) {
     }
   };
 
-  return (
+  return !Loading ? (
     <div className="searchsupervisor__component">
-      {SupervisorStatus !== "accepted" && CoSupervisorStatus !== "accepted" ? (
+      {SupervisorStatus !== "accepted" || CoSupervisorStatus !== "accepted" ? (
         <div className="topicreg__form">
           <div>
             <h1>
@@ -353,6 +353,23 @@ export default function SearchSupervisor({ user }) {
         alt="supervisors"
         width={"40%"}
       />
+    </div>
+  ) : (
+    <div className="searchsupervisor__component">
+      <div>
+        <br />
+        <br />
+        <Skeleton variant="text" width={500} height={100} />
+        <Skeleton variant="text" width={100} height={20} />
+        <Skeleton variant="text" width={500} height={100} />
+        <br />
+        <br />
+        <br />
+        <Skeleton variant="text" width={200} height={100} />
+      </div>
+      <div>
+        <Skeleton variant="rectangular" width={600} height={400} />
+      </div>
     </div>
   );
 }

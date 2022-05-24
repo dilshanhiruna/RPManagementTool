@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import "./StudentDashboard.css";
 
+// paper card for student dashboard
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -17,6 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+// paper card for student card
 const ItemStudent = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#c7c7c7",
   ...theme.typography.body2,
@@ -33,12 +35,14 @@ export default function StudentDashboard({ user }) {
   const [Student, setStudent] = useState([]);
   const [SelectedStudent, setSelectedStudent] = useState("");
 
+  // get student group details
   const fetchStudentGroup = async () => {
     try {
       axios.get(`${API}/studentgroups/${user.studentGroupID}`).then((res) => {
         setStudentGroup(res.data.data);
+
+        //set all students into a array
         let studentGroup = res.data.data;
-        console.log(res.data.data.student1._id);
 
         setStudents([
           studentGroup.student1,
@@ -53,9 +57,11 @@ export default function StudentDashboard({ user }) {
   };
 
   useEffect(() => {
+    // fetch student group details
     fetchStudentGroup();
   }, []);
 
+  // get students by wildcards
   const fetchStudentsByKeyword = async (keyword) => {
     if (keyword.length < 3) {
       return;
@@ -76,12 +82,14 @@ export default function StudentDashboard({ user }) {
     axios
       .put(`${API}/studentgroups/${user.studentGroupID}`, { SelectedStudent })
       .then((res) => {
+        //reset states
         fetchStudentGroup();
         setSelectedStudent("");
         setStudent([]);
       });
   };
 
+  // remove student from group
   const removeStudent = (studentID) => {
     //get object number in array by the student id
     let studentNo = Students.findIndex((student) => student._id === studentID);
@@ -93,7 +101,7 @@ export default function StudentDashboard({ user }) {
         }`
       )
       .then((res) => {
-        console.log(res);
+        //fetches student group details again
         fetchStudentGroup();
       });
     console.log(studentNo);
