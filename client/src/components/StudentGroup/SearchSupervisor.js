@@ -10,10 +10,58 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./SearchSupervisor.css";
 
-export default function SearchSupervisor() {
+export default function SearchSupervisor({ user }) {
+  const API = process.env.REACT_APP_API;
+
+  //all supervisors in the system
+  const [supervisors, setSupervisors] = useState([]);
+  //Supervisor
+  const [Supervisor, setSupervisor] = useState("");
+  //Co-Supervisor
+  const [CoSupervisor, setCoSupervisor] = useState("");
+  //Supervisor Status
+  const [SupervisorStatus, setSupervisorStatus] = useState("");
+  //Co-SupervisorStatus
+  const [CoSupervisorStatus, setCoSupervisorStatus] = useState("");
+
+  const [selectedResearchArea, setSelectedResearchArea] = useState("");
+  const [selectedSupervisor, setSelectedSupervisor] = useState("");
+
+  //alearts
+  const [showRejectedAlert, setShowRejectedAlert] = useState(true);
+
+  const fetchGroupDetails = async () => {
+    try {
+      axios.get(`${API}/studentgroups/${user.studentGroupID}`).then((res) => {
+        setSupervisor(res.data.data.supervisor);
+        setCoSupervisor(res.data.data.cosupervisor);
+        setSupervisorStatus(res.data.data.supervisorStatus);
+        setCoSupervisorStatus(res.data.data.cosupervisorStatus);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchGroupDetails();
+
+    axios
+      .get(`${API}/users/supervisors`)
+      .then((res) => {
+        setSupervisors(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   function createData(name, researcharea) {
     return { name, researcharea };
   }
@@ -44,9 +92,6 @@ export default function SearchSupervisor() {
     createData(" Vishan Jayasinghearachchi (SE, PL)", "Software Engineering"),
   ];
 
-  const [selectedResearchArea, setSelectedResearchArea] = useState("");
-  const [selectedSupervisor, setSelectedSupervisor] = useState("");
-
   const onSelecteResearchArea = (event) => {
     event.preventDefault();
     setSelectedResearchArea(event.target.value);
@@ -59,12 +104,30 @@ export default function SearchSupervisor() {
     setSelectedSupervisor("");
   }, [selectedResearchArea]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (SupervisorStatus === "accepted") {
+    } else {
+      axios
+        .put(`${API}/studentgroups/${user.studentGroupID}`, {})
+        .then((res) => {
+          console.log(res);
+        });
+    }
+  };
+
   return (
     <div className="searchsupervisor__component">
       <div className="topicreg__form">
         <div>
-          <h1>Search Supervisor</h1>
-          <h3>Select a research interest area</h3>
+          <h1>
+            {SupervisorStatus === "accepted"
+              ? "Search Co-Supervisor"
+              : "Search Supervisor"}
+          </h1>
+
+          <h3>Select your research interest area</h3>
           <div>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Area</InputLabel>
@@ -125,19 +188,65 @@ export default function SearchSupervisor() {
             </FormControl>
           </div>
         </div>
-        <div
-          style={{ maxWidth: "500px", marginTop: "20px", textAlign: "justify" }}
-          hidden={!selectedSupervisor}
+        <Collapse
+          in={
+            SupervisorStatus === "pending" || CoSupervisorStatus === "pending"
+          }
         >
-          <span>
-            Do you want to send a request
-            <b>{selectedSupervisor}</b> as the supervisor of your research group
-            under the research area
-            <b> {selectedResearchArea}</b>? Please not that after sending the
-            request, you will not be able to request a another supervisor while
-            the request is still pending.
-          </span>
-        </div>
+          <Alert
+            hidden
+            severity="error"
+            color="error"
+            sx={{
+              marginTop: "1rem",
+            }}
+          >
+            A supervisor request is still pending!
+          </Alert>
+        </Collapse>
+        <Collapse in={SupervisorStatus === "rejected"}>
+          <Alert
+            hidden
+            severity="warning"
+            color="warning"
+            sx={{
+              marginTop: "1rem",
+            }}
+          >
+            Your previous request for supervisor has been rejected!
+          </Alert>
+        </Collapse>
+        <Collapse in={CoSupervisorStatus === "rejected"}>
+          <Alert
+            hidden
+            severity="warning"
+            color="warning"
+            sx={{
+              marginTop: "1rem",
+            }}
+          >
+            Your previous request for co-supervisor has been rejected!
+          </Alert>
+        </Collapse>
+        <Collapse in={selectedSupervisor}>
+          <div
+            style={{
+              maxWidth: "500px",
+              marginTop: "20px",
+              textAlign: "justify",
+            }}
+          >
+            <span>
+              Do you want to send a request
+              <b>{selectedSupervisor}</b> as the{" "}
+              {SupervisorStatus === "accepted" ? "co-" : ""}supervisor of your
+              research group under the research area
+              <b> {selectedResearchArea}</b>? Please not that after sending the
+              request, you will not be able to request a another supervisor
+              while the request is still pending.
+            </span>
+          </div>
+        </Collapse>
 
         <div className="submittopic__button">
           <Button
@@ -148,7 +257,11 @@ export default function SearchSupervisor() {
               width: "200px",
               borderRadius: "40px",
             }}
-            disabled={!selectedSupervisor}
+            disabled={
+              !selectedSupervisor ||
+              SupervisorStatus === "pending" ||
+              CoSupervisorStatus === "pending"
+            }
           >
             Request
           </Button>
@@ -169,9 +282,9 @@ export default function SearchSupervisor() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {supervisors
                 .filter((row) => {
-                  return row.researcharea === selectedResearchArea;
+                  return row.interestedResearchField === selectedResearchArea;
                 })
                 .map((row, key) => (
                   <TableRow
@@ -181,7 +294,7 @@ export default function SearchSupervisor() {
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell>{row.researcharea}</TableCell>
+                    <TableCell>{row.interestedResearchField}</TableCell>
                     <TableCell>
                       <Button
                         variant="outlined"

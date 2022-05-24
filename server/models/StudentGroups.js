@@ -33,10 +33,18 @@ const StudentGroups = new Schema({
     type: Number,
   },
   supervisor: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  supervisorStatus: {
+    type: String,
+  },
+  cosupervisorStatus: {
     type: String,
   },
   cosupervisor: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   panelmember: {
     type: String,

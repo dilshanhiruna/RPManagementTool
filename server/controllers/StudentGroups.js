@@ -18,7 +18,9 @@ exports.createGroup = async (req, res) => {
     topicFeedback: null,
     topicDetailDocument: null,
     supervisor: null,
+    supervisorStatus: "none",
     cosupervisor: null,
+    cosupervisorStatus: "none",
     panelmember: null,
     createdDate: new Date(),
   });
@@ -170,12 +172,12 @@ exports.updateResearchTopic = async (req, res) => {
 //@desc update supervisor
 //@route PUT /api/v1/studentgroups/supervisor/:id
 exports.updateSupervisor = async (req, res) => {
-  const { supervisor } = req.body;
+  const { supervisor, status } = req.body;
 
   try {
     const updatedStudentGroup = await StudentGroups.findByIdAndUpdate(
       req.params.id,
-      { supervisor },
+      { supervisor: supervisor, supervisorStatus: status },
       { new: true }
     );
     res.status(200).json({ success: true, data: updatedStudentGroup });
@@ -187,12 +189,12 @@ exports.updateSupervisor = async (req, res) => {
 //@desc update cosupervisor
 //@route PUT /api/v1/studentgroups/cosupervisor/:id
 exports.updateCosupervisor = async (req, res) => {
-  const { cosupervisor } = req.body;
+  const { cosupervisor, status } = req.body;
 
   try {
     const updatedStudentGroup = await StudentGroups.findByIdAndUpdate(
       req.params.id,
-      { cosupervisor },
+      { cosupervisor: cosupervisor, cosupervisorStatus: status },
       { new: true }
     );
     res.status(200).json({ success: true, data: updatedStudentGroup });

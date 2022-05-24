@@ -26,7 +26,7 @@ export default function Student() {
     interestedResearchField: null,
     staffType: null,
     studentGrouped: true,
-    studentGroupID: "628bc2f5a887eeda9fe2b9c2",
+    studentGroupID: "628ce20f01959a156fb22b66",
   };
 
   return (
@@ -48,7 +48,7 @@ export default function Student() {
             <TopicReg user={user} />
           </Route>
           <Route exact path="/student/searchsupervisor">
-            <SearchSupervisor />
+            <SearchSupervisor user={user} />
           </Route>
           <Route exact path="/student/chat"></Route>
           <Redirect to="/student/404" />

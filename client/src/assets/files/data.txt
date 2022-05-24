@@ -1,0 +1,167 @@
+  //supervisor list
+  //   Nuwan Kodagoda (SE, HPC, PC,PL, ADD)
+  //   Anuththara Kuruppu (SE)
+  //   Udara Samaratunge (SE)
+  //   Dinuka R. Wijendra (SE,PL,ADD)
+  //   Disni Sriyaratna (SE, MC)
+  //   Dilani Lunugalage (SE)
+  //   Dilshan De Silva (SE)
+  //   Nalaka Dissanayake (SE, RAAD)
+  //   Shalini Rupasinghe (SE)
+  //   Aruna Ishara Gamage (AR/VR)
+  //   Samanthi Eranga Siriwardene(SE)
+  //   Thilmi Anuththara Kuruppu(PL,ADD,A/VR,RAAD)
+  //   Amali Upekha Gunasinghe(A/VR)
+  //   Vishan Jayasinghearachchi (SE, PL)
+
+  //research area
+  // Information Security
+  // Artificial Intelligence and Machine Learning
+  //ICT for Development
+  // Distributed & Parallel Computing
+  // Software Engineering
+  //Data Communication and Networking
+  //Visual Computing
+  //Robotics & Intelligent Systems
+  // Data Science
+  //Design Lab
+  //Assitive Technology
+  //Elearning and Education
+  //Computing Linguistics
+  //Business Intelligence and Analytics
+  //Human Computer Interaction
+  //Internet of Things
+
+
+{
+  "uid": "ST22000001",
+  "name": "Nuwan Kodagoda (SE, HPC, PC,PL, ADD)",
+  "email": "st22000001"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Artificial Intelligence and Machine Learning",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000002",
+  "name": "Anuththara Kuruppu (SE)",
+  "email": "st22000002"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Artificial Intelligence and Machine Learning",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000003",
+  "name": "Udara Samaratunge (SE)",
+  "email": "st22000003"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Artificial Intelligence and Machine Learning",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000004",
+  "name": "Dinuka R. Wijendra (SE,PL,ADD)",
+  "email": "st22000004"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Artificial Intelligence and Machine Learning",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000005",
+  "name": "Disni Sriyaratna (SE, MC)",
+  "email": "st22000005"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Artificial Intelligence and Machine Learning",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000006",
+  "name": "Dilani Lunugalage (SE)",
+  "email": "st22000006"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Artificial Intelligence and Machine Learning",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000007",
+  "name": "Dilshan De Silva (SE)",
+  "email": "st22000007"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Distributed & Parallel Computing",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000008",
+  "name": "Nalaka Dissanayake (SE, RAAD)",
+  "email": "st22000008"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Distributed & Parallel Computing",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000009",
+  "name": "Samanthi Eranga Siriwardene(SE)",
+  "email": "st22000009"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Distributed & Parallel Computing",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000010",
+  "name": "Thilmi Anuththara Kuruppu(PL,ADD,A/VR,RAAD)",
+  "email": "st22000010"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Distributed & Parallel Computing",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000011",
+  "name": "Amali Upekha Gunasinghe(A/VR)",
+  "email": "st22000011"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Software Engineering",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}
+{
+  "uid": "ST22000012",
+  "name": "Vishan Jayasinghearachchi (SE, PL)",
+  "email": "st22000012"@sliit.lk",
+  "password": "password",
+  "role": "staff",
+  "interestedResearchField": "Software Engineering",
+  "staffType": "supervisor",
+  "studentGrouped": null,
+  "studentGroupID": null
+}

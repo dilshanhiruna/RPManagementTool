@@ -44,3 +44,23 @@ exports.getUserById = async (req, res) => {
     });
   }
 };
+
+//@desc Get all supervisors
+//@route GET /api/v1/users/supervisors
+//@access Public
+exports.getAllSupervisors = async (req, res) => {
+  try {
+    const supervisors = await User.find({ staffType: "supervisor" });
+
+    return res.status(200).json({
+      success: true,
+      data: supervisors,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: "Server Error",
+    });
+  }
+};
