@@ -90,10 +90,10 @@ export default function StudentDashboard({ user }) {
         if (studentGroup.researhTopic !== "") {
           setactiveStep(1);
         }
-        if (studentGroup.supervisorStatus !== "") {
+        if (studentGroup.supervisorStatus === "accepted") {
           setactiveStep(2);
         }
-        if (studentGroup.cosupervisorStatus !== "") {
+        if (studentGroup.cosupervisorStatus === "accepted") {
           setactiveStep(3);
         }
       });
@@ -386,7 +386,7 @@ export default function StudentDashboard({ user }) {
           <Grid item xs={4}>
             <Item
               sx={{
-                height: "95vh",
+                height: "120vh",
               }}
             >
               <Autocomplete
@@ -564,7 +564,7 @@ export default function StudentDashboard({ user }) {
           <Grid item xs={8}>
             <Item
               sx={{
-                height: "95vh",
+                height: "120vh",
               }}
             >
               <Stepper

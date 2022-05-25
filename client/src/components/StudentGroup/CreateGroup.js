@@ -53,7 +53,9 @@ export default function CreateGroup({ user }) {
     try {
       const response = await axios.post(`${API}/studentgroups`, group);
       console.log(response);
-      alert("Group Created Successfully");
+
+      //direct to dashboard
+      window.location.href = `/student`;
     } catch (err) {
       console.log(err);
     }

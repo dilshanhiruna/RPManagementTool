@@ -12,6 +12,7 @@ import ChatMenu from "../components/StudentGroup/ChatMenu";
 import TopicReg from "../components/StudentGroup/TopicReg";
 import SearchSupervisor from "../components/StudentGroup/SearchSupervisor";
 import StudentDashboard from "../components/StudentGroup/StudentDashboard";
+import StudentHeader from "../components/view/StudentHeader";
 
 export default function Student() {
   const API = process.env.REACT_APP_API;
@@ -31,7 +32,7 @@ export default function Student() {
 
   return (
     <div className="student__dashboard">
-      <Header userType={"Student"} />
+      <StudentHeader userType={"Student"} />
       <Router>
         <Switch>
           <Route exact path="/student">

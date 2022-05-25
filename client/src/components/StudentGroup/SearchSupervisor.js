@@ -89,6 +89,8 @@ export default function SearchSupervisor({ user }) {
         .put(`${API}/studentgroups/cosupervisor/${user.studentGroupID}`, data)
         .then((res) => {
           console.log(res);
+          //refresh the page
+          window.location.reload();
         });
     } else {
       const data = {
@@ -99,6 +101,8 @@ export default function SearchSupervisor({ user }) {
         .put(`${API}/studentgroups/supervisor/${user.studentGroupID}`, data)
         .then((res) => {
           console.log(res);
+          //refresh the page
+          window.location.reload();
         });
     }
   };
