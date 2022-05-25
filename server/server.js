@@ -1,15 +1,15 @@
-const express = require("express");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const http = require("http");
-const { Server } = require("socket.io");
-require("./common/db")();
-require("dotenv").config();
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const http = require('http');
+const { Server } = require('socket.io');
+require('./common/db')();
+require('dotenv').config();
 const app = express();
 const server = http.createServer(app);
 
 //request allow any domain
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: '*' }));
 
 //Body parser
 app.use(express.json());
@@ -18,34 +18,37 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Route files
-const studentGroups = require("./routes/StudentGroups");
-const user = require("./routes/User");
+const studentGroups = require('./routes/StudentGroups');
+const user = require('./routes/User');
+const topicRequests = require('./routes/TopicRequests');
+
 // Mount routers
-app.use("/api/v1/studentgroups", studentGroups);
-app.use("/api/v1/users", user);
+app.use('/api/v1/studentgroups', studentGroups);
+app.use('/api/v1/users', user);
+app.use('/api/v1/topicRequests', topicRequests);
 
 // Socket.io server
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:1234",
-    methods: ["GET", "POST"],
+    origin: 'http://localhost:1234',
+    methods: ['GET', 'POST'],
   },
 });
 
-io.on("connection", (socket) => {
+io.on('connection', (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-  socket.on("join_room", (data) => {
+  socket.on('join_room', (data) => {
     socket.join(data);
     console.log(`User with ID: ${socket.id} joined room: ${data}`);
   });
 
-  socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
+  socket.on('send_message', (data) => {
+    socket.to(data.room).emit('receive_message', data);
   });
 
-  socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
+  socket.on('disconnect', () => {
+    console.log('User Disconnected', socket.id);
   });
 });
 
