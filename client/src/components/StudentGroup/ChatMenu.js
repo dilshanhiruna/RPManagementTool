@@ -1,17 +1,17 @@
-import io from "socket.io-client";
-import { useState } from "react";
-import Chat from "./Chat";
+import io from 'socket.io-client';
+import { useState } from 'react';
+import Chat from './Chat';
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect('http://localhost:5001');
 
 function ChatMenu() {
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("123");
+  const [username, setUsername] = useState('');
+  const [room, setRoom] = useState('123');
   const [showChat, setShowChat] = useState(false);
 
   const joinRoom = () => {
-    if (username !== "" && room !== "") {
-      socket.emit("join_room", room);
+    if (username !== '' && room !== '') {
+      socket.emit('join_room', room);
       setShowChat(true);
     }
   };
