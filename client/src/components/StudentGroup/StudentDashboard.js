@@ -471,7 +471,7 @@ export default function StudentDashboard({ user }) {
                   <h1>Chat</h1>
                 </div>
                 <div>
-                  {/* <ChatMenu studentGroup={studentGroup} user={user} /> */}
+                  <ChatMenu studentGroup={studentGroup} user={user} />
                 </div>
               </div>
 

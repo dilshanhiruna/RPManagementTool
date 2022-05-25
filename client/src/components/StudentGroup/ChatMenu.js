@@ -5,16 +5,23 @@ import Chat from "./Chat";
 const socket = io.connect("http://localhost:5001");
 
 function ChatMenu({ studentGroup, user }) {
-  const [username, setUsername] = useState(user.uid);
+  const [username, setUsername] = useState("");
   const [room, setRoom] = useState(studentGroup._id);
   const [showChat, setShowChat] = useState(false);
 
-  useEffect(() => {
-    if (username !== "" && room !== "") {
-      socket.emit("join_room", room);
+  // useEffect(() => {
+  //   if (username !== "" && room !== "") {
+  //     socket.emit("join_room", room);
+  //     setShowChat(true);
+  //   }
+  // }, []);
+
+  const joinRoom = () => {
+    if (username !== "" && studentGroup._id !== "") {
+      socket.emit("join_room", studentGroup._id);
       setShowChat(true);
     }
-  }, []);
+  };
 
   return (
     <div className="App">
@@ -28,16 +35,18 @@ function ChatMenu({ studentGroup, user }) {
               setUsername(event.target.value);
             }}
           />
-          <input
+          {/* <input
             type="text"
+            value={room}
             placeholder="Room ID..."
             onChange={(event) => {
               setRoom(event.target.value);
             }}
-          />
+          /> */}
+          <button onClick={joinRoom}>Join A Room</button>
         </div>
       ) : (
-        <Chat socket={socket} username={username} room={room} />
+        <Chat socket={socket} username={username} room={studentGroup._id} />
       )}
     </div>
   );
