@@ -23,8 +23,8 @@ export default function TopicReg({ user }) {
           if (res.data.data.researchTopic) {
             sethasTopic(res.data.data.researchTopic);
             setNewTopic(res.data.data.researchTopic);
-            setLoading(false);
           }
+          setLoading(false);
         });
     } catch (err) {
       console.log(err);

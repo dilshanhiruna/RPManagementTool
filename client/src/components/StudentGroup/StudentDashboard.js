@@ -87,17 +87,17 @@ export default function StudentDashboard({ user }) {
           studentGroup.student4 ? studentGroup.student4 : "",
         ]);
 
-        if (studentGroup.researhTopic !== "") {
+        if (
+          studentGroup.researchTopic !== "" &&
+          isNaN(studentGroup.researchTopic)
+        ) {
           setactiveStep(1);
-          return;
         }
         if (studentGroup.supervisorStatus === "accepted") {
           setactiveStep(2);
-          return;
         }
         if (studentGroup.cosupervisorStatus === "accepted") {
           setactiveStep(3);
-          return;
         }
       });
     } catch (err) {
@@ -584,7 +584,7 @@ export default function StudentDashboard({ user }) {
                   </Step>
                 ))}
               </Stepper>
-              <Divider light />
+              <Divider />
               <div style={{ margin: "20px", marginLeft: "70px" }}>
                 <Submissions studentGroup={studentGroup} />
               </div>

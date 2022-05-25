@@ -20,6 +20,10 @@ const StudentGroups = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  groupID: {
+    type: String,
+    require: true,
+  },
   groupClosed: {
     type: String,
   },

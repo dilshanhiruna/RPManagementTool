@@ -1,6 +1,8 @@
 import { Button, Chip } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import Alert from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CreateGroup.css";
@@ -8,10 +10,12 @@ import "./CreateGroup.css";
 export default function CreateGroup({ user }) {
   const API = process.env.REACT_APP_API;
   const [Student, setStudent] = useState([]);
+  const [GroupID, setGroupID] = useState("");
   const [SelectedStudent, setSelectedStudent] = useState("");
   const [GroupMembers, setGroupMembers] = useState([
     { id: user._id, name: user.name },
   ]);
+  const [showError, setshowError] = useState(false);
 
   const fetchStudentsByKeyword = async (keyword) => {
     if (keyword.length < 3) {
@@ -40,11 +44,15 @@ export default function CreateGroup({ user }) {
 
   //function to create group
   const createGroup = async () => {
-    if (GroupMembers.length < 2) {
-      alert("Please add at least 2 members to the group");
+    if (GroupMembers.length < 2 || GroupID === "") {
+      setshowError(true);
+      setTimeout(() => {
+        setshowError(false);
+      }, 3000);
       return;
     }
     const group = {
+      GroupID: GroupID,
       student1: GroupMembers[0].id,
       student2: GroupMembers[1] ? GroupMembers[1].id : null,
       student3: GroupMembers[2] ? GroupMembers[2].id : null,
@@ -66,6 +74,14 @@ export default function CreateGroup({ user }) {
       <div className="creategroup__addstudents">
         <div>
           <h1>Let's create a new group</h1>
+          <TextField
+            required
+            id="outlined-basic"
+            label="Enter Group ID"
+            variant="outlined"
+            sx={{ width: 250 }}
+            onChange={(e) => setGroupID(e.target.value)}
+          />
           <h3>Search members to your group</h3>
           <div style={{ display: "flex" }}>
             <Autocomplete
@@ -106,6 +122,19 @@ export default function CreateGroup({ user }) {
               ADD
             </Button>
           </div>
+          <Collapse in={showError}>
+            <Alert
+              hidden
+              severity="error"
+              color="error"
+              sx={{
+                width: "132%",
+                marginTop: "1rem",
+              }}
+            >
+              Error, please check again!
+            </Alert>
+          </Collapse>
         </div>
         <div className="creategroup__button">
           <Button

@@ -5,7 +5,7 @@ const User = require("../models/User");
 //@route POST /api/v1/studentgroups
 exports.createGroup = async (req, res) => {
   //get data from body
-  const { student1, student2, student3, student4 } = req.body;
+  const { GroupID, student1, student2, student3, student4 } = req.body;
 
   //create new student group
   const newStudentGroup = new StudentGroups({
@@ -13,6 +13,7 @@ exports.createGroup = async (req, res) => {
     student2: student2 || null,
     student3: student3 || null,
     student4: student4 || null,
+    groupID: GroupID,
     groupClosed: null,
     researchTopic: null,
     topicFeedback: null,
