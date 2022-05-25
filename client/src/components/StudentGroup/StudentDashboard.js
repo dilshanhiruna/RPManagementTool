@@ -89,12 +89,15 @@ export default function StudentDashboard({ user }) {
 
         if (studentGroup.researhTopic !== "") {
           setactiveStep(1);
+          return;
         }
         if (studentGroup.supervisorStatus === "accepted") {
           setactiveStep(2);
+          return;
         }
         if (studentGroup.cosupervisorStatus === "accepted") {
           setactiveStep(3);
+          return;
         }
       });
     } catch (err) {
