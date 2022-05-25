@@ -10,22 +10,23 @@ import {
   Select,
 } from "@mui/material";
 import { useHistory } from "react-router";
+import UploadDocuments from "./UploadDocuments";
 
 export default function CreateSubmission() {
   const [submissionName, setsubmissionName] = useState("");
   const [sType, setsType] = useState("");
   const [sDescription, setsDescription] = useState("");
-  const [sDeadline, setsDeadline] = useState("2022-06-01");
+  const [sDeadline, setsDeadline] = useState("");
 
   const API = process.env.REACT_APP_API;
-
+  const history = useHistory();
   return (
     <div className="res_component">
       <div className="submission_details">
         <br />
 
         <div className="submission_details__input">
-          <p>Name : </p>
+          <p>Name </p>
 
           <FormControl fullWidth>
             <TextField
@@ -39,7 +40,7 @@ export default function CreateSubmission() {
         </div>
 
         <div className="submission_details__input">
-          <p>Assignment type :</p>
+          <p>Assignment type </p>
 
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Type</InputLabel>
@@ -65,7 +66,7 @@ export default function CreateSubmission() {
         </div>
 
         <div className="submission_details__input">
-          <p>Description : </p>
+          <p>Description</p>
           <FormControl fullWidth>
             <TextField
               id="outlined-multiline-static"
@@ -87,7 +88,6 @@ export default function CreateSubmission() {
               id="date"
               label="Date"
               type="date"
-              // defaultValue={date}
               sx={{ width: 350 }}
               InputLabelProps={{
                 shrink: true,
@@ -119,7 +119,7 @@ export default function CreateSubmission() {
               variant="contained"
               style={{ width: "100px" }}
               sx={{ left: "550px" }}
-              //onClick={}
+              onClick={() => history.push("/admin/uploadfiles")}
             >
               Next
             </Button>
