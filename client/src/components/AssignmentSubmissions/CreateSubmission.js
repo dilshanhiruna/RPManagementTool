@@ -9,27 +9,18 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-// import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-// import { Typography } from "@material-ui/core";
+import { useHistory } from "react-router";
 
 export default function CreateSubmission() {
-  // const theme = createTheme({
-  //   typography: {
-  //     fontFamily: [
-  //       "Nunito",
-  //       "Roboto",
-  //       "Helvetica Neue",
-  //       "Arial",
-  //       "sans-serif",
-  //     ].join(","),
-  //   },
-  // });
-  const [date, setdate] = useState("2022-06-01");
+  const [submissionName, setsubmissionName] = useState("");
+  const [sType, setsType] = useState("");
+  const [sDescription, setsDescription] = useState("");
+  const [sDeadline, setsDeadline] = useState("2022-06-01");
+
+  const API = process.env.REACT_APP_API;
+
   return (
     <div className="res_component">
-      {/* <ThemeProvider theme={theme}>
-        <Typography variant="h3">hello world</Typography> */}
-
       <div className="submission_details">
         <br />
 
@@ -42,8 +33,7 @@ export default function CreateSubmission() {
               className="submission_txt"
               label="Assignment Name"
               variant="outlined"
-              // size="small"
-              // onChange={(e) => setsubmissionname(e.target.value)}
+              onChange={(e) => setsubmissionName(e.target.value)}
             />
           </FormControl>
         </div>
@@ -58,10 +48,10 @@ export default function CreateSubmission() {
               id="demo-simple-select"
               // value={timeSlot}
               label="Type"
-              // onChange={(event) => {
-              //   settimeSlot(event.target.value);
-              // }}
-              style={{ width: "330px" }}
+              onChange={(event) => {
+                setsType(event.target.value);
+              }}
+              style={{ width: "350px" }}
             >
               <MenuItem value={1}>Topic Assignment Form</MenuItem>
               <MenuItem value={2}>Chater</MenuItem>
@@ -74,21 +64,6 @@ export default function CreateSubmission() {
           </FormControl>
         </div>
 
-        {/* <div className="submission_details__input">
-          <p>Description : </p>
-
-          <FormControl fullWidth>
-            <TextField
-              id="outlined-basic"
-              className="submission_txt"
-              label="Description"
-              variant="outlined"
-              // size="small"
-              // onChange={(e) => setsubmissionname(e.target.value)}
-            />
-          </FormControl>
-        </div> */}
-
         <div className="submission_details__input">
           <p>Description : </p>
           <FormControl fullWidth>
@@ -98,7 +73,10 @@ export default function CreateSubmission() {
               multiline
               rows={3}
               variant="outlined"
-              style={{ width: "330px" }}
+              style={{ width: "350px" }}
+              onChange={(event) => {
+                setsDescription(event.target.value);
+              }}
             />
           </FormControl>
         </div>
@@ -110,13 +88,13 @@ export default function CreateSubmission() {
               label="Date"
               type="date"
               // defaultValue={date}
-              sx={{ width: 330 }}
+              sx={{ width: 350 }}
               InputLabelProps={{
                 shrink: true,
               }}
-              // onChange={(event) => {
-              //   setdate(event.target.value);
-              // }}
+              onChange={(event) => {
+                setsDeadline(event.target.value);
+              }}
             />
           </FormControl>
         </div>
@@ -140,14 +118,14 @@ export default function CreateSubmission() {
             <Button
               variant="contained"
               style={{ width: "100px" }}
-              sx={{ left: "795px" }}
+              sx={{ left: "550px" }}
+              //onClick={}
             >
               Next
             </Button>
           </FormControl>
         </div>
       </div>
-      {/* </ThemeProvider> */}
     </div>
   );
 }

@@ -7,18 +7,20 @@ import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
 
 export default function UploadDocuments() {
-  const [files, setFiles] = useState();
+  const [sTemplate, setsTemplate] = useState();
+  const [sMarkingScheme, setsMarkingScheme] = useState();
+
   return (
     <div className="res_component">
       <div className="submission_details">
         <h2>Upload the document template :</h2>
         <div>
-          <FileUpload value={files} onChange={setFiles} />
+          <FileUpload value={sTemplate} onChange={setsTemplate} />
         </div>
         <br />
         <h2>Upload the Marking Rubric :</h2>
         <div>
-          <FileUpload value={files} onChange={setFiles} />
+          <FileUpload value={sMarkingScheme} onChange={setsMarkingScheme} />
         </div>
         <br />
         <Button variant="outline" style={{ width: "100px" }}>
@@ -28,7 +30,7 @@ export default function UploadDocuments() {
           variant="contained"
           endIcon={<SendIcon />}
           style={{ width: "100px" }}
-          sx={{ left: "795px" }}
+          sx={{ left: "720px" }}
         >
           Create
         </Button>

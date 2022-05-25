@@ -10,5 +10,6 @@ h1{
     padding: 0px 35px;
   }
   .submission_details {
-    min-width: 70%;
+    min-width: 65%;
+    margin-left: 100px;
   }
