@@ -1,4 +1,4 @@
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, Skeleton } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
@@ -13,6 +13,8 @@ export default function TopicReg({ user }) {
   const [showAlert, setshowAlert] = useState(false);
   const [showError, setshowError] = useState(false);
 
+  const [Loading, setLoading] = useState(true);
+
   const fetchTopic = async () => {
     try {
       await axios
@@ -21,6 +23,7 @@ export default function TopicReg({ user }) {
           if (res.data.data.researchTopic) {
             sethasTopic(res.data.data.researchTopic);
             setNewTopic(res.data.data.researchTopic);
+            setLoading(false);
           }
         });
     } catch (err) {
@@ -58,7 +61,7 @@ export default function TopicReg({ user }) {
     }
   };
 
-  return (
+  return !Loading ? (
     <div className="topicreg__component">
       <div className="topicreg__form">
         <div>
@@ -135,6 +138,23 @@ export default function TopicReg({ user }) {
             filter: "contrast(105%) ",
           }}
         />
+      </div>
+    </div>
+  ) : (
+    <div className="searchsupervisor__component">
+      <div>
+        <br />
+        <br />
+        <Skeleton variant="text" width={500} height={100} />
+        <Skeleton variant="text" width={100} height={20} />
+        <Skeleton variant="text" width={500} height={100} />
+        <br />
+        <br />
+        <br />
+        <Skeleton variant="text" width={200} height={100} />
+      </div>
+      <div>
+        <Skeleton variant="rectangular" width={600} height={400} />
       </div>
     </div>
   );
