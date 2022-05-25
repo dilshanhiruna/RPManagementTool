@@ -38,6 +38,10 @@ export default function SearchSupervisor({ user }) {
   const fetchGroupDetails = async () => {
     try {
       axios.get(`${API}/studentgroups/${user.studentGroupID}`).then((res) => {
+        if (!res.data.data.researchTopic) {
+          window.location.href = "/student/topicreg";
+        }
+
         //set the supervisor and cosupervisor
         if (isNaN(res.data.data.supervisor)) {
           setSupervisor(res.data.data.supervisor.name);

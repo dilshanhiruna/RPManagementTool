@@ -27,7 +27,7 @@ export default function Student() {
     interestedResearchField: null,
     staffType: null,
     studentGrouped: true,
-    studentGroupID: "628ce20f01959a156fb22b66",
+    studentGroupID: "628e55274a2760fe44048084",
   };
 
   return (
