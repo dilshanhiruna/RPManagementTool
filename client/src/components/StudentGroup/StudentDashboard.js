@@ -20,7 +20,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-import { Divider } from "@mui/material";
+import { Chip, Container, Divider } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -35,6 +35,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
+import Submissions from "./Submissions";
 
 // paper card for student dashboard
 const Item = styled(Paper)(({ theme }) => ({
@@ -346,6 +349,36 @@ export default function StudentDashboard({ user }) {
   const handleCloseRemoveMember = () => {
     setRemoveMember(false);
   };
+
+  // for displaying avartars
+  function stringToColor(string) {
+    let hash = 0;
+    let i;
+
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    let color = "#";
+
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+
+    return color;
+  }
+
+  function stringAvatar(name) {
+    return {
+      sx: {
+        bgcolor: stringToColor(name),
+      },
+      children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+    };
+  }
   return (
     <div className="student__dashboard">
       <Box sx={{ flexGrow: 1 }}>
@@ -392,7 +425,7 @@ export default function StudentDashboard({ user }) {
                 variant="contained"
                 sx={{
                   marginTop: "5px",
-                  marginBottom: "50px",
+                  marginBottom: "30px",
                   width: "100%",
                 }}
                 onClick={() => {
@@ -402,9 +435,33 @@ export default function StudentDashboard({ user }) {
                 Add Member
               </Button>
 
-              <Button onClick={handleClickOpenGroupMemberModal}>
-                Show Members
-              </Button>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "start",
+                  marginLeft: "20px",
+                }}
+              >
+                <div>
+                  <AvatarGroup max={4}>
+                    {Students.filter((std) => {
+                      return std !== "";
+                    }).map((row) => (
+                      <Avatar
+                        {...stringAvatar(row.name)}
+                        // sx={{ width: 56, height: 56 }}
+                      />
+                    ))}
+                  </AvatarGroup>
+                </div>
+                <div>
+                  <Chip
+                    label=" Show Members"
+                    style={{ margin: "7px" }}
+                    onClick={handleClickOpenGroupMemberModal}
+                  />
+                </div>
+              </div>
 
               <BootstrapDialog
                 onClose={handleCloseOpenGroupMemberModal}
@@ -525,6 +582,9 @@ export default function StudentDashboard({ user }) {
                 ))}
               </Stepper>
               <Divider light />
+              <div style={{ margin: "20px", marginLeft: "70px" }}>
+                <Submissions studentGroup={studentGroup} />
+              </div>
             </Item>
           </Grid>
         </Grid>
