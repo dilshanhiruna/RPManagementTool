@@ -38,6 +38,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Submissions from "./Submissions";
+import ChatMenu from "./ChatMenu";
 
 // paper card for student dashboard
 const Item = styled(Paper)(({ theme }) => ({
@@ -463,6 +464,14 @@ export default function StudentDashboard({ user }) {
                     style={{ margin: "7px" }}
                     onClick={handleClickOpenGroupMemberModal}
                   />
+                </div>
+              </div>
+              <div>
+                <div style={{ textAlign: "left", margin: "25px" }}>
+                  <h1>Chat</h1>
+                </div>
+                <div>
+                  {/* <ChatMenu studentGroup={studentGroup} user={user} /> */}
                 </div>
               </div>
 

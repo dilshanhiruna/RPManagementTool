@@ -1,20 +1,20 @@
-import io from 'socket.io-client';
-import { useState } from 'react';
-import Chat from './Chat';
+import io from "socket.io-client";
+import { useEffect, useState } from "react";
+import Chat from "./Chat";
 
-const socket = io.connect('http://localhost:5001');
+const socket = io.connect("http://localhost:5001");
 
-function ChatMenu() {
-  const [username, setUsername] = useState('');
-  const [room, setRoom] = useState('123');
+function ChatMenu({ studentGroup, user }) {
+  const [username, setUsername] = useState(user.uid);
+  const [room, setRoom] = useState(studentGroup._id);
   const [showChat, setShowChat] = useState(false);
 
-  const joinRoom = () => {
-    if (username !== '' && room !== '') {
-      socket.emit('join_room', room);
+  useEffect(() => {
+    if (username !== "" && room !== "") {
+      socket.emit("join_room", room);
       setShowChat(true);
     }
-  };
+  }, []);
 
   return (
     <div className="App">
@@ -35,7 +35,6 @@ function ChatMenu() {
               setRoom(event.target.value);
             }}
           />
-          <button onClick={joinRoom}>Join A Room</button>
         </div>
       ) : (
         <Chat socket={socket} username={username} room={room} />
