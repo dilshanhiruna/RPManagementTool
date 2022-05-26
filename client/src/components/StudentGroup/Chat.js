@@ -1,3 +1,6 @@
+import { Button, TextField } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import "./Chat.css";
@@ -34,9 +37,6 @@ function Chat({ socket, username, room }) {
 
   return (
     <div className="chat-window">
-      <div className="chat-header">
-        <p>Live Chat</p>
-      </div>
       <div className="chat-body">
         <ScrollToBottom
           className="message-container"
@@ -63,19 +63,27 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
-      <div className="chat-footer">
-        <input
-          type="text"
-          value={currentMessage}
-          placeholder="Hey..."
-          onChange={(event) => {
-            setCurrentMessage(event.target.value);
-          }}
-          // onKeyPress={(event) => {
-          //   event.key === "Enter" && sendMessage();
-          // }}
-        />
-        <button onClick={sendMessage}>&#9658;</button>
+      <div>
+        <Stack direction="row" spacing={0}>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            fullWidth
+            placeholder="Type a message..."
+            value={currentMessage}
+            onChange={(event) => {
+              setCurrentMessage(event.target.value);
+            }}
+            onKeyPress={(event) => {
+              event.key === "Enter" && sendMessage();
+            }}
+          />
+          <Button
+            variant="contained"
+            startIcon={<SendIcon sx={{ marginLeft: "11px" }} />}
+            onClick={sendMessage}
+          ></Button>
+        </Stack>
       </div>
     </div>
   );

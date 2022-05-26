@@ -6,7 +6,6 @@ const socket = io.connect("http://localhost:5002");
 
 function ChatMenu({ studentGroup, user }) {
   const [username, setUsername] = useState("");
-  const [room, setRoom] = useState(studentGroup._id);
   const [showChat, setShowChat] = useState(false);
 
   // useEffect(() => {
@@ -46,10 +45,42 @@ function ChatMenu({ studentGroup, user }) {
           <button onClick={joinRoom}>Join A Room</button>
         </div>
       ) : (
-        <Chat socket={socket} username={username} room={studentGroup._id} />
+        <div>
+          <h1>Group Chat</h1>
+          <Chat socket={socket} username={username} room={studentGroup._id} />
+        </div>
       )}
     </div>
   );
 }
 
 export default ChatMenu;
+
+// import io from "socket.io-client";
+// import { useEffect, useState } from "react";
+// import Chat from "./Chat";
+
+// const socket = io.connect("http://localhost:5002");
+
+// function ChatMenu({ studentGroup, user }) {
+//   const [showChat, setShowChat] = useState(false);
+
+//   useEffect(() => {
+//     if (user.uid !== "" && studentGroup._id !== "") {
+//       socket.emit("join_room", studentGroup._id);
+//       setShowChat(true);
+//     }
+//   }, []);
+
+//   return (
+//     <div className="App">
+//       {showChat ? (
+//         <Chat socket={socket} username={user.uid} room={studentGroup._id} />
+//       ) : (
+//         ""
+//       )}
+//     </div>
+//   );
+// }
+
+// export default ChatMenu;

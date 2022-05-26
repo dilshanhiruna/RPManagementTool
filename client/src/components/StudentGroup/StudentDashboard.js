@@ -470,13 +470,10 @@ export default function StudentDashboard({ user }) {
                   />
                 </div>
               </div>
+
               <div>
-                <div style={{ textAlign: "left", margin: "25px" }}>
-                  <h1>Chat</h1>
-                </div>
-                <div>
-                  <ChatMenu studentGroup={studentGroup} user={user} />
-                </div>
+                <Divider sx={{ marginTop: "25px" }} />
+                <ChatMenu studentGroup={studentGroup} user={user} />
               </div>
 
               <BootstrapDialog
