@@ -24,18 +24,19 @@ function Chat({ socket, username, room }) {
       await socket.emit("send_message", messageData);
 
       setMessageList((list) => [...list, messageData]);
-      // save chat data in local storage
-      localStorage.setItem("chatData", JSON.stringify(messageList));
       setCurrentMessage("");
+      // save chat data in local storage
+      // localStorage.setItem("chatData", JSON.stringify(messageList));
     }
   };
 
   useEffect(() => {
     // get chat data from local storage
-    const chatData = JSON.parse(localStorage.getItem("chatData"));
-    if (chatData) {
-      setMessageList(chatData);
-    }
+    // const chatData = JSON.parse(localStorage.getItem("chatData"));
+    // console.log(chatData);
+    // if (chatData) {
+    //   setMessageList(chatData.filter((message) => message.room === room));
+    // }
   }, []);
 
   useEffect(() => {

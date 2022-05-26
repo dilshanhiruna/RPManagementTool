@@ -359,7 +359,7 @@ export default function ViewMyStudentGroups({ user }) {
                     <CloseRoundedIcon />
                   </IconButton>
                 </div>
-                <ChatMenu studentGroup={{ _id: groupId }} user={user} />
+                <ChatMenu studentGroup={{ _id: _id }} user={user} />
               </div>
             </Backdrop>
           </div>
