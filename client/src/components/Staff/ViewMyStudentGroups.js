@@ -359,7 +359,7 @@ export default function ViewMyStudentGroups({ user }) {
       <div>
         {rows.length == 0 ? (
           <div className="student__dashboard">
-            <div>No New Requests avaialable</div>{" "}
+            <div>You are not assigned to any group yet</div>{" "}
           </div>
         ) : (
           ""
