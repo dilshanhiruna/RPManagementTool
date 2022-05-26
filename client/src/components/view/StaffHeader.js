@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import "./Header.css";
 
+<<<<<<< HEAD:client/src/components/view/StaffHeader.js
 export default function StaffHeader({ userType }) {
+=======
+export default function SupervisorHeader({ userType }) {
+>>>>>>> 1a93f04645bf7748f49fba22397dbfea3d240d5d:client/src/components/view/SupervisorHeader.js
   const redirect = () => {
     console.log("hey");
   };

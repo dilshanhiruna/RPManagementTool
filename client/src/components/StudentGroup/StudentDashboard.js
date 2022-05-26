@@ -20,7 +20,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-import { Chip, Container, Divider } from "@mui/material";
+import { Chip, Container, Divider, Skeleton } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -38,6 +38,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Submissions from "./Submissions";
+import ChatMenu from "./ChatMenu";
 
 // paper card for student dashboard
 const Item = styled(Paper)(({ theme }) => ({
@@ -71,6 +72,8 @@ export default function StudentDashboard({ user }) {
   const [RemoveMember, setRemoveMember] = useState(false);
   const [SelectedMemeberRemove, setSelectedMemeberRemove] = useState("");
 
+  const [Loading, setLoading] = useState(true);
+
   // get student group details
   const fetchStudentGroup = async () => {
     try {
@@ -99,6 +102,7 @@ export default function StudentDashboard({ user }) {
         if (studentGroup.cosupervisorStatus === "accepted") {
           setactiveStep(3);
         }
+        setLoading(false);
       });
     } catch (err) {
       console.log(err);
@@ -382,7 +386,7 @@ export default function StudentDashboard({ user }) {
       children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
     };
   }
-  return (
+  return !Loading ? (
     <div className="student__dashboard">
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
@@ -463,6 +467,14 @@ export default function StudentDashboard({ user }) {
                     style={{ margin: "7px" }}
                     onClick={handleClickOpenGroupMemberModal}
                   />
+                </div>
+              </div>
+              <div>
+                <div style={{ textAlign: "left", margin: "25px" }}>
+                  <h1>Chat</h1>
+                </div>
+                <div>
+                  <ChatMenu studentGroup={studentGroup} user={user} />
                 </div>
               </div>
 
@@ -593,5 +605,90 @@ export default function StudentDashboard({ user }) {
         </Grid>
       </Box>
     </div>
+  ) : (
+    <>
+      <div className="student__dashboard">
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Item
+                sx={{
+                  height: "120vh",
+                }}
+              >
+                <Skeleton
+                  variant="rectangular"
+                  height={50}
+                  sx={{
+                    marginBottom: "10px",
+                  }}
+                />
+
+                <Skeleton variant="rectangular" height={40} />
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "start",
+                    marginLeft: "20px",
+                  }}
+                >
+                  <div>
+                    <Skeleton
+                      height={60}
+                      sx={{
+                        marginRight: "10px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      <AvatarGroup max={4}>
+                        <Avatar />
+                        <Avatar />
+                        <Avatar />
+                        <Avatar />
+                        <Avatar />
+                      </AvatarGroup>
+                    </Skeleton>
+                  </div>
+                  <div>
+                    <Skeleton
+                      height={60}
+                      sx={{
+                        marginTop: "10px",
+                      }}
+                    >
+                      <Chip label=" Show Members" style={{ margin: "7px" }} />
+                    </Skeleton>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ textAlign: "left", margin: "25px" }}>
+                    <h1>Chat</h1>
+                  </div>
+                  <div></div>
+                </div>
+              </Item>
+            </Grid>
+            <Grid item xs={8}>
+              <Item
+                sx={{
+                  height: "120vh",
+                }}
+              >
+                <Skeleton height={100} />
+                <Divider />
+                <div style={{ margin: "20px", marginLeft: "70px" }}>
+                  <Skeleton variant="text" width={300} height={30} />
+                  <Skeleton variant="text" width={270} height={30} />
+                  <Skeleton variant="text" width={310} height={30} />
+                  <Skeleton variant="text" width={320} height={30} />
+                  <Skeleton variant="text" width={300} height={30} />
+                </div>
+              </Item>
+            </Grid>
+          </Grid>
+        </Box>
+      </div>
+    </>
   );
 }
