@@ -473,6 +473,7 @@ export default function StudentDashboard({ user }) {
 
               <div>
                 <Divider sx={{ marginTop: "25px" }} />
+                <h1>Group Chat</h1>
                 <ChatMenu studentGroup={studentGroup} user={user} />
               </div>
 

@@ -51,8 +51,7 @@ export default function Student() {
         <Route exact path="/student/searchsupervisor">
           <SearchSupervisor user={user} />
         </Route>
-        <Route exact path="/student/chat"></Route>
-        <Redirect to="/student/404" />
+        <Redirect to="/student" />
       </Switch>
 
       <footer />

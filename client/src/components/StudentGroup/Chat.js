@@ -24,9 +24,19 @@ function Chat({ socket, username, room }) {
       await socket.emit("send_message", messageData);
 
       setMessageList((list) => [...list, messageData]);
+      // save chat data in local storage
+      localStorage.setItem("chatData", JSON.stringify(messageList));
       setCurrentMessage("");
     }
   };
+
+  useEffect(() => {
+    // get chat data from local storage
+    const chatData = JSON.parse(localStorage.getItem("chatData"));
+    if (chatData) {
+      setMessageList(chatData);
+    }
+  }, []);
 
   useEffect(() => {
     socket.removeAllListeners();

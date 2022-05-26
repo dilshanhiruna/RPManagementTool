@@ -13,7 +13,7 @@ export default function Admin() {
 
       <Switch>
         <Route exact path="/admin"></Route>
-        <Redirect to="/admin/404" />
+        <Redirect to="/admin" />
       </Switch>
 
       <footer />
