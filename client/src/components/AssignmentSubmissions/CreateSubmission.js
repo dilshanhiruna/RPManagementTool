@@ -8,21 +8,38 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Box,
+  colors,
 } from "@mui/material";
 import { useHistory } from "react-router";
 import UploadDocuments from "./UploadDocuments";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+
+const steps = ["Insert Assignment Details", "Upload documents"];
 
 export default function CreateSubmission() {
   const [submissionName, setsubmissionName] = useState("");
   const [sType, setsType] = useState("");
   const [sDescription, setsDescription] = useState("");
   const [sDeadline, setsDeadline] = useState("");
+  const [activeStep, setActiveStep] = React.useState(0);
 
   const API = process.env.REACT_APP_API;
   const history = useHistory();
   return (
     <div className="res_component">
       <div className="submission_details">
+        <Box sx={{ width: "100%" }} style={{ backgroundColor: "black" }}>
+          <Stepper activeStep={1} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Box>
         <br />
 
         <div className="submission_details__input">
@@ -34,6 +51,7 @@ export default function CreateSubmission() {
               className="submission_txt"
               label="Assignment Name"
               variant="outlined"
+              value={submissionName}
               onChange={(e) => setsubmissionName(e.target.value)}
             />
           </FormControl>
@@ -47,7 +65,7 @@ export default function CreateSubmission() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              // value={timeSlot}
+              value={sType}
               label="Type"
               onChange={(event) => {
                 setsType(event.target.value);
@@ -75,6 +93,7 @@ export default function CreateSubmission() {
               rows={3}
               variant="outlined"
               style={{ width: "350px" }}
+              value={sDescription}
               onChange={(event) => {
                 setsDescription(event.target.value);
               }}
@@ -88,6 +107,7 @@ export default function CreateSubmission() {
               id="date"
               label="Date"
               type="date"
+              value={sDeadline}
               sx={{ width: 350 }}
               InputLabelProps={{
                 shrink: true,
