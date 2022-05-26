@@ -53,7 +53,7 @@ const columns = [
   { id: "reject", label: "", minWidth: 100, align: "center" },
 ];
 
-export default function MyStudentGroups({ user }) {
+export default function ViewMyStudentGroups({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [studentGroups, setStudentGroups] = useState([]);
@@ -184,7 +184,7 @@ export default function MyStudentGroups({ user }) {
       <div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h3>Following groups have requested you to be their:</h3>
+            <h3>Following groups have requested you to be their supervisor:</h3>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">

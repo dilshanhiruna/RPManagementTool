@@ -4,7 +4,7 @@ import "./Header.css";
 
 export default function StaffHeader({ userType }) {
   const redirect = () => {
-    console.log("hey");
+    window.location.href = "/staff/supervisor/topicReq";
   };
   return (
     <>
