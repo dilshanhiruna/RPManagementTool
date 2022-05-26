@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import { Button } from '@mui/material';
 import './TopicRequests.css';
 
@@ -73,6 +73,7 @@ export default function TopicRequests({ user }) {
               student4 = data.student4.uid;
             }
             const obj = {
+              _id: data._id,
               groupID: data.groupID,
               reTopic: data.researchTopic,
               student1,
@@ -103,6 +104,19 @@ export default function TopicRequests({ user }) {
   //     console.log(err);
   //   }
   // };
+
+  //function to accept/reject topic reqest
+  const acceptOrReject = (groupId, action) => {
+    console.log(groupId);
+    console.log(action);
+    axios
+      .post(`${API}/topicRequests/acceptOrReject/${groupId}`, {
+        action,
+      })
+      .then(() => {
+        window.location.reload();
+      });
+  };
   useEffect(() => {
     getTopicReqs();
   }, []);
@@ -185,7 +199,14 @@ export default function TopicRequests({ user }) {
                                     align={column.align}
                                     className="hash-table-border"
                                   >
-                                    <Button color="success">Accept</Button>
+                                    <Button
+                                      color="success"
+                                      onClick={() => {
+                                        acceptOrReject(row['_id'], 'accepted');
+                                      }}
+                                    >
+                                      Accept
+                                    </Button>
                                   </TableCell>
                                 );
                               }
@@ -196,7 +217,14 @@ export default function TopicRequests({ user }) {
                                     align={column.align}
                                     className="hash-table-border"
                                   >
-                                    <Button color="error">Reject</Button>
+                                    <Button
+                                      color="error"
+                                      onClick={() => {
+                                        acceptOrReject(row['_id'], 'rejected');
+                                      }}
+                                    >
+                                      Reject
+                                    </Button>
                                   </TableCell>
                                 );
                               }
