@@ -30,21 +30,21 @@ export default function Staff() {
   return (
     <div className="student__dashboard">
       <SupervisorHeader userType={"Staff"} />
-      <Router>
-        <Switch>
-          <Route exact path="/staff"></Route>
-          <Route exact path="/supervisor">
-            <SupervisorDashboard user={user} />
-          </Route>
-          <Route exact path="/supervisor/topicReq">
-            <SuperviosrRequests user={user} />
-          </Route>
-          <Route exact path="/cosupervisor/topicReq">
-            <CoSuperviosrRequests user={user} />
-          </Route>
-          <Redirect to="/supervisor" />
-        </Switch>
-      </Router>
+
+      <Switch>
+        <Route exact path="/staff"></Route>
+        <Route exact path="/supervisor">
+          <SupervisorDashboard user={user} />
+        </Route>
+        <Route exact path="/supervisor/topicReq">
+          <SuperviosrRequests user={user} />
+        </Route>
+        <Route exact path="/cosupervisor/topicReq">
+          <CoSuperviosrRequests user={user} />
+        </Route>
+        <Redirect to="/supervisor" />
+      </Switch>
+
       <footer />
     </div>
   );

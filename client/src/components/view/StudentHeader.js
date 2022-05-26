@@ -4,7 +4,8 @@ import "./Header.css";
 import { useHistory } from "react-router-dom";
 
 export default function StudentHeader({ userType }) {
-  const history = useHistory();
+  let history = useHistory();
+
   return (
     <>
       <header>

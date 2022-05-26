@@ -8,14 +8,15 @@ import Admin from "./routes/Admin";
 
 function App() {
   const [userType, setuserType] = useState("student");
-  console.log(userType);
   return (
-    <div className="App">
-      {userType === "student" ? <Student /> : ""}
-      {userType === "staff" ? <Staff /> : ""}
-      {userType === "admin" ? <Admin /> : ""}
-      {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
-    </div>
+    <Router>
+      <div className="App">
+        {userType === "student" ? <Student /> : ""}
+        {userType === "staff" ? <Staff /> : ""}
+        {userType === "admin" ? <Admin /> : ""}
+        {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
+      </div>
+    </Router>
   );
 }
 

@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import Chat from "./Chat";
 
-const socket = io.connect("http://localhost:5001");
+const socket = io.connect("http://localhost:5002");
 
 function ChatMenu({ studentGroup, user }) {
   const [username, setUsername] = useState("");
