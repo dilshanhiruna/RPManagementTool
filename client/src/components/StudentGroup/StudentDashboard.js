@@ -453,8 +453,9 @@ export default function StudentDashboard({ user }) {
                   <AvatarGroup max={4}>
                     {Students.filter((std) => {
                       return std !== "";
-                    }).map((row) => (
+                    }).map((row, key) => (
                       <Avatar
+                        key={key}
                         {...stringAvatar(row.name)}
                         // sx={{ width: 56, height: 56 }}
                       />
