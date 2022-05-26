@@ -49,8 +49,8 @@ const columns = [
     minWidth: 90,
     align: "center",
   },
-  { id: "accept", label: "", minWidth: 100, align: "center" },
-  { id: "reject", label: "", minWidth: 100, align: "center" },
+  { id: "role", label: "Your Role", minWidth: 100, align: "center" },
+  { id: "chat", label: "Chat", minWidth: 100, align: "center" },
 ];
 
 export default function ViewMyStudentGroups({ user }) {
@@ -65,52 +65,72 @@ export default function ViewMyStudentGroups({ user }) {
   const [_id, set_id] = useState();
   const [action, setAction] = useState();
 
+  //function to create obj from response
+  const createObjResponse = (res, data) => {
+    let student1, student2, student3, student4;
+
+    if (data.student1) {
+      student1 = data.student1.uid;
+    } else {
+      student1 = "Not Avaialable";
+    }
+    if (data.student2) {
+      student2 = data.student2.uid;
+    } else {
+      student1 = "Not Avaialable";
+    }
+    if (data.student3) {
+      student3 = data.student3.uid;
+    } else {
+      student1 = "Not Avaialable";
+    }
+    if (data.student4) {
+      student4 = data.student4.uid;
+    } else {
+      student4 = "Not Avaialable";
+    }
+    let obj = {
+      _id: data._id,
+      groupID: data.groupID,
+      reTopic: data.researchTopic,
+      student1,
+      student2,
+      student3,
+      student4,
+      role: res.data.type,
+    };
+    return obj;
+  };
   //function to get topic requests of the relevant supervisor
   const getTopicReqs = async () => {
     try {
-      await axios.get(`${API}/supervisorRequests/${user._id}`).then((res) => {
-        if (res.data.data.length == 0) {
-          console.log("No topic reqs");
-        } else {
-          // res.data.data.forEach((data) => {});
-          let objArray = [];
-          let student1, student2, student3, student4;
+      let objArray = [];
 
-          res.data.data.map((data) => {
-            if (data.student1) {
-              student1 = data.student1.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student2) {
-              student2 = data.student2.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student3) {
-              student3 = data.student3.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student4) {
-              student4 = data.student4.uid;
-            } else {
-              student4 = "Not Avaialable";
-            }
-            const obj = {
-              _id: data._id,
-              groupID: data.groupID,
-              reTopic: data.researchTopic,
-              student1,
-              student2,
-              student3,
-              student4,
-            };
-            objArray.push(obj);
-          });
-          setRows(objArray);
-        }
-      });
+      await axios
+        .get(`${API}/studentgroups/supervisor/accepted/${user._id}`)
+        .then((res) => {
+          if (res.data.data.length == 0) {
+            console.log("No topic reqs");
+          } else {
+            res.data.data.map((data) => {
+              let obj = createObjResponse(res, data);
+              objArray.push(obj);
+            });
+          }
+        });
+      await axios
+        .get(`${API}/studentgroups/cosupervisor/accepted/${user._id}`)
+        .then((res) => {
+          if (res.data.data.length == 0) {
+            console.log("No topic reqs");
+          } else {
+            res.data.data.map((data) => {
+              let obj = createObjResponse(res, data);
+              objArray.push(obj);
+            });
+          }
+        });
+      setRows(objArray);
     } catch (err) {
       console.log(err);
     }
@@ -131,21 +151,9 @@ export default function ViewMyStudentGroups({ user }) {
   // };
 
   //function to accept/reject topic reqest
-  const acceptOrReject = () => {
+  const openChat = () => {
+    setOpenConfirmModal(false);
     console.log(_id);
-    let accRej = "";
-    if (action == "Accept") {
-      accRej = "accepted";
-    } else if (action == "Reject") {
-      accRej = "rejected";
-    }
-    axios
-      .post(`${API}/supervisorRequests/acceptOrReject/${_id}`, {
-        action: accRej,
-      })
-      .then(() => {
-        window.location.reload();
-      });
   };
 
   //get confirmation to accept or reject action
@@ -183,7 +191,7 @@ export default function ViewMyStudentGroups({ user }) {
       <div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h3>Following groups have requested you to be their supervisor:</h3>
+            <h3>Groups you have registered as supervisor or co-supervisor: </h3>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -207,9 +215,7 @@ export default function ViewMyStudentGroups({ user }) {
                         align="center"
                         colSpan={2}
                         className="hash-table-border"
-                      >
-                        Action
-                      </TableCell>
+                      ></TableCell>
                     </TableRow>
                     <TableRow>
                       {columns.map((column) => (
@@ -262,7 +268,7 @@ export default function ViewMyStudentGroups({ user }) {
                                   </TableCell>
                                 );
                               }
-                              if (column.id == "reject") {
+                              if (column.id == "chat") {
                                 return (
                                   <TableCell
                                     key={column.id}
@@ -270,7 +276,7 @@ export default function ViewMyStudentGroups({ user }) {
                                     className="hash-table-border"
                                   >
                                     <Button
-                                      color="error"
+                                      color="success"
                                       onClick={() => {
                                         getConfirmation(
                                           row["groupID"],
@@ -279,7 +285,7 @@ export default function ViewMyStudentGroups({ user }) {
                                         );
                                       }}
                                     >
-                                      Reject
+                                      Chat
                                     </Button>
                                   </TableCell>
                                 );
@@ -320,12 +326,10 @@ export default function ViewMyStudentGroups({ user }) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title">
-                {`${action} Topic`}
-              </DialogTitle>
+              <DialogTitle id="alert-dialog-title">{"Open Chat"}</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  {`Are you sure you want to ${action} the topic of group "${groupId}" ?`}
+                  {`Do you wanna chat with group "${groupId}" ?`}
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -334,16 +338,16 @@ export default function ViewMyStudentGroups({ user }) {
                     handleModalClose();
                   }}
                 >
-                  Disagree
+                  No
                 </Button>
                 <Button
                   onClick={() => {
-                    acceptOrReject();
+                    openChat();
                   }}
                   autoFocus
                   color="error"
                 >
-                  Agree
+                  Yes
                 </Button>
               </DialogActions>
             </Dialog>
