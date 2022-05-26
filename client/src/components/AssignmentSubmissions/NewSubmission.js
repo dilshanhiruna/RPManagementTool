@@ -1,130 +1,133 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Form, FormElement } from "@progress/kendo-react-form";
-import { Button } from "@progress/kendo-react-buttons";
-import { Stepper } from "@progress/kendo-react-layout";
-import { AssignmentDetails } from "./CreateSubmission";
-import { DocumentUploads } from "./EditSubmission";
-
-const stepPages = [AssignmentDetails, DocumentUploads];
+import React, { useState } from "react";
+import "./NewSubmission.css";
+import { useState } from "react";
+import {
+  FormControl,
+  TextField,
+  MenuItem,
+  InputLabel,
+  Select,
+  Button,
+} from "@mui/material";
+import FileUpload from "react-material-file-upload";
 
 export default function NewSubmission() {
-  state = {
-    step: 0,
-    formState: {},
-    steps: [
-      {
-        label: "Assignment Details",
-        isValid: undefined,
-      },
-      {
-        label: "Document Uploads",
-        isValid: undefined,
-      },
-    ],
-  };
-  lastStepIndex = this.state.steps.length - 1;
-  isLastStep = this.lastStepIndex === this.state.step;
-  isPreviousStepsValid =
-    this.state.steps
-      .slice(0, this.state.step)
-      .findIndex((currentStep) => currentStep.isValid === false) === -1;
-  onStepSubmit = (event) => {
-    const { isValid, values } = event;
-    const currentSteps = this.state.steps.map((currentStep, index) => ({
-      ...currentStep,
-      isValid: index === this.state.step ? isValid : currentStep.isValid,
-    }));
-    this.setState({
-      steps: currentSteps,
-      step: Math.min(this.state.step + 1, this.lastStepIndex),
-      formState: values,
-    });
+  const [sType, setsType] = useState("");
+  const [submissionName, setsubmissionName] = useState("");
+  const [sDescription, setsDescription] = useState("");
+  const [sTemplate, setsTemplate] = useState();
+  const [sMarkingScheme, setsMarkingScheme] = useState();
+  const [sDeadline, setsDeadline] = useState("");
+  const [sVisibility, setsVisibility] = useState(false);
 
-    if (
-      this.lastStepIndex === this.state.step &&
-      this.isPreviousStepsValid &&
-      isValid
-    ) {
-      alert(JSON.stringify(values));
-    }
-  };
-  onPrevClick = (event) => {
-    event.preventDefault();
-    this.setState({
-      step: Math.max(this.state.step - 1, 0),
-    });
-  };
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
-    >
-      <Stepper value={this.state.step} items={this.state.steps} />
-      <Form
-        initialValues={this.state.formState}
-        onSubmitClick={this.onStepSubmit}
-        render={(formRenderProps) => (
-          <div
-            style={{
-              alignSelf: "center",
-            }}
-          >
-            <FormElement
-              style={{
-                width: 480,
+    <div>
+      <div className="form">
+        <div>
+          <p>Submission Type </p>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={sType}
+              label="Type"
+              onChange={(event) => {
+                setsType(event.target.value);
               }}
+              size="small"
+              style={{ width: "350px" }}
             >
-              {stepPages[this.state.step]}
-              <span
-                style={{
-                  marginTop: "40px",
-                }}
-                className={"k-form-separator"}
-              />
-              <div
-                style={{
-                  justifyContent: "space-between",
-                  alignContent: "center",
-                }}
-                className={
-                  "k-form-buttons k-button k-button-md k-rounded-md k-button-solid k-button-solid-bases-end"
-                }
-              >
-                <span
-                  style={{
-                    alignSelf: "center",
-                  }}
-                >
-                  Step {this.state.step + 1} of 3
-                </span>
-                <div>
-                  {this.state.step !== 0 ? (
-                    <Button
-                      style={{
-                        marginRight: "16px",
-                      }}
-                      onClick={this.onPrevClick}
-                    >
-                      Previous
-                    </Button>
-                  ) : undefined}
-                  <Button
-                    themeColor={"primary"}
-                    disabled={!formRenderProps.allowSubmit}
-                    onClick={formRenderProps.onSubmit}
-                  >
-                    {this.isLastStep ? "Submit" : "Next"}
-                  </Button>
-                </div>
-              </div>
-            </FormElement>
+              <MenuItem value={1}>Document</MenuItem>
+              <MenuItem value={2}>Presentation</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+
+        <div>
+          <p>Category </p>
+
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Category</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={submissionName}
+              label="Type"
+              onChange={(event) => {
+                setsubmissionName(event.target.value);
+              }}
+              size="small"
+              style={{ width: "350px" }}
+            >
+              <MenuItem value={1}>Topic Assignment Form</MenuItem>
+              <MenuItem value={2}>ProjectProposal</MenuItem>
+              <MenuItem value={3}>Research Paper</MenuItem>
+              <MenuItem value={4}>Final Paper</MenuItem>
+              <MenuItem value={5}>Research LogBook</MenuItem>
+              <MenuItem value={6}>Thesis</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </div>
+      <div className="form_feilds_col">
+        <div>
+          <p>Description</p>
+          <FormControl fullWidth>
+            <TextField
+              id="outlined-multiline-static"
+              label="Info"
+              multiline
+              rows={2}
+              variant="outlined"
+              style={{ width: "760px" }}
+              value={sDescription}
+              onChange={(event) => {
+                setsDescription(event.target.value);
+              }}
+            />
+          </FormControl>
+        </div>
+
+        <div style={{ width: "760px" }}>
+          <p>Upload Template</p>
+          <FileUpload value={sTemplate} onChange={setsTemplate} />
+        </div>
+
+        <div style={{ width: "760px" }}>
+          <p>Upload Marking Scheme</p>
+          <FileUpload value={sMarkingScheme} onChange={setsMarkingScheme} />
+        </div>
+        <div className="dat">
+          <p>Deadline</p>
+          <FormControl fullWidth>
+            <TextField
+              id="date"
+              label="Date"
+              type="date"
+              value={sDeadline}
+              sx={{ width: 350 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={(event) => {
+                setsDeadline(event.target.value);
+              }}
+              size="small"
+            />
+          </FormControl>
+        </div>
+
+        <div className="Btn">
+          <div>
+            <FormControl fullWidth>
+              <Button variant="outlined" style={{ width: "350px" }}>
+                Create Submission
+              </Button>
+            </FormControl>
           </div>
-        )}
-      />
+        </div>
+      </div>
     </div>
   );
 }

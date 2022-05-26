@@ -17,7 +17,7 @@ export default function Admin() {
         <Route exact path="/admin/uploadfiles">
           <UploadDocuments />
         </Route>
-        <Route exact path="/admin/testadd">
+        <Route exact path="/admin/create">
           <NewSubmission />
         </Route>
         <Route exact path="/admin/update:id">

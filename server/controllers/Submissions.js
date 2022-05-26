@@ -5,8 +5,8 @@ const SubmissionDetails = require("../models/Submissions");
 //@access Public
 exports.createSubmission = async (req, res) => {
   const {
-    submissionName,
-    sType,
+    submissionName, //category
+    sType, //doc or presentation
     sDescription,
     sTemplate,
     sMarkingScheme,

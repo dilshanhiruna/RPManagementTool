@@ -28,6 +28,7 @@ export default function CreateSubmission() {
 
   const API = process.env.REACT_APP_API;
   const history = useHistory();
+
   return (
     <div className="res_component">
       <div className="submission_details">
