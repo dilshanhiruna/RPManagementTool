@@ -7,15 +7,16 @@ import Admin from "./routes/Admin";
 // import Supervisor from "./routes/Supervisor";
 
 function App() {
-  const [userType, setuserType] = useState("staff");
-  console.log(userType);
+  const [userType, setuserType] = useState("student");
   return (
-    <div className="App">
-      {userType === "student" ? <Student /> : ""}
-      {userType === "staff" ? <Staff /> : ""}
-      {userType === "admin" ? <Admin /> : ""}
-      {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
-    </div>
+    <Router>
+      <div className="App">
+        {userType === "student" ? <Student /> : ""}
+        {userType === "staff" ? <Staff /> : ""}
+        {userType === "admin" ? <Admin /> : ""}
+        {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
+      </div>
+    </Router>
   );
 }
 

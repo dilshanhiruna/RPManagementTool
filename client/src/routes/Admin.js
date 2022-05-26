@@ -10,12 +10,12 @@ export default function Admin() {
   return (
     <div className="admin__dashboard">
       <Header userType={"Admin"} />
-      <Router>
-        <Switch>
-          <Route exact path="/admin"></Route>
-          <Redirect to="/admin/404" />
-        </Switch>
-      </Router>
+
+      <Switch>
+        <Route exact path="/admin"></Route>
+        <Redirect to="/admin/404" />
+      </Switch>
+
       <footer />
     </div>
   );
