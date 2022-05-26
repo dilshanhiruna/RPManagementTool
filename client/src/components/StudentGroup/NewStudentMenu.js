@@ -38,7 +38,7 @@ export default function NewStudentMenu() {
           <CardActions>
             <Button
               size="small"
-              onClick={() => (window.location.href = "/student/creategroup")}
+              onClick={() => history.push("/student/creategroup")}
             >
               {"Create"}
             </Button>

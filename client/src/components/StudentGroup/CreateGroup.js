@@ -6,8 +6,10 @@ import Collapse from "@mui/material/Collapse";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CreateGroup.css";
+import { useHistory } from "react-router-dom";
 
 export default function CreateGroup({ user }) {
+  const history = useHistory();
   const API = process.env.REACT_APP_API;
   const [Student, setStudent] = useState([]);
   const [GroupID, setGroupID] = useState("");
@@ -63,7 +65,7 @@ export default function CreateGroup({ user }) {
       console.log(response);
 
       //direct to dashboard
-      window.location.href = `/student`;
+      history.push("/student");
     } catch (err) {
       console.log(err);
     }

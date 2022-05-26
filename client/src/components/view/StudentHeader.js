@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import "./Header.css";
+import { useHistory } from "react-router-dom";
 
 export default function StudentHeader({ userType }) {
+  const history = useHistory();
   return (
     <>
       <header>
@@ -17,7 +19,7 @@ export default function StudentHeader({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  window.location.href = "/student";
+                  history.push("/student");
                 }}
               >
                 Dashboard
@@ -26,7 +28,7 @@ export default function StudentHeader({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  window.location.href = "/student/topicreg";
+                  history.push("/student/topicreg");
                 }}
               >
                 Our Topic
@@ -35,7 +37,7 @@ export default function StudentHeader({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  window.location.href = "/student/searchsupervisor";
+                  history.push("/student/searchsupervisor");
                 }}
               >
                 Supervisors
