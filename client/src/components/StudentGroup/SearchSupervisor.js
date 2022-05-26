@@ -14,10 +14,13 @@ import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+
 import "./SearchSupervisor.css";
 
 export default function SearchSupervisor({ user }) {
   const API = process.env.REACT_APP_API;
+  const history = useHistory();
 
   //all supervisors in the system
   const [supervisors, setSupervisors] = useState([]);
@@ -39,7 +42,7 @@ export default function SearchSupervisor({ user }) {
     try {
       axios.get(`${API}/studentgroups/${user.studentGroupID}`).then((res) => {
         if (!res.data.data.researchTopic) {
-          window.location.href = "/student/topicreg";
+          history.push("/student/topicreg");
         }
 
         //set the supervisor and cosupervisor
@@ -94,7 +97,7 @@ export default function SearchSupervisor({ user }) {
         .then((res) => {
           console.log(res);
           //refresh the page
-          window.location.reload();
+          history.push("/student/searchsupervisor");
         });
     } else {
       const data = {
@@ -106,7 +109,7 @@ export default function SearchSupervisor({ user }) {
         .then((res) => {
           console.log(res);
           //refresh the page
-          window.location.reload();
+          history.push("/student/searchsupervisor");
         });
     }
   };
