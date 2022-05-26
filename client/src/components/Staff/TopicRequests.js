@@ -1,45 +1,56 @@
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { useEffect, useState } from 'react';
-import axios, { Axios } from 'axios';
-import { Button } from '@mui/material';
-import './TopicRequests.css';
+import * as React from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { useEffect, useState } from "react";
+import axios, { Axios } from "axios";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
+import "./TopicRequests.css";
 
 const API = process.env.REACT_APP_API;
 
 //table columns
 const columns = [
-  { id: 'groupID', label: 'Group ID', minWidth: 100 },
-  { id: 'reTopic', label: 'Research Topic', minWidth: 100 },
+  { id: "groupID", label: "Group ID", minWidth: 70, align: "center" },
+  { id: "reTopic", label: "Research Topic", minWidth: 100, align: "center" },
   {
-    id: 'student1',
-    label: 'Students 1',
-    minWidth: 100,
+    id: "student1",
+    label: "Student 1",
+    minWidth: 90,
+    align: "center",
   },
   {
-    id: 'student2',
-    label: 'Student 2',
-    minWidth: 100,
+    id: "student2",
+    label: "Student 2",
+    minWidth: 90,
+    align: "center",
   },
   {
-    id: 'student3',
-    label: 'Student 3',
-    minWidth: 100,
+    id: "student3",
+    label: "Student 3",
+    minWidth: 90,
+    align: "center",
   },
   {
-    id: 'student4',
-    label: 'Student 4',
-    minWidth: 100,
+    id: "student4",
+    label: "Student 4",
+    minWidth: 90,
+    align: "center",
   },
-  { id: 'accept', label: '', minWidth: 100, align: 'center' },
-  { id: 'reject', label: '', minWidth: 100, align: 'center' },
+  { id: "accept", label: "", minWidth: 100, align: "center" },
+  { id: "reject", label: "", minWidth: 100, align: "center" },
 ];
 
 export default function TopicRequests({ user }) {
@@ -47,13 +58,20 @@ export default function TopicRequests({ user }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [studentGroups, setStudentGroups] = useState([]);
   const [rows, setRows] = useState([]);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [confirmAction, setConfirmAction] = useState();
+
+  //set group id and action for topic request accept and reject
+  const [groupId, setGroupId] = useState();
+  const [_id, set_id] = useState();
+  const [action, setAction] = useState();
 
   //function to get topic requests
   const getTopicReqs = async () => {
     try {
       await axios.get(`${API}/topicRequests/${user._id}`).then((res) => {
         if (res.data.data.length == 0) {
-          console.log('No topic reqs');
+          console.log("No topic reqs");
         } else {
           // res.data.data.forEach((data) => {});
           let objArray = [];
@@ -106,17 +124,37 @@ export default function TopicRequests({ user }) {
   // };
 
   //function to accept/reject topic reqest
-  const acceptOrReject = (groupId, action) => {
-    console.log(groupId);
-    console.log(action);
+  const acceptOrReject = () => {
+    console.log(_id);
+    let accRej = "";
+    if (action == "Accept") {
+      accRej = "accepted";
+    } else if (action == "Reject") {
+      accRej = "rejected";
+    }
     axios
-      .post(`${API}/topicRequests/acceptOrReject/${groupId}`, {
-        action,
+      .post(`${API}/topicRequests/acceptOrReject/${_id}`, {
+        action: accRej,
       })
       .then(() => {
         window.location.reload();
       });
   };
+
+  //get confirmation to accept or reject action
+  const getConfirmation = (groupId, _id, action) => {
+    setGroupId(groupId);
+    set_id(_id);
+    setAction(action);
+    setOpenConfirmModal(true);
+
+    if (confirmAction) {
+      console.log("true");
+    } else {
+      console.log("false");
+    }
+  };
+
   useEffect(() => {
     getTopicReqs();
   }, []);
@@ -130,13 +168,16 @@ export default function TopicRequests({ user }) {
     setPage(0);
   };
 
+  const handleModalClose = () => {
+    setOpenConfirmModal(false);
+  };
   return (
     <>
       <div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
             <h1>New Requests</h1>
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
@@ -192,7 +233,7 @@ export default function TopicRequests({ user }) {
                           >
                             {columns.map((column) => {
                               const value = row[column.id];
-                              if (column.id == 'accept') {
+                              if (column.id == "accept") {
                                 return (
                                   <TableCell
                                     key={column.id}
@@ -202,7 +243,11 @@ export default function TopicRequests({ user }) {
                                     <Button
                                       color="success"
                                       onClick={() => {
-                                        acceptOrReject(row['_id'], 'accepted');
+                                        getConfirmation(
+                                          row["groupID"],
+                                          row["_id"],
+                                          "Accept"
+                                        );
                                       }}
                                     >
                                       Accept
@@ -210,7 +255,7 @@ export default function TopicRequests({ user }) {
                                   </TableCell>
                                 );
                               }
-                              if (column.id == 'reject') {
+                              if (column.id == "reject") {
                                 return (
                                   <TableCell
                                     key={column.id}
@@ -220,7 +265,11 @@ export default function TopicRequests({ user }) {
                                     <Button
                                       color="error"
                                       onClick={() => {
-                                        acceptOrReject(row['_id'], 'rejected');
+                                        getConfirmation(
+                                          row["groupID"],
+                                          row["_id"],
+                                          "Reject"
+                                        );
                                       }}
                                     >
                                       Reject
@@ -234,7 +283,7 @@ export default function TopicRequests({ user }) {
                                   align={column.align}
                                   className="hash-table-border"
                                 >
-                                  {column.format && typeof value === 'number'
+                                  {column.format && typeof value === "number"
                                     ? column.format(value)
                                     : value}
                                 </TableCell>
@@ -256,18 +305,53 @@ export default function TopicRequests({ user }) {
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </Paper>
+
+            {/* confirm modal */}
+            <Dialog
+              open={openConfirmModal}
+              // onClose={handleCloseRemoveMember}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {`${action} Topic`}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {`Are you sure you want to ${action} the topic of group "${groupId}" ?`}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    handleModalClose();
+                  }}
+                >
+                  Disagree
+                </Button>
+                <Button
+                  onClick={() => {
+                    acceptOrReject();
+                  }}
+                  autoFocus
+                  color="error"
+                >
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
         ) : (
-          ''
+          ""
         )}
       </div>
       <div>
         {rows.length == 0 ? (
           <div className="student__dashboard">
-            <div>No New Requests avaialable</div>{' '}
+            <div>No New Requests avaialable</div>{" "}
           </div>
         ) : (
-          ''
+          ""
         )}
       </div>
     </>
