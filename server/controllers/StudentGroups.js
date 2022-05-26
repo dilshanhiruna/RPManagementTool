@@ -314,15 +314,34 @@ exports.getAllStudentsWithoutAGroup = async (req, res) => {
 };
 
 //@desc get student groups, a supervisor has accepted
-//@route GET /api/v1/studentgroups/accepted/:supId
+//@route GET /api/v1/studentgroups/supervisor/accepted/:id
 exports.getAcceptedGroupsOfSupervisor = async (req, res) => {
   try {
-    const supervisor = mongoose.Types.ObjectId(req.params.supId);
+    const supervisor = mongoose.Types.ObjectId(req.params.id);
     const studentGroups = await StudentGroups.find({
       supervisor,
       supervisorStatus: "accepted",
     });
-    res.status(200).json({ success: true, data: studentGroups });
+    res
+      .status(200)
+      .json({ success: true, data: studentGroups, type: "supervisor" });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
+
+//@desc get student groups, a cosupervisor has accepted
+//@route GET /api/v1/studentgroups/cosupervisor/accepted/:id
+exports.getAcceptedGroupsOfCoSupervisor = async (req, res) => {
+  try {
+    const cosupervisor = mongoose.Types.ObjectId(req.params.id);
+    const studentGroups = await StudentGroups.find({
+      cosupervisor,
+      supervisorStatus: "accepted",
+    });
+    res
+      .status(200)
+      .json({ success: true, data: studentGroups, type: "cosupervisor" });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
   }

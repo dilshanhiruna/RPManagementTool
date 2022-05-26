@@ -15,6 +15,8 @@ const {
   getStudentGroupById,
   deleteStudentGroup,
   removeStudentFromGroup,
+  getAcceptedGroupsOfSupervisor,
+  getAcceptedGroupsOfCoSupervisor,
 } = require("../controllers/StudentGroups");
 
 router.post("/", createGroup);
@@ -28,6 +30,10 @@ router.put("/topicfeedback/:id", updateTopicFeedback);
 router.put("/topicdetail/:id", updateTopicDetailDocument);
 router.get("/", getAllStudentGroups);
 router.get("/:id", getStudentGroupById);
+
+router.get("/supervisor/accepted/:id", getAcceptedGroupsOfSupervisor);
+router.get("/cosupervisor/accepted/:id", getAcceptedGroupsOfCoSupervisor);
+
 router.delete("/:id", deleteStudentGroup);
 router.delete("/:id/:studentId/:studentFeild", removeStudentFromGroup);
 
