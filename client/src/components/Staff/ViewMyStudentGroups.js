@@ -56,7 +56,6 @@ const columns = [
 export default function ViewMyStudentGroups({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [studentGroups, setStudentGroups] = useState([]);
   const [rows, setRows] = useState([]);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [confirmAction, setConfirmAction] = useState();
