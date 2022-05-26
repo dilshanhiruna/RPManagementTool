@@ -71,6 +71,10 @@ function Chat({ socket, username, room }) {
             fullWidth
             placeholder="Type a message..."
             value={currentMessage}
+            sx={{
+              background: "white",
+              borderRadius: "10px",
+            }}
             onChange={(event) => {
               setCurrentMessage(event.target.value);
             }}

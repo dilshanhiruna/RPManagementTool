@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
 import {
@@ -16,8 +17,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Backdrop,
+  Stack,
+  IconButton,
 } from "@mui/material";
 import "./TopicRequests.css";
+import ChatMenu from "../StudentGroup/ChatMenu";
 
 const API = process.env.REACT_APP_API;
 
@@ -58,6 +63,7 @@ export default function ViewMyStudentGroups({ user }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [openBackdrop, setOpenBackdrop] = React.useState(false);
   const [confirmAction, setConfirmAction] = useState();
 
   //set group id and action for topic request accept and reject
@@ -155,9 +161,16 @@ export default function ViewMyStudentGroups({ user }) {
     setOpenConfirmModal(false);
     console.log(_id);
   };
+  const handleCloseBackdrop = () => {
+    setOpenBackdrop(false);
+  };
+  const handleToggle = () => {
+    setOpenBackdrop(!openBackdrop);
+  };
 
   //get confirmation to accept or reject action
   const getConfirmation = (groupId, _id, action) => {
+    handleToggle();
     setGroupId(groupId);
     set_id(_id);
     setAction(action);
@@ -186,6 +199,7 @@ export default function ViewMyStudentGroups({ user }) {
   const handleModalClose = () => {
     setOpenConfirmModal(false);
   };
+
   return (
     <>
       <div>
@@ -319,38 +333,35 @@ export default function ViewMyStudentGroups({ user }) {
               />
             </Paper>
 
-            {/* confirm modal */}
-            <Dialog
-              open={openConfirmModal}
-              // onClose={handleCloseRemoveMember}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
+            <Backdrop
+              sx={{
+                color: "#fff",
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+              }}
+              open={openBackdrop}
             >
-              <DialogTitle id="alert-dialog-title">{"Open Chat"}</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  {`Do you wanna chat with group "${groupId}" ?`}
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    handleModalClose();
-                  }}
+              <div
+                className="supervisor__chat"
+                style={{
+                  width: "400px",
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  No
-                </Button>
-                <Button
-                  onClick={() => {
-                    openChat();
-                  }}
-                  autoFocus
-                  color="error"
-                >
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
+                  <h1>Chat with {groupId}</h1>
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="span"
+                    onClick={handleCloseBackdrop}
+                  >
+                    <CloseRoundedIcon />
+                  </IconButton>
+                </div>
+                <ChatMenu studentGroup={{ _id: groupId }} user={user} />
+              </div>
+            </Backdrop>
           </div>
         ) : (
           ""

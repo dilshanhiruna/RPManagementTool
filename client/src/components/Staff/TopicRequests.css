@@ -1,9 +1,25 @@
 .hash-table-border {
-  border: 0.1px solid gray;
+  border: 0.1px solid rgb(223, 223, 223);
 }
 
 .centerItems {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.supervisor__chat {
+  z-index: 2;
+  position: fixed;
+  bottom: 100;
+  right: 20;
+  background-color: white;
+  border-radius: 20px;
+  /* right: 0px; */
+  /* background-color: lightblue; */
+  /* padding: 5px; */
+}
+.supervisor__chat h1 {
+  color: rgb(65, 65, 65);
+  margin: 10px;
 }
