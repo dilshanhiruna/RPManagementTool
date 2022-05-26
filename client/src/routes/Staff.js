@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/view/Header";
-import SupervisorHeader from "../components/view/SupervisorHeader";
+// import SupervisorHeader from "../components/view/SupervisorHeader";
+import StaffHeader from "../components/view/StaffHeader";
 import {
   Switch,
   Route,
@@ -10,6 +11,7 @@ import {
 import SupervisorDashboard from "../components/Staff/SupervisorDashboard";
 import SuperviosrRequests from "../components/Staff/SuperviosrRequests";
 import CoSuperviosrRequests from "../components/Staff/CoSuperviosrRequests";
+import ViewMyStudentGroups from "../components/Staff/ViewMyStudentGroups";
 
 export default function Staff() {
   const API = process.env.REACT_APP_API;
@@ -29,22 +31,25 @@ export default function Staff() {
 
   return (
     <div className="student__dashboard">
-      <SupervisorHeader userType={"Staff"} />
-
-      <Switch>
-        <Route exact path="/staff"></Route>
-        <Route exact path="/supervisor">
-          <SupervisorDashboard user={user} />
-        </Route>
-        <Route exact path="/supervisor/topicReq">
-          <SuperviosrRequests user={user} />
-        </Route>
-        <Route exact path="/cosupervisor/topicReq">
-          <CoSuperviosrRequests user={user} />
-        </Route>
-        <Redirect to="/supervisor" />
-      </Switch>
-
+      <StaffHeader userType={"Staff"} />
+      <Router>
+        <Switch>
+          <Route exact path="/staff"></Route>
+          {/* <Route exact path="/supervisor">
+            <SupervisorDashboard user={user} />
+          </Route> */}
+          <Route exact path="/staff/supervisor/topicReq">
+            <SuperviosrRequests user={user} />
+          </Route>
+          <Route exact path="/staff/cosupervisor/topicReq">
+            <CoSuperviosrRequests user={user} />
+          </Route>
+          <Route exact path="/staff/mygroups">
+            <ViewMyStudentGroups user={user} />
+          </Route>
+          <Redirect to="/staff/mygroups" />
+        </Switch>
+      </Router>
       <footer />
     </div>
   );
