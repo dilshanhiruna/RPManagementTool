@@ -3,9 +3,7 @@ import Button from "@mui/material/Button";
 import "./Header.css";
 
 export default function StaffHeader({ userType }) {
-  const redirect = () => {
-    window.location.href = "/staff/supervisor/topicReq";
-  };
+  const redirect = () => {};
   return (
     <>
       <header>
@@ -19,25 +17,29 @@ export default function StaffHeader({ userType }) {
               <Button
                 variant="outlined"
                 className="header__button"
-                onClick={() => redirect()}
+                onClick={() => {
+                  window.location.href = "/staff/supervisor/topicReq";
+                }}
               >
                 Supervisor Requests
               </Button>
               <Button
                 variant="outlined"
                 className="header__button"
-                onClick={() => redirect()}
+                onClick={() => {
+                  window.location.href = "/staff/cosupervisor/topicReq";
+                }}
               >
                 Co-Supervisor Requests
               </Button>
-              <Button variant="outlined" className="header__button">
+              <Button
+                variant="outlined"
+                className="header__button"
+                onClick={() => {
+                  window.location.href = "/staff/mygroups";
+                }}
+              >
                 My Groups
-              </Button>
-              <Button variant="outlined" className="header__button">
-                Click
-              </Button>
-              <Button variant="outlined" className="header__button">
-                Click
               </Button>
             </div>
           </div>

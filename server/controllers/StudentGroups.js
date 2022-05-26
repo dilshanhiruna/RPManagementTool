@@ -1,5 +1,6 @@
 const StudentGroups = require("../models/StudentGroups");
 const User = require("../models/User");
+var mongoose = require("mongoose");
 
 //@desc create a student group
 //@route POST /api/v1/studentgroups
@@ -321,11 +322,12 @@ exports.getAcceptedGroupsOfSupervisor = async (req, res) => {
     const studentGroups = await StudentGroups.find({
       supervisor,
       supervisorStatus: "accepted",
-    });
+    }).populate("student1 student2 student3 student4 supervisor cosupervisor");
     res
       .status(200)
       .json({ success: true, data: studentGroups, type: "supervisor" });
   } catch (err) {
+    console.error(err);
     res.status(400).json({ success: false, error: err });
   }
 };
@@ -334,11 +336,12 @@ exports.getAcceptedGroupsOfSupervisor = async (req, res) => {
 //@route GET /api/v1/studentgroups/cosupervisor/accepted/:id
 exports.getAcceptedGroupsOfCoSupervisor = async (req, res) => {
   try {
+    console.log("hey");
     const cosupervisor = mongoose.Types.ObjectId(req.params.id);
     const studentGroups = await StudentGroups.find({
       cosupervisor,
-      supervisorStatus: "accepted",
-    });
+      cosupervisorStatus: "accepted",
+    }).populate("student1 student2 student3 student4 supervisor cosupervisor");
     res
       .status(200)
       .json({ success: true, data: studentGroups, type: "cosupervisor" });
