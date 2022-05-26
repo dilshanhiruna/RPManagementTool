@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import './Header.css';
-import { useHistory } from 'react-router';
+import React, { useState } from "react";
+import Button from "@mui/material/Button";
+import "./Header.css";
 
-export default function SupervisorHeader({ userType }) {
-  const history = useHistory();
-
+export default function StaffHeader({ userType }) {
   const redirect = () => {
-    console.log('hey');
-    history.push('/supervisor/topicReq');
+    console.log("hey");
   };
   return (
     <>
@@ -25,7 +21,14 @@ export default function SupervisorHeader({ userType }) {
                 className="header__button"
                 onClick={() => redirect()}
               >
-                Topic Requests
+                Supervisor Requests
+              </Button>
+              <Button
+                variant="outlined"
+                className="header__button"
+                onClick={() => redirect()}
+              >
+                Co-Supervisor Requests
               </Button>
               <Button variant="outlined" className="header__button">
                 My Groups
@@ -42,9 +45,9 @@ export default function SupervisorHeader({ userType }) {
             <Button
               variant="contained"
               style={{
-                borderRadius: '20px',
-                width: '100px',
-                backgroundColor: 'rgb(60, 60, 60)',
+                borderRadius: "20px",
+                width: "100px",
+                backgroundColor: "rgb(60, 60, 60)",
               }}
               className="header__button"
             >
