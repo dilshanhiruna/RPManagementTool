@@ -53,7 +53,7 @@ const columns = [
   { id: "reject", label: "", minWidth: 100, align: "center" },
 ];
 
-export default function TopicRequests({ user }) {
+export default function SuperviosrRequests({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [studentGroups, setStudentGroups] = useState([]);
@@ -69,7 +69,7 @@ export default function TopicRequests({ user }) {
   //function to get topic requests of the relevant supervisor
   const getTopicReqs = async () => {
     try {
-      await axios.get(`${API}/topicRequests/${user._id}`).then((res) => {
+      await axios.get(`${API}/supervisorRequests/${user._id}`).then((res) => {
         if (res.data.data.length == 0) {
           console.log("No topic reqs");
         } else {
@@ -141,7 +141,7 @@ export default function TopicRequests({ user }) {
       accRej = "rejected";
     }
     axios
-      .post(`${API}/topicRequests/acceptOrReject/${_id}`, {
+      .post(`${API}/supervisorRequests/acceptOrReject/${_id}`, {
         action: accRej,
       })
       .then(() => {
@@ -184,7 +184,7 @@ export default function TopicRequests({ user }) {
       <div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h2 className="centerItems">New Topic Requests For You</h2>
+            <h3>Following groups have requested you to be their supervisor:</h3>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">

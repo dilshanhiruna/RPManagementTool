@@ -312,3 +312,18 @@ exports.getAllStudentsWithoutAGroup = async (req, res) => {
     res.status(400).json({ success: false, error: err });
   }
 };
+
+//@desc get student groups, a supervisor has accepted
+//@route GET /api/v1/studentgroups/accepted/:supId
+exports.getAcceptedGroupsOfSupervisor = async (req, res) => {
+  try {
+    const supervisor = mongoose.Types.ObjectId(req.params.supId);
+    const studentGroups = await StudentGroups.find({
+      supervisor,
+      supervisorStatus: "accepted",
+    });
+    res.status(200).json({ success: true, data: studentGroups });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
