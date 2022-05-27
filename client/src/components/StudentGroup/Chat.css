@@ -14,7 +14,7 @@
   background-color: rgba(79, 147, 206, 0.103);
   border-radius: 10px;
   border: 1px solid #04426113;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 .chat-window .chat-body .message-container {
   width: 100%;

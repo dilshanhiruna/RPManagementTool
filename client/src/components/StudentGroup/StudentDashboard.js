@@ -370,7 +370,7 @@ export default function StudentDashboard({ user }) {
     let color = "#";
 
     for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
+      const value = (hash >> (i * 8)) & 0xfff;
       color += `00${value.toString(16)}`.slice(-2);
     }
     /* eslint-enable no-bitwise */

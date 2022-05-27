@@ -91,8 +91,21 @@ function Chat({ socket, username, room }) {
         )}
       </div>
       <div>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <span
+            style={{
+              margin: "0px",
+              padding: "0px",
+              fontSize: "10px",
+              color: "grey",
+            }}
+          >
+            {currentMessage.length + `/ 1000`}
+          </span>
+        </div>
         <Stack direction="row" spacing={0}>
           <TextField
+            error={currentMessage.length > 1000}
             id="outlined-basic"
             variant="outlined"
             fullWidth
@@ -113,6 +126,11 @@ function Chat({ socket, username, room }) {
             variant="contained"
             startIcon={<SendIcon sx={{ marginLeft: "11px" }} />}
             onClick={sendMessage}
+            disabled={
+              currentMessage === "" ||
+              loadingMsgs ||
+              currentMessage.length > 1000
+            }
           ></Button>
         </Stack>
       </div>
