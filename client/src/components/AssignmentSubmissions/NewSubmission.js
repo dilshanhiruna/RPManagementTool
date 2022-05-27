@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./NewSubmission.css";
-import { useState } from "react";
+import Axios from "axios";
 import {
   FormControl,
   TextField,
@@ -19,7 +19,40 @@ export default function NewSubmission() {
   const [sMarkingScheme, setsMarkingScheme] = useState();
   const [sDeadline, setsDeadline] = useState("");
   const [sVisibility, setsVisibility] = useState(false);
+  const API = process.env.REACT_APP_API;
 
+  const sendNewSubmissionTypeToAPI = () => {
+    const formDataTemp = new FormData();
+    const formDataMarking = new FormData();
+    formDataTemp.append("sTemplate", sTemplate);
+    formDataMarking.append("sMarkingScheme", sMarkingScheme);
+
+    Axios.post(`${API}api/v1/AssignmentSubmissions`, {
+      submissionName,
+      sType,
+      sDescription,
+      sDeadline,
+      formDataTemp,
+      formDataMarking,
+      sVisibility,
+    }).then((res) => {});
+  };
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append("sMarkingScheme", sMarkingScheme);
+  //   try {
+  //     const response = Axios({
+  //       method: "post",
+  //       url: `${API}api/v1/AssignmentSubmissions`,
+  //       data: formData,
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   return (
     <div>
       <div className="form">
@@ -91,12 +124,31 @@ export default function NewSubmission() {
 
         <div style={{ width: "760px" }}>
           <p>Upload Template</p>
-          <FileUpload value={sTemplate} onChange={setsTemplate} />
+          <FileUpload
+            value={sTemplate}
+            onChange={(event) => {
+              setsTemplate(event.target.files[0]);
+            }}
+          />
         </div>
 
         <div style={{ width: "760px" }}>
           <p>Upload Marking Scheme</p>
-          <FileUpload value={sMarkingScheme} onChange={setsMarkingScheme} />
+          <FileUpload
+            value={sMarkingScheme}
+            onChange={(event) => {
+              setsMarkingScheme(event.target.files[0]);
+            }}
+          />
+          {/* <form onSubmit={handleSubmit}>
+            <input
+              type="file"
+              onChange={(event) => {
+                setsMarkingScheme(event.target.files[0]);
+              }}
+            />
+            <input type="submit" value="Upload File" />
+          </form> */}
         </div>
         <div className="dat">
           <p>Deadline</p>
@@ -121,7 +173,11 @@ export default function NewSubmission() {
         <div className="Btn">
           <div>
             <FormControl fullWidth>
-              <Button variant="outlined" style={{ width: "350px" }}>
+              <Button
+                variant="outlined"
+                style={{ width: "350px" }}
+                onClick={sendNewSubmissionTypeToAPI}
+              >
                 Create Submission
               </Button>
             </FormControl>

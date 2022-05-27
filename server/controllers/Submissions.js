@@ -1,7 +1,7 @@
 const SubmissionDetails = require("../models/Submissions");
 
 //@desc   Create new submission
-//@route  POST /api/v1/submission
+//@route  POST /api/v1/AssignmentSubmissions
 //@access Public
 exports.createSubmission = async (req, res) => {
   const {
