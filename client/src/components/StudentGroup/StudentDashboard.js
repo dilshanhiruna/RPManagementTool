@@ -662,9 +662,11 @@ export default function StudentDashboard({ user }) {
                 </div>
                 <div>
                   <div style={{ textAlign: "left", margin: "25px" }}>
-                    <h1>Chat</h1>
+                    <Skeleton variant="text" height={70} alignItems="center" />
                   </div>
-                  <div></div>
+                  <Skeleton variant="rectangular" height={590} />
+                  <br />
+                  <Skeleton variant="rectangular" height={50} />
                 </div>
               </Item>
             </Grid>

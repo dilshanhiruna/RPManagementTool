@@ -64,6 +64,7 @@ const socket = io.connect("http://localhost:5002");
 
 function ChatMenu({ studentGroup, user }) {
   const [showChat, setShowChat] = useState(false);
+  console.log(user);
 
   useEffect(() => {
     socket.connect();
