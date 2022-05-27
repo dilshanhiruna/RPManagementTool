@@ -66,11 +66,13 @@ function ChatMenu({ studentGroup, user }) {
   const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
+    socket.connect();
     if (user.uid !== "" && studentGroup._id !== "") {
       socket.emit("join_room", studentGroup._id);
       setShowChat(true);
     }
-  }, []);
+    //reset the socket.io connection when the student group changes
+  }, [studentGroup]);
 
   return (
     <div className="App">

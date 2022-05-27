@@ -1,10 +1,18 @@
 const mongoose = require("mongoose");
 const msgSchema = new mongoose.Schema({
-  gid: {
+  room: {
     type: String,
     required: true,
   },
-  msg: {
+  message: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: String,
+    required: true,
+  },
+  time: {
     type: String,
     required: true,
   },

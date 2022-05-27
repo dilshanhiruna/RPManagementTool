@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
@@ -8,6 +8,8 @@ import "./Chat.css";
 function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
+
+  const [loadingMsgs, setloadingMsgs] = useState(true);
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
@@ -25,22 +27,20 @@ function Chat({ socket, username, room }) {
 
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
-      // save chat data in local storage
-      // localStorage.setItem("chatData", JSON.stringify(messageList));
     }
   };
-
   useEffect(() => {
-    // get chat data from local storage
-    // const chatData = JSON.parse(localStorage.getItem("chatData"));
-    // console.log(chatData);
-    // if (chatData) {
-    //   setMessageList(chatData.filter((message) => message.room === room));
-    // }
-  }, []);
+    setMessageList([]);
+  }, [room]);
 
   useEffect(() => {
     socket.removeAllListeners();
+    //get messages from server at the beginning of the chat
+    socket.on("get_messages", (data) => {
+      setMessageList(data);
+      setloadingMsgs(false);
+    });
+
     socket.on("receive_message", (data) => {
       setMessageList((list) => [...list, data]);
     });
@@ -49,30 +49,46 @@ function Chat({ socket, username, room }) {
   return (
     <div className="chat-window">
       <div className="chat-body">
-        <ScrollToBottom
-          className="message-container"
-          initialScrollBehavior="smooth"
-        >
-          {messageList.map((messageContent, key) => {
-            return (
-              <div
-                key={key}
-                className="message"
-                id={username !== messageContent.author ? "you" : "other"}
-              >
-                <div>
-                  <div className="message-content">
-                    <p>{messageContent.message}</p>
-                  </div>
-                  <div className="message-meta">
-                    <p id="time">{messageContent.time}</p>
-                    <p id="author">{messageContent.author}</p>
+        {!loadingMsgs ? (
+          <ScrollToBottom
+            className="message-container"
+            initialScrollBehavior="smooth"
+          >
+            {messageList.map((messageContent, key) => {
+              return (
+                <div
+                  key={key}
+                  className="message"
+                  id={username !== messageContent.author ? "you" : "other"}
+                >
+                  <div>
+                    <div className="message-content">
+                      <p>{messageContent.message}</p>
+                    </div>
+                    <div className="message-meta">
+                      <p id="time">{messageContent.time}</p>
+                      <p id="author">{messageContent.author}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </ScrollToBottom>
+              );
+            })}
+          </ScrollToBottom>
+        ) : (
+          <>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "70vh",
+              }}
+            >
+              <CircularProgress color="inherit" size={15} />
+              <p>Loading messages...</p>
+            </div>
+          </>
+        )}
       </div>
       <div>
         <Stack direction="row" spacing={0}>
