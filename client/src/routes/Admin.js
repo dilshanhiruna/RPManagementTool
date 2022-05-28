@@ -5,6 +5,7 @@ import {
   Redirect,
   BrowserRouter as Router,
 } from "react-router-dom";
+import Header from "../components/view/Header";
 import CreateSubmission from "../components/AssignmentSubmission/CreateSubmission";
 
 export default function Admin() {
