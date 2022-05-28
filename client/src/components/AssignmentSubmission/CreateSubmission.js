@@ -77,8 +77,8 @@ export default function NewSubmission() {
               size="small"
               style={{ width: "350px" }}
             >
-              <MenuItem value={1}>Document</MenuItem>
-              <MenuItem value={2}>Presentation</MenuItem>
+              <MenuItem value={"Document"}>Document</MenuItem>
+              <MenuItem value={"Presentation"}>Presentation</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -99,12 +99,14 @@ export default function NewSubmission() {
               size="small"
               style={{ width: "350px" }}
             >
-              <MenuItem value={1}>Topic Assignment Form</MenuItem>
-              <MenuItem value={2}>ProjectProposal</MenuItem>
-              <MenuItem value={3}>Research Paper</MenuItem>
-              <MenuItem value={4}>Final Paper</MenuItem>
-              <MenuItem value={5}>Research LogBook</MenuItem>
-              <MenuItem value={6}>Thesis</MenuItem>
+              <MenuItem value={"Topic Assignment Form"}>
+                Topic Assignment Form
+              </MenuItem>
+              <MenuItem value={"Project Proposal"}>Project Proposal</MenuItem>
+              <MenuItem value={"Research Paper"}>Research Paper</MenuItem>
+              <MenuItem value={"Final Paper"}>Final Paper</MenuItem>
+              <MenuItem value={"Research LogBook"}>Research LogBook</MenuItem>
+              <MenuItem value={"Thesis"}>Thesis</MenuItem>
             </Select>
           </FormControl>
         </div>
