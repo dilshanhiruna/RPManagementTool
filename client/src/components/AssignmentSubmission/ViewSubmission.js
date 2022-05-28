@@ -32,6 +32,8 @@ export default function ViewSubmission() {
               sTemplate={submission.sTemplate}
               sMarkingScheme={submission.sMarkingScheme}
               sVisisbility={submission.sVisibility}
+              btn1="Update"
+              btn2="Delete"
             />
           );
         })}
