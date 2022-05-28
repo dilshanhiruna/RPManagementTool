@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./NewSubmission.css";
+import { styled } from "@mui/material/styles";
 import Axios from "axios";
 import {
   FormControl,
@@ -8,8 +9,8 @@ import {
   InputLabel,
   Select,
   Button,
+  Input,
 } from "@mui/material";
-import FileUpload from "react-material-file-upload";
 
 export default function NewSubmission() {
   const [sType, setsType] = useState("");
@@ -22,20 +23,28 @@ export default function NewSubmission() {
   const API = process.env.REACT_APP_API;
 
   const sendNewSubmissionTypeToAPI = () => {
-    const formDataTemp = new FormData();
-    const formDataMarking = new FormData();
-    formDataTemp.append("sTemplate", sTemplate);
-    formDataMarking.append("sMarkingScheme", sMarkingScheme);
+    //const formDataTemp = new FormData();
+    // const formDataMarking = new FormData();
+    //formDataTemp.append("sTemplate", sTemplate);
+    // formDataMarking.append("sMarkingScheme", sMarkingScheme);
+
+    //console.log(formDataTemp);
 
     Axios.post(`${API}api/v1/AssignmentSubmissions`, {
       submissionName,
       sType,
       sDescription,
       sDeadline,
-      formDataTemp,
-      formDataMarking,
+      sTemplate,
+      sMarkingScheme,
       sVisibility,
-    }).then((res) => {});
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // const handleSubmit = (event) => {
@@ -53,6 +62,11 @@ export default function NewSubmission() {
   //     console.log(error);
   //   }
   // };
+
+  const Input = styled("input")({
+    display: "none",
+  });
+
   return (
     <div>
       <div className="form">
@@ -124,31 +138,54 @@ export default function NewSubmission() {
 
         <div style={{ width: "760px" }}>
           <p>Upload Template</p>
-          <FileUpload
-            value={sTemplate}
-            onChange={(event) => {
-              setsTemplate(event.target.files[0]);
-            }}
-          />
+          <label htmlFor="contained-button-file">
+            <Input
+              id="contained-button-file"
+              type="file"
+              onChange={(event) => {
+                // Get a reference to the file
+                const file = event.target.files[0];
+
+                // Encode the file using the FileReader API
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  console.log(reader.result);
+                  // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
+                  setsTemplate(reader.result);
+                };
+                reader.readAsDataURL(file);
+              }}
+            />
+            <Button variant="contained" component="span">
+              Upload
+            </Button>
+          </label>
         </div>
 
         <div style={{ width: "760px" }}>
           <p>Upload Marking Scheme</p>
-          <FileUpload
-            value={sMarkingScheme}
-            onChange={(event) => {
-              setsMarkingScheme(event.target.files[0]);
-            }}
-          />
-          {/* <form onSubmit={handleSubmit}>
-            <input
+          <label htmlFor="contained-ms-button-file">
+            <Input
+              id="contained-ms-button-file"
               type="file"
               onChange={(event) => {
-                setsMarkingScheme(event.target.files[0]);
+                // Get a reference to the file
+                const file = event.target.files[0];
+
+                // Encode the file using the FileReader API
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  console.log(reader.result);
+                  // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
+                  setsMarkingScheme(reader.result);
+                };
+                reader.readAsDataURL(file);
               }}
             />
-            <input type="submit" value="Upload File" />
-          </form> */}
+            <Button variant="contained" component="span">
+              Upload
+            </Button>
+          </label>
         </div>
         <div className="dat">
           <p>Deadline</p>
