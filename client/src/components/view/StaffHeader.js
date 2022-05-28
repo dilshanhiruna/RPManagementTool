@@ -18,6 +18,15 @@ export default function StaffHeader({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
+                  window.location.href = "/staff/mygroups";
+                }}
+              >
+                My Groups
+              </Button>
+              <Button
+                variant="outlined"
+                className="header__button"
+                onClick={() => {
                   window.location.href = "/staff/supervisor/topicReq";
                 }}
               >
@@ -31,15 +40,6 @@ export default function StaffHeader({ userType }) {
                 }}
               >
                 Co-Supervisor Requests
-              </Button>
-              <Button
-                variant="outlined"
-                className="header__button"
-                onClick={() => {
-                  window.location.href = "/staff/mygroups";
-                }}
-              >
-                My Groups
               </Button>
             </div>
           </div>
