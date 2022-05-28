@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { LinearProgress } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
@@ -65,6 +66,7 @@ export default function ViewMyStudentGroups({ user }) {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [openBackdrop, setOpenBackdrop] = React.useState(false);
   const [confirmAction, setConfirmAction] = useState();
+  const [pageIsLoadig, setPageIsLoading] = useState(true);
 
   //set group id and action for topic request accept and reject
   const [groupId, setGroupId] = useState();
@@ -136,6 +138,7 @@ export default function ViewMyStudentGroups({ user }) {
             });
           }
         });
+      setPageIsLoading(false);
       setRows(objArray);
     } catch (err) {
       console.log(err);
@@ -203,6 +206,9 @@ export default function ViewMyStudentGroups({ user }) {
   return (
     <>
       <div>
+        <div className="student__dashboard">
+          {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
+        </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
             <h3>Groups you have registered as supervisor or co-supervisor: </h3>
@@ -368,7 +374,7 @@ export default function ViewMyStudentGroups({ user }) {
         )}
       </div>
       <div>
-        {rows.length == 0 ? (
+        {pageIsLoadig == false && rows.length == 0 ? (
           <div className="student__dashboard">
             <div>You are not assigned to any group yet</div>{" "}
           </div>
