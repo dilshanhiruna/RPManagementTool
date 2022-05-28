@@ -336,7 +336,6 @@ exports.getAcceptedGroupsOfSupervisor = async (req, res) => {
 //@route GET /api/v1/studentgroups/cosupervisor/accepted/:id
 exports.getAcceptedGroupsOfCoSupervisor = async (req, res) => {
   try {
-    console.log("hey");
     const cosupervisor = mongoose.Types.ObjectId(req.params.id);
     const studentGroups = await StudentGroups.find({
       cosupervisor,

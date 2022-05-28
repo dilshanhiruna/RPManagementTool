@@ -22,7 +22,7 @@ import {
   Stack,
   IconButton,
 } from "@mui/material";
-import "./TopicRequests.css";
+import "./SupervisorDashboard.css";
 import ChatMenu from "../StudentGroup/ChatMenu";
 
 const API = process.env.REACT_APP_API;

@@ -18,7 +18,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
-import "./TopicRequests.css";
+import "./SupervisorDashboard.css";
 
 const API = process.env.REACT_APP_API;
 
