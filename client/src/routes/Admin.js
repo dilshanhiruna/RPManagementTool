@@ -5,6 +5,7 @@ import {
   Redirect,
   BrowserRouter as Router,
 } from "react-router-dom";
+import Header from "../components/view/Header";
 
 export default function Admin() {
   return (
