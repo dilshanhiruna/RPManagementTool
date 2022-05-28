@@ -370,7 +370,7 @@ export default function StudentDashboard({ user }) {
     let color = "#";
 
     for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
+      const value = (hash >> (i * 8)) & 0xfff;
       color += `00${value.toString(16)}`.slice(-2);
     }
     /* eslint-enable no-bitwise */
@@ -453,8 +453,9 @@ export default function StudentDashboard({ user }) {
                   <AvatarGroup max={4}>
                     {Students.filter((std) => {
                       return std !== "";
-                    }).map((row) => (
+                    }).map((row, key) => (
                       <Avatar
+                        key={key}
                         {...stringAvatar(row.name)}
                         // sx={{ width: 56, height: 56 }}
                       />
@@ -469,13 +470,11 @@ export default function StudentDashboard({ user }) {
                   />
                 </div>
               </div>
+
               <div>
-                <div style={{ textAlign: "left", margin: "25px" }}>
-                  <h1>Chat</h1>
-                </div>
-                <div>
-                  <ChatMenu studentGroup={studentGroup} user={user} />
-                </div>
+                <Divider sx={{ marginTop: "25px" }} />
+                <h1>Group Chat</h1>
+                <ChatMenu studentGroup={studentGroup} user={user} />
               </div>
 
               <BootstrapDialog
@@ -663,9 +662,11 @@ export default function StudentDashboard({ user }) {
                 </div>
                 <div>
                   <div style={{ textAlign: "left", margin: "25px" }}>
-                    <h1>Chat</h1>
+                    <Skeleton variant="text" height={70} alignItems="center" />
                   </div>
-                  <div></div>
+                  <Skeleton variant="rectangular" height={590} />
+                  <br />
+                  <Skeleton variant="rectangular" height={50} />
                 </div>
               </Item>
             </Grid>

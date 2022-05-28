@@ -29,17 +29,29 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-  Msg.find().then((result) => {
-    socket.emit("output-messages", result);
-  });
-
   socket.on("join_room", (data) => {
     socket.join(data);
     console.log(`User with ID: ${socket.id} joined room: ${data}`);
+    //get messages form mongodb and send to client
+    const messages = Msg.find({ room: data }).limit(100).sort({ _id: 1 });
+    messages.exec((err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        socket.emit("get_messages", data);
+      }
+    });
   });
 
   socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data);
+    const message = new Msg({
+      room: data.room,
+      message: data.message,
+      author: data.author,
+      time: data.time,
+    });
+    message.save();
   });
 
   socket.on("disconnect", () => {
