@@ -143,3 +143,22 @@ exports.deleteSubmission = async (req, res, next) => {
     });
   }
 };
+
+//@desc get active submissions
+//@route GET /api/v1/AssignmentSubmissions/active
+//@access private
+exports.getActiveSubmissions = async (req, res) => {
+  try {
+    const submissions = await SubmissionDetails.find({ sVisibility: true });
+    return res.status(200).json({
+      success: true,
+      count: submissions.length,
+      data: submissions,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: "Server Error",
+    });
+  }
+};
