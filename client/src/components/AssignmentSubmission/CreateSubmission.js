@@ -11,6 +11,7 @@ import {
   Button,
   Input,
 } from "@mui/material";
+import Swal from "sweetalert2";
 
 export default function NewSubmission() {
   const [sType, setsType] = useState("");
@@ -20,7 +21,7 @@ export default function NewSubmission() {
   const [sMarkingScheme, setsMarkingScheme] = useState();
   const [sDeadline, setsDeadline] = useState("");
   const [sVisibility, setsVisibility] = useState(false);
-  const API = process.env.REACT_APP_API;
+  const API = process.env.REACT_APP_API_SUBMISSIONS;
 
   const sendNewSubmissionTypeToAPI = () => {
     //const formDataTemp = new FormData();
@@ -41,6 +42,13 @@ export default function NewSubmission() {
     })
       .then((res) => {
         console.log(res);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your work has been saved",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       })
       .catch((err) => {
         console.log(err);
