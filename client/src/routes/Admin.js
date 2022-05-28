@@ -5,6 +5,7 @@ import {
   Redirect,
   BrowserRouter as Router,
 } from "react-router-dom";
+import CreateSubmission from "../components/AssignmentSubmission/CreateSubmission";
 
 export default function Admin() {
   return (
@@ -12,7 +13,10 @@ export default function Admin() {
       <Header userType={"Admin"} />
       <Router>
         <Switch>
-          <Route exact path="/admin"></Route>
+          {/* <Route exact path="/admin"></Route> */}
+          <Route exact path="/admin/create">
+            <CreateSubmission />
+          </Route>
           <Redirect to="/admin/404" />
         </Switch>
       </Router>
