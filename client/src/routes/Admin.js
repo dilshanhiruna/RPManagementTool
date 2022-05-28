@@ -6,17 +6,21 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 import Header from "../components/view/Header";
+import CreateSubmission from "../components/AssignmentSubmission/CreateSubmission";
 
 export default function Admin() {
   return (
     <div className="admin__dashboard">
       <Header userType={"Admin"} />
-
-      <Switch>
-        <Route exact path="/admin"></Route>
-        <Redirect to="/admin" />
-      </Switch>
-
+      <Router>
+        <Switch>
+          {/* <Route exact path="/admin"></Route> */}
+          <Route exact path="/admin/create">
+            <CreateSubmission />
+          </Route>
+          <Redirect to="/admin/create" />
+        </Switch>
+      </Router>
       <footer />
     </div>
   );
