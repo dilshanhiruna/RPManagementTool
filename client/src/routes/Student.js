@@ -13,6 +13,7 @@ import TopicReg from "../components/StudentGroup/TopicReg";
 import SearchSupervisor from "../components/StudentGroup/SearchSupervisor";
 import StudentDashboard from "../components/StudentGroup/StudentDashboard";
 import StudentHeader from "../components/view/StudentHeader";
+import SubmissionDetails from "../components/StudentGroup/SubmissionDetails";
 
 export default function Student() {
   const API = process.env.REACT_APP_API;
@@ -50,6 +51,9 @@ export default function Student() {
         </Route>
         <Route exact path="/student/searchsupervisor">
           <SearchSupervisor user={user} />
+        </Route>
+        <Route exact path="/student/submissionDetails">
+          <SubmissionDetails user={user} />
         </Route>
         <Redirect to="/student" />
       </Switch>
