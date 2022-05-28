@@ -119,57 +119,58 @@ export default function NewSubmission() {
             />
           </FormControl>
         </div>
+        <div className="form">
+          <div style={{ width: "380px" }}>
+            <p>Upload Template</p>
+            <label htmlFor="contained-button-file">
+              <Input
+                id="contained-button-file"
+                type="file"
+                onChange={(event) => {
+                  // Get a reference to the file
+                  const file = event.target.files[0];
 
-        <div style={{ width: "760px" }}>
-          <p>Upload Template</p>
-          <label htmlFor="contained-button-file">
-            <Input
-              id="contained-button-file"
-              type="file"
-              onChange={(event) => {
-                // Get a reference to the file
-                const file = event.target.files[0];
+                  // Encode the file using the FileReader API
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    console.log(reader.result);
+                    // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
+                    setsTemplate(reader.result);
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
+              <Button variant="contained" component="span">
+                Upload
+              </Button>
+            </label>
+          </div>
 
-                // Encode the file using the FileReader API
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  console.log(reader.result);
-                  // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
-                  setsTemplate(reader.result);
-                };
-                reader.readAsDataURL(file);
-              }}
-            />
-            <Button variant="contained" component="span">
-              Upload
-            </Button>
-          </label>
-        </div>
+          <div style={{ width: "380px" }}>
+            <p>Upload Marking Scheme</p>
+            <label htmlFor="contained-ms-button-file">
+              <Input
+                id="contained-ms-button-file"
+                type="file"
+                onChange={(event) => {
+                  // Get a reference to the file
+                  const file = event.target.files[0];
 
-        <div style={{ width: "760px" }}>
-          <p>Upload Marking Scheme</p>
-          <label htmlFor="contained-ms-button-file">
-            <Input
-              id="contained-ms-button-file"
-              type="file"
-              onChange={(event) => {
-                // Get a reference to the file
-                const file = event.target.files[0];
-
-                // Encode the file using the FileReader API
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  console.log(reader.result);
-                  // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
-                  setsMarkingScheme(reader.result);
-                };
-                reader.readAsDataURL(file);
-              }}
-            />
-            <Button variant="contained" component="span">
-              Upload
-            </Button>
-          </label>
+                  // Encode the file using the FileReader API
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    console.log(reader.result);
+                    // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
+                    setsMarkingScheme(reader.result);
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
+              <Button variant="contained" component="span">
+                Upload
+              </Button>
+            </label>
+          </div>
         </div>
         <div className="dat">
           <p>Deadline</p>
