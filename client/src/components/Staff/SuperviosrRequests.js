@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { LinearProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
 import {
@@ -59,6 +60,7 @@ export default function SuperviosrRequests({ user }) {
   const [rows, setRows] = useState([]);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [confirmAction, setConfirmAction] = useState();
+  const [pageIsLoadig, setPageIsLoading] = useState(true);
 
   //set group id and action for topic request accept and reject
   const [groupId, setGroupId] = useState();
@@ -68,12 +70,13 @@ export default function SuperviosrRequests({ user }) {
   //function to get topic requests of the relevant supervisor
   const getTopicReqs = async () => {
     try {
+      let objArray = [];
+
       await axios.get(`${API}/supervisorRequests/${user._id}`).then((res) => {
         if (res.data.data.length == 0) {
           console.log("No topic reqs");
         } else {
           // res.data.data.forEach((data) => {});
-          let objArray = [];
           let student1, student2, student3, student4;
 
           res.data.data.map((data) => {
@@ -108,9 +111,10 @@ export default function SuperviosrRequests({ user }) {
             };
             objArray.push(obj);
           });
-          setRows(objArray);
         }
       });
+      setPageIsLoading(false);
+      setRows(objArray);
     } catch (err) {
       console.log(err);
     }
@@ -181,6 +185,9 @@ export default function SuperviosrRequests({ user }) {
   return (
     <>
       <div>
+        <div className="student__dashboard">
+          {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
+        </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
             <h3>Following groups have requested you to be their supervisor:</h3>
@@ -353,7 +360,7 @@ export default function SuperviosrRequests({ user }) {
         )}
       </div>
       <div>
-        {rows.length == 0 ? (
+        {pageIsLoadig == false && rows.length == 0 ? (
           <div className="student__dashboard">
             <div>No New Requests avaialable</div>{" "}
           </div>
