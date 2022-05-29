@@ -10,10 +10,16 @@ import {
   Select,
   Button,
   Input,
+  Snackbar,
 } from "@mui/material";
-// import Swal from "sweetalert2";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function NewSubmission() {
+  const API = process.env.REACT_APP_API_SUBMISSIONS;
   const [sType, setsType] = useState("");
   const [submissionName, setsubmissionName] = useState("");
   const [sDescription, setsDescription] = useState("");
@@ -21,16 +27,10 @@ export default function NewSubmission() {
   const [sMarkingScheme, setsMarkingScheme] = useState();
   const [sDeadline, setsDeadline] = useState("");
   const [sVisibility, setsVisibility] = useState(false);
-  const API = process.env.REACT_APP_API_SUBMISSIONS;
+
+  const [openAlert, setopenAlert] = useState(false);
 
   const sendNewSubmissionTypeToAPI = () => {
-    //const formDataTemp = new FormData();
-    // const formDataMarking = new FormData();
-    //formDataTemp.append("sTemplate", sTemplate);
-    // formDataMarking.append("sMarkingScheme", sMarkingScheme);
-
-    //console.log(formDataTemp);
-
     Axios.post(`${API}/AssignmentSubmissions`, {
       submissionName,
       sType,
@@ -41,14 +41,7 @@ export default function NewSubmission() {
       sVisibility,
     })
       .then((res) => {
-        console.log(res);
-        // Swal.fire({
-        //   position: "top-end",
-        //   icon: "success",
-        //   title: "Your work has been saved",
-        //   showConfirmButton: false,
-        //   timer: 1500,
-        // });
+        setopenAlert(true);
       })
       .catch((err) => {
         console.log(err);
@@ -58,6 +51,13 @@ export default function NewSubmission() {
   const Input = styled("input")({
     display: "none",
   });
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setopenAlert(false);
+  };
 
   return (
     <div>
@@ -213,6 +213,16 @@ export default function NewSubmission() {
             </FormControl>
           </div>
         </div>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={openAlert}
+          autoHideDuration={5000}
+          onClose={handleAlertClose}
+        >
+          <Alert severity="success" sx={{ width: "100%" }}>
+            Submission created successfully!
+          </Alert>
+        </Snackbar>
       </div>
     </div>
   );
