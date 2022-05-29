@@ -16,7 +16,6 @@ app.use(express.urlencoded({ limit: "50mb" }));
 
 // Cookie parser
 app.use(cookieParser());
-app.use(bodyParser.json({ limit: "50mb" }));
 
 // Route files
 const studentGroups = require("./routes/StudentGroups");

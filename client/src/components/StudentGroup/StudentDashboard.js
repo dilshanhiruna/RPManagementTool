@@ -74,6 +74,8 @@ export default function StudentDashboard({ user }) {
 
   const [Loading, setLoading] = useState(true);
 
+  const [addingMemberLoading, setaddingMemberLoading] = useState(false);
+
   // get student group details
   const fetchStudentGroup = async () => {
     try {
@@ -132,10 +134,12 @@ export default function StudentDashboard({ user }) {
     if (!SelectedStudent) {
       return;
     }
+    setaddingMemberLoading(true);
     axios
       .put(`${API}/studentgroups/${user.studentGroupID}`, { SelectedStudent })
       .then((res) => {
         //reset states
+        setaddingMemberLoading(false);
         fetchStudentGroup();
         setSelectedStudent("");
         setStudent([]);
@@ -425,6 +429,7 @@ export default function StudentDashboard({ user }) {
               />
               <Button
                 disabled={
+                  addingMemberLoading ||
                   Students.filter((stu) => {
                     return stu !== "";
                   }).length >= 4
@@ -439,7 +444,7 @@ export default function StudentDashboard({ user }) {
                   addStudent();
                 }}
               >
-                Add Member
+                {addingMemberLoading ? "Adding..." : "   Add Member"}
               </Button>
 
               <div
@@ -596,7 +601,7 @@ export default function StudentDashboard({ user }) {
                 ))}
               </Stepper>
               <Divider />
-              <div style={{ margin: "20px", marginLeft: "70px" }}>
+              <div style={{ margin: "20px", marginLeft: "50px" }}>
                 <Submissions studentGroup={studentGroup} />
               </div>
             </Item>
