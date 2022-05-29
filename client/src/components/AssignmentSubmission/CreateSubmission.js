@@ -61,7 +61,7 @@ export default function NewSubmission() {
 
   return (
     <div>
-      <div className="form">
+      <div className="createsubmission__form">
         <div>
           <p>Submission Type </p>
           <FormControl fullWidth>
@@ -74,7 +74,6 @@ export default function NewSubmission() {
               onChange={(event) => {
                 setsType(event.target.value);
               }}
-              size="small"
               style={{ width: "350px" }}
             >
               <MenuItem value={1}>Document</MenuItem>
@@ -85,18 +84,16 @@ export default function NewSubmission() {
 
         <div>
           <p>Category </p>
-
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Category</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={submissionName}
-              label="Type"
+              label="Category"
               onChange={(event) => {
                 setsubmissionName(event.target.value);
               }}
-              size="small"
               style={{ width: "350px" }}
             >
               <MenuItem value={1}>Topic Assignment Form</MenuItem>
@@ -148,7 +145,7 @@ export default function NewSubmission() {
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="contained" component="span">
+              <Button variant="outlined" component="span">
                 Upload
               </Button>
             </label>
@@ -174,7 +171,7 @@ export default function NewSubmission() {
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="contained" component="span">
+              <Button variant="outlined" component="span">
                 Upload
               </Button>
             </label>
@@ -195,7 +192,6 @@ export default function NewSubmission() {
               onChange={(event) => {
                 setsDeadline(event.target.value);
               }}
-              size="small"
             />
           </FormControl>
         </div>
@@ -204,8 +200,14 @@ export default function NewSubmission() {
           <div>
             <FormControl fullWidth>
               <Button
-                variant="outlined"
-                style={{ width: "350px" }}
+                variant="contained"
+                size="large"
+                style={{
+                  height: "60px",
+                  width: "200px",
+                  borderRadius: "40px",
+                  marginTop: "35px",
+                }}
                 onClick={sendNewSubmissionTypeToAPI}
               >
                 Create Submission
