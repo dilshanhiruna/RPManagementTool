@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 export default function ViewSubmission() {
   const [submissions, setsubmissions] = useState([]);
-  const API = process.env.REACT_APP_API_SUBMISSIONS;
+  const API = process.env.REACT_APP_API;
   // id = useParams();
 
   //get all theaters from the database

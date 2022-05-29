@@ -9,8 +9,7 @@ import Typography from "@mui/material/Typography";
 import { color } from "@mui/system";
 import Axios from "axios";
 import "../AssignmentSubmission/ViewSubmission.css";
-import Swal from "sweetalert2";
-const API = process.env.REACT_APP_API_SUBMISSIONS;
+const API = process.env.REACT_APP_API;
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 
@@ -41,29 +40,33 @@ export default function SubmissionCard({
     console.log(id);
     history.push({ pathname: `/admin/updatesubmission/${id}` });
   };
+  // const Delete = (id) => {
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You won't be able to revert this!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, delete it!",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Axios.delete(`${API}/AssignmentSubmissions/${id}`).then((res) => {
+  //         Swal.fire({
+  //           position: "top-end",
+  //           icon: "success",
+  //           title: "Your work has been saved",
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         });
+  //         getAllSubmissions();
+  //         Swal.fire("Deleted!", "Your file has been deleted.", "success");
+  //       });
+  //     }
+  //   });
   const Delete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.delete(`${API}/AssignmentSubmissions/${id}`).then((res) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your work has been saved",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          getAllSubmissions();
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        });
-      }
+    Axios.delete(`${API}/AssignmentSubmissions/${id}`).then((res) => {
+      alert("success");
     });
   };
   return (

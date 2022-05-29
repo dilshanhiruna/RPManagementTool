@@ -11,7 +11,6 @@ import {
   Button,
   Input,
 } from "@mui/material";
-import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 
@@ -23,7 +22,7 @@ export default function UpdateSubmission() {
   const [sMarkingScheme, setsMarkingScheme] = useState();
   const [sDeadline, setsDeadline] = useState("");
   const [sVisibility, setsVisibility] = useState(false);
-  const API = process.env.REACT_APP_API_SUBMISSIONS;
+  const API = process.env.REACT_APP_API;
   const history = useHistory();
   //   id = useParams();
 
@@ -37,13 +36,6 @@ export default function UpdateSubmission() {
     };
     //update theater details
     Axios.put(`${API}/AssignmentSubmissions/${id}`, data).then((res) => {
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Your work has been saved",
-        showConfirmButton: false,
-        timer: 1500,
-      });
       history.push("/getAllSubmissions");
     });
   };
