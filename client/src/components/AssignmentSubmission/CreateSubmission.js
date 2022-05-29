@@ -19,7 +19,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function NewSubmission() {
-  const API = process.env.REACT_APP_API_SUBMISSIONS;
+  const API = process.env.REACT_APP_API;
   const [sType, setsType] = useState("");
   const [submissionName, setsubmissionName] = useState("");
   const [sDescription, setsDescription] = useState("");
@@ -138,7 +138,6 @@ export default function NewSubmission() {
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
-                    console.log(reader.result);
                     // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
                     setsTemplate(reader.result);
                   };
@@ -164,7 +163,6 @@ export default function NewSubmission() {
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
-                    console.log(reader.result);
                     // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
                     setsMarkingScheme(reader.result);
                   };
