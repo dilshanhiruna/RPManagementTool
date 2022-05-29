@@ -22,7 +22,7 @@ export default function Submissions({ studentGroup }) {
   // ResearchLogBook
   // Thesis
 
-  const BasicCard = (name, type, dl, desc, sub, temp) => {
+  const BasicCard = ({ submissionDetail }) => {
     return (
       <Card
         sx={{ minWidth: 275, marginBottom: 2, backgroundColor: "#edf4fa" }}
@@ -35,19 +35,16 @@ export default function Submissions({ studentGroup }) {
             color="text.secondary"
             gutterBottom
           >
-            Topic Assesment Form
+            {submissionDetail.submissionName}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="grey">
-            Document
+            {submissionDetail.sType}
           </Typography>
           <Typography sx={{ fontSize: 12 }} gutterBottom>
-            Deadline: 20/10/2020
+            {submissionDetail.sDeadline}
           </Typography>
           <Typography variant="body2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-            possimus minus optio aliquid beatae eum exercitationem sequi iusto.
-            Hic rem doloremque dolore quas pariatur sequi excepturi, nam fuga
-            beatae eligendi!
+            {submissionDetail.sDescription}
             <br />
           </Typography>
         </CardContent>
@@ -55,8 +52,11 @@ export default function Submissions({ studentGroup }) {
           <Button size="small" variant="contained">
             Submit
           </Button>
-          <Button size="small" variant="outlined">
-            Download Template
+          <Button size="small" variant="text">
+            Template
+          </Button>
+          <Button size="small" variant="text">
+            Marking
           </Button>
         </CardActions>
       </Card>
@@ -66,6 +66,7 @@ export default function Submissions({ studentGroup }) {
   const getSubmissionDetails = async () => {
     try {
       const result = await axios.get(`${API}/AssignmentSubmissions/active`);
+      console.log(result.data.data);
       setSubmissionDetails(result.data.data);
     } catch (err) {
       console.error(err);
@@ -111,15 +112,16 @@ export default function Submissions({ studentGroup }) {
         <Divider />
 
         <h1>Group Submissions</h1>
-        <BasicCard />
-        {submissionDetails.map((submissionDetail) => {
-          return (
-            <>
-              {/* <SubmissionItem submission={submissionDetail} /> */}
-              {/* <Divider /> */}
-            </>
-          );
-        })}
+        <div style={{ maxHeight: 600, overflow: "auto" }}>
+          {submissionDetails.map((submissionDetail) => {
+            return (
+              <>
+                <BasicCard submissionDetail={submissionDetail} />
+                <br></br>
+              </>
+            );
+          })}
+        </div>
       </div>
       <Box sx={{ maxWidth: 400 }}></Box>
     </div>
