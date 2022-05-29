@@ -6,6 +6,14 @@
   margin-right: 350px;
   background-color: white;
 }
+.createsubmission__form{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-left: 350px;
+  margin-right: 350px;
+  background-color: white;
+}
 .form p {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
