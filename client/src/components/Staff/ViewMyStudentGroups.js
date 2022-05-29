@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { LinearProgress } from "@mui/material";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
 import {
@@ -17,8 +18,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Backdrop,
+  Stack,
+  IconButton,
 } from "@mui/material";
 import "./SupervisorDashboard.css";
+import ChatMenu from "../StudentGroup/ChatMenu";
 
 const API = process.env.REACT_APP_API;
 
@@ -50,15 +55,16 @@ const columns = [
     minWidth: 90,
     align: "center",
   },
-  { id: "accept", label: "", minWidth: 100, align: "center" },
-  { id: "reject", label: "", minWidth: 100, align: "center" },
+  { id: "role", label: "Your Role", minWidth: 100, align: "center" },
+  { id: "chat", label: "Chat", minWidth: 100, align: "center" },
 ];
 
-export default function CoSuperviosrRequests({ user }) {
+export default function ViewMyStudentGroups({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [openBackdrop, setOpenBackdrop] = React.useState(false);
   const [confirmAction, setConfirmAction] = useState();
   const [pageIsLoadig, setPageIsLoading] = useState(true);
 
@@ -67,52 +73,71 @@ export default function CoSuperviosrRequests({ user }) {
   const [_id, set_id] = useState();
   const [action, setAction] = useState();
 
+  //function to create obj from response
+  const createObjResponse = (res, data) => {
+    let student1, student2, student3, student4;
+
+    if (data.student1) {
+      student1 = data.student1.uid;
+    } else {
+      student1 = "Not Avaialable";
+    }
+    if (data.student2) {
+      student2 = data.student2.uid;
+    } else {
+      student1 = "Not Avaialable";
+    }
+    if (data.student3) {
+      student3 = data.student3.uid;
+    } else {
+      student1 = "Not Avaialable";
+    }
+    if (data.student4) {
+      student4 = data.student4.uid;
+    } else {
+      student4 = "Not Avaialable";
+    }
+    let obj = {
+      _id: data._id,
+      groupID: data.groupID,
+      reTopic: data.researchTopic,
+      student1,
+      student2,
+      student3,
+      student4,
+      role: res.data.type,
+    };
+    return obj;
+  };
   //function to get topic requests of the relevant supervisor
   const getTopicReqs = async () => {
     try {
       let objArray = [];
 
-      await axios.get(`${API}/cosupervisorRequests/${user._id}`).then((res) => {
-        if (res.data.data.length == 0) {
-          console.log("No topic reqs");
-        } else {
-          // res.data.data.forEach((data) => {});
-          let student1, student2, student3, student4;
-
-          res.data.data.map((data) => {
-            if (data.student1) {
-              student1 = data.student1.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student2) {
-              student2 = data.student2.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student3) {
-              student3 = data.student3.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student4) {
-              student4 = data.student4.uid;
-            } else {
-              student4 = "Not Avaialable";
-            }
-            const obj = {
-              _id: data._id,
-              groupID: data.groupID,
-              reTopic: data.researchTopic,
-              student1,
-              student2,
-              student3,
-              student4,
-            };
-            objArray.push(obj);
-          });
-        }
-      });
+      await axios
+        .get(`${API}/studentgroups/supervisor/accepted/${user._id}`)
+        .then((res) => {
+          if (res.data.data.length == 0) {
+            console.log("No topic reqs");
+          } else {
+            res.data.data.map((data) => {
+              let obj = createObjResponse(res, data);
+              objArray.push(obj);
+            });
+          }
+        });
+      await axios
+        .get(`${API}/studentgroups/cosupervisor/accepted/${user._id}`)
+        .then((res) => {
+          if (res.data.data.length == 0) {
+            console.log("No topic reqs");
+          } else {
+            res.data.data.map((data) => {
+              let obj = createObjResponse(res, data);
+              objArray.push(obj);
+            });
+          }
+        });
       setPageIsLoading(false);
       setRows(objArray);
     } catch (err) {
@@ -135,25 +160,20 @@ export default function CoSuperviosrRequests({ user }) {
   // };
 
   //function to accept/reject topic reqest
-  const acceptOrReject = () => {
+  const openChat = () => {
+    setOpenConfirmModal(false);
     console.log(_id);
-    let accRej = "";
-    if (action == "Accept") {
-      accRej = "accepted";
-    } else if (action == "Reject") {
-      accRej = "rejected";
-    }
-    axios
-      .post(`${API}/cosupervisorRequests/acceptOrReject/${_id}`, {
-        action: accRej,
-      })
-      .then(() => {
-        window.location.reload();
-      });
+  };
+  const handleCloseBackdrop = () => {
+    setOpenBackdrop(false);
+  };
+  const handleToggle = () => {
+    setOpenBackdrop(!openBackdrop);
   };
 
   //get confirmation to accept or reject action
   const getConfirmation = (groupId, _id, action) => {
+    handleToggle();
     setGroupId(groupId);
     set_id(_id);
     setAction(action);
@@ -182,6 +202,7 @@ export default function CoSuperviosrRequests({ user }) {
   const handleModalClose = () => {
     setOpenConfirmModal(false);
   };
+
   return (
     <>
       <div>
@@ -190,9 +211,7 @@ export default function CoSuperviosrRequests({ user }) {
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h3>
-              Following groups have requested you to be their co-supervisor:
-            </h3>{" "}
+            <h3>Groups you have registered as supervisor or co-supervisor: </h3>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -216,9 +235,7 @@ export default function CoSuperviosrRequests({ user }) {
                         align="center"
                         colSpan={2}
                         className="hash-table-border"
-                      >
-                        Action
-                      </TableCell>
+                      ></TableCell>
                     </TableRow>
                     <TableRow>
                       {columns.map((column) => (
@@ -271,7 +288,7 @@ export default function CoSuperviosrRequests({ user }) {
                                   </TableCell>
                                 );
                               }
-                              if (column.id == "reject") {
+                              if (column.id == "chat") {
                                 return (
                                   <TableCell
                                     key={column.id}
@@ -279,7 +296,7 @@ export default function CoSuperviosrRequests({ user }) {
                                     className="hash-table-border"
                                   >
                                     <Button
-                                      color="error"
+                                      color="success"
                                       onClick={() => {
                                         getConfirmation(
                                           row["groupID"],
@@ -288,7 +305,7 @@ export default function CoSuperviosrRequests({ user }) {
                                         );
                                       }}
                                     >
-                                      Reject
+                                      Chat
                                     </Button>
                                   </TableCell>
                                 );
@@ -321,40 +338,36 @@ export default function CoSuperviosrRequests({ user }) {
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </Paper>
-            {/* confirm modal */}
-            <Dialog
-              open={openConfirmModal}
-              // onClose={handleCloseRemoveMember}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
+
+            <Backdrop
+              sx={{
+                color: "#fff",
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+              }}
+              open={openBackdrop}
             >
-              <DialogTitle id="alert-dialog-title">
-                {`${action} Topic`}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  {`Are you sure you want to ${action} the topic of group "${groupId}" ?`}
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    handleModalClose();
-                  }}
+              <div
+                className="supervisor__chat"
+                style={{
+                  width: "400px",
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  Disagree
-                </Button>
-                <Button
-                  onClick={() => {
-                    acceptOrReject();
-                  }}
-                  autoFocus
-                  color="error"
-                >
-                  Agree
-                </Button>
-              </DialogActions>
-            </Dialog>
+                  <h1>Chat with {groupId}</h1>
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="span"
+                    onClick={handleCloseBackdrop}
+                  >
+                    <CloseRoundedIcon />
+                  </IconButton>
+                </div>
+                <ChatMenu studentGroup={{ _id: _id }} user={user} />
+              </div>
+            </Backdrop>
           </div>
         ) : (
           ""
@@ -363,7 +376,7 @@ export default function CoSuperviosrRequests({ user }) {
       <div>
         {pageIsLoadig == false && rows.length == 0 ? (
           <div className="student__dashboard">
-            <div>No New Requests avaialable</div>{" "}
+            <div>You are not assigned to any group yet</div>{" "}
           </div>
         ) : (
           ""

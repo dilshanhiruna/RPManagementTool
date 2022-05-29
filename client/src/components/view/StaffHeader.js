@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import "./Header.css";
 
-export default function SupervisorHeader({ userType }) {
-  const redirect = () => {
-    console.log("hey");
-  };
+export default function StaffHeader({ userType }) {
+  const redirect = () => {};
   return (
     <>
       <header>
@@ -19,18 +17,29 @@ export default function SupervisorHeader({ userType }) {
               <Button
                 variant="outlined"
                 className="header__button"
-                onClick={() => redirect()}
+                onClick={() => {
+                  window.location.href = "/staff/mygroups";
+                }}
               >
-                Topic Requests
-              </Button>
-              <Button variant="outlined" className="header__button">
                 My Groups
               </Button>
-              <Button variant="outlined" className="header__button">
-                Click
+              <Button
+                variant="outlined"
+                className="header__button"
+                onClick={() => {
+                  window.location.href = "/staff/supervisor/topicReq";
+                }}
+              >
+                Supervisor Requests
               </Button>
-              <Button variant="outlined" className="header__button">
-                Click
+              <Button
+                variant="outlined"
+                className="header__button"
+                onClick={() => {
+                  window.location.href = "/staff/cosupervisor/topicReq";
+                }}
+              >
+                Co-Supervisor Requests
               </Button>
             </div>
           </div>
