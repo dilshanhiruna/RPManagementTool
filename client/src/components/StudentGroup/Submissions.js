@@ -35,7 +35,10 @@ export default function Submissions({ studentGroup }) {
         <h4>
           Supervisor :
           {studentGroup.supervisor?.name
-            ? studentGroup.supervisor?.name
+            ? " " +
+              studentGroup.supervisor?.uid +
+              " - " +
+              studentGroup.supervisor?.name
             : "Not Assigned"}{" "}
           (
           {studentGroup.supervisorStatus !== "none"
@@ -46,7 +49,10 @@ export default function Submissions({ studentGroup }) {
         <h4>
           Co-Supervisor :
           {studentGroup.cosupervisor?.name
-            ? studentGroup.cosupervisor?.name
+            ? " " +
+              studentGroup.cosupervisor?.uid +
+              " - " +
+              studentGroup.cosupervisor?.name
             : "Not Assigned"}{" "}
           (
           {studentGroup.cosupervisorStatus !== "none"
