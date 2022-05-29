@@ -9,7 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SubmissionItem from "./SubmissionItem";
-import { LinearProgress } from "@mui/material";
+import { LinearProgress, CircularProgress } from "@mui/material";
 import {
   Dialog,
   DialogTitle,
@@ -29,6 +29,8 @@ export default function Submissions({ studentGroup }) {
   const [selectedSubmissionDetail, setSelectedSubmissionDetail] =
     useState(false);
   const [studentSubmission, setStudentSubmission] = useState({});
+  const [existingSubmission, setExistingSubmission] = useState(null);
+  const [fileIsLoadig, setFileIsLoading] = useState(true);
 
   // Submission Types
   // TopicAssesmentForm
@@ -88,7 +90,6 @@ export default function Submissions({ studentGroup }) {
   const getSubmissionDetails = async () => {
     try {
       const result = await axios.get(`${API}/AssignmentSubmissions/active`);
-      console.log(result.data.data);
       setSubmissionDetails(result.data.data);
       setPageIsLoading(false);
     } catch (err) {
@@ -96,18 +97,24 @@ export default function Submissions({ studentGroup }) {
     }
   };
 
-  const handleModalClose = () => {
-    setOpenConfirmModal(false);
-  };
+  const getExisitingStudentSubmissions = async (submissionDetailsId) => {
+    try {
+      const submissionObj = {
+        submissionDetailsId,
+        studentGroupId: studentGroup._id,
+      };
 
-  const handleModalOpen = (submissionDetail) => {
-    setOpenConfirmModal(true);
-    setSelectedSubmissionDetail(submissionDetail);
-  };
-
-  const onFileUpload = (file) => {
-    setStudentSubmission(file);
-    console.log(file);
+      const result = await axios.post(
+        `${API}/studentSubmission/getSpecific`,
+        submissionObj
+      );
+      setExistingSubmission(result.data.data);
+      // console.log("olaaaaaaa" + result.data.data);
+      // setPageIsLoading(false);
+    } catch (err) {
+      console.error(err);
+    }
+    setFileIsLoading(false);
   };
 
   const onSubmitConfirm = async (submissionDetailsId) => {
@@ -132,6 +139,25 @@ export default function Submissions({ studentGroup }) {
       console.error(err);
     }
   };
+
+  const handleModalClose = () => {
+    setOpenConfirmModal(false);
+    setFileIsLoading(true);
+  };
+
+  const handleModalOpen = async (submissionDetail) => {
+    setOpenConfirmModal(true);
+    setSelectedSubmissionDetail(submissionDetail);
+    await getExisitingStudentSubmissions(submissionDetail._id);
+  };
+
+  const onFileUpload = (file) => {
+    setStudentSubmission(file);
+    console.log(file);
+  };
+
+  const deleteStudentSubmission = () => {};
+
   useEffect(() => {
     getSubmissionDetails();
   }, []);
@@ -197,15 +223,47 @@ export default function Submissions({ studentGroup }) {
                 {selectedSubmissionDetail.submissionName}
               </DialogTitle>
               <DialogContent>
+                <DialogContentText>
+                  Type: {selectedSubmissionDetail.sType}
+                </DialogContentText>
+                <DialogContentText color={"error"}>
+                  Deadline: {selectedSubmissionDetail.sDeadline}
+                </DialogContentText>
+                <br></br>
                 <DialogContentText id="alert-dialog-description">
                   {selectedSubmissionDetail.sDescription}
                 </DialogContentText>
               </DialogContent>
+
               <DialogContent className="centerItems">
-                <FileBase64 multiple={false} onDone={onFileUpload.bind()} />
+                {fileIsLoadig ? (
+                  <CircularProgress color="inherit" />
+                ) : (
+                  <div>
+                    {existingSubmission ? (
+                      <>
+                        {existingSubmission.file.name}
+                        <Button
+                          onClick={() => {
+                            deleteStudentSubmission();
+                          }}
+                          color="error"
+                        >
+                          Remove
+                        </Button>
+                      </>
+                    ) : (
+                      <FileBase64
+                        multiple={false}
+                        onDone={onFileUpload.bind()}
+                      />
+                    )}
+                  </div>
+                )}
               </DialogContent>
               <DialogActions>
                 <Button
+                  variant="outlined"
                   onClick={() => {
                     handleModalClose();
                   }}
@@ -213,11 +271,12 @@ export default function Submissions({ studentGroup }) {
                   Cancel
                 </Button>
                 <Button
+                  variant="outlined"
                   onClick={() => {
                     onSubmitConfirm(selectedSubmissionDetail._id);
                   }}
                   autoFocus
-                  color="error"
+                  color="success"
                 >
                   Submit
                 </Button>
