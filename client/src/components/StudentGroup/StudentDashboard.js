@@ -596,7 +596,7 @@ export default function StudentDashboard({ user }) {
                 ))}
               </Stepper>
               <Divider />
-              <div style={{ margin: "20px", marginLeft: "70px" }}>
+              <div style={{ margin: "20px", marginLeft: "50px" }}>
                 <Submissions studentGroup={studentGroup} />
               </div>
             </Item>
