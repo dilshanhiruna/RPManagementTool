@@ -1,32 +1,43 @@
 .form{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-left: 350px;
-    margin-right: 350px;
-    background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-left: 350px;
+  margin-right: 350px;
+  background-color: white;
 }
-.createsubmission__form p {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+.form p {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 }
 
-.form_txt {
+.form_txt{
   margin: 1;
   width: 39ch;
   height: 6ch;
 }
 
-.form_feilds_col {
-  display: flex;
-  flex-direction: column;
+.form_feilds_col{
+  display:flex; 
+  flex-direction:column;
   justify-content: space-around;
   margin-left: 350px;
   margin-right: 350px;
   background-color: white;
-  padding: 30px;
+  align-items: center;
 }
 .form_feilds_col p {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
+}
+.Btn{
+  display:flex; 
+  flex-direction:column; 
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.dat{
+  margin-left: -400px;
 }
