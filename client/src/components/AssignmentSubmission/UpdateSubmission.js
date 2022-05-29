@@ -12,8 +12,10 @@ import {
   Input,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router";
 
-export default function CreateSubmission() {
+export default function UpdateSubmission() {
   const [sType, setsType] = useState("");
   const [submissionName, setsubmissionName] = useState("");
   const [sDescription, setsDescription] = useState("");
@@ -22,37 +24,28 @@ export default function CreateSubmission() {
   const [sDeadline, setsDeadline] = useState("");
   const [sVisibility, setsVisibility] = useState(false);
   const API = process.env.REACT_APP_API_SUBMISSIONS;
+  const history = useHistory();
+  //   id = useParams();
 
-  const sendNewSubmissionTypeToAPI = () => {
-    //const formDataTemp = new FormData();
-    // const formDataMarking = new FormData();
-    //formDataTemp.append("sTemplate", sTemplate);
-    // formDataMarking.append("sMarkingScheme", sMarkingScheme);
-
-    //console.log(formDataTemp);
-
-    Axios.post(`${API}/AssignmentSubmissions`, {
-      submissionName,
-      sType,
+  const updateSubmissionTypeToAPI = () => {
+    const data = {
       sDescription,
-      sDeadline,
       sTemplate,
       sMarkingScheme,
+      sDeadline,
       sVisibility,
-    })
-      .then((res) => {
-        console.log(res);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Your work has been saved",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+    };
+    //update theater details
+    Axios.put(`${API}/AssignmentSubmissions/${id}`, data).then((res) => {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
       });
+      history.push("/getAllSubmissions");
+    });
   };
 
   const Input = styled("input")({
@@ -208,9 +201,9 @@ export default function CreateSubmission() {
               <Button
                 variant="outlined"
                 style={{ width: "350px" }}
-                onClick={sendNewSubmissionTypeToAPI}
+                onClick={updateSubmissionTypeToAPI}
               >
-                Create Submission
+                Update Submission
               </Button>
             </FormControl>
           </div>

@@ -6,12 +6,13 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
-import { useHistory } from "react-router-dom";
 import { color } from "@mui/system";
 import Axios from "axios";
 import "../AssignmentSubmission/ViewSubmission.css";
 import Swal from "sweetalert2";
 const API = process.env.REACT_APP_API_SUBMISSIONS;
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router";
 
 export default function SubmissionCard({
   submissionName,
@@ -21,7 +22,7 @@ export default function SubmissionCard({
   sDeadline,
   sVisibility,
   sMarkingScheme,
-  key,
+  id,
   btn1,
   btn2,
 }) {
@@ -30,15 +31,16 @@ export default function SubmissionCard({
   };
 
   let history = useHistory();
-
+  // id = useParams();
   //   const viewDetails = () => {
   //     history.push({ pathname: '/customer/reservation', id });
   //   };
 
-  //   const updateSubmission = () => {
-  //     console.log("update...");
-  //     history.push({ pathname: "/admin/movies/edit", movie });
-  //   };
+  const updateSubmission = () => {
+    console.log("update...");
+    console.log(id);
+    history.push({ pathname: `/admin/updatesubmission/${id}` });
+  };
   const Delete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -72,7 +74,7 @@ export default function SubmissionCard({
             {submissionName}
           </Typography>
           <Switch
-            checked={sVisibility}
+            // checked={sVisibility}
             onChange={handleChange}
             inputProps={{ "aria-label": "controlled" }}
           />
@@ -98,7 +100,9 @@ export default function SubmissionCard({
           size="small"
           variant="outlined"
           style={{ width: "85px", marginLeft: "1150px" }}
-          // onClick={}
+          onClick={() => {
+            updateSubmission({ id });
+          }}
         >
           {btn1}
         </Button>
@@ -108,7 +112,7 @@ export default function SubmissionCard({
           color="error"
           style={{ width: "85px" }}
           onClick={() => {
-            Delete(key);
+            Delete({ id });
           }}
         >
           {btn2}
