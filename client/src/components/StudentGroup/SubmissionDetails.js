@@ -15,6 +15,7 @@ export default function SubmissionDetails() {
       <div> {submissionDetails.sTemplate}</div>
       <div> {submissionDetails.sMarkingScheme}</div>
       <div> {submissionDetails.sDeadline}</div>
+      <div> {submissionDetails.sDeadline}</div>
     </>
   );
 }
