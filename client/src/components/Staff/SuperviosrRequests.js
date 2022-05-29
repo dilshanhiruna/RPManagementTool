@@ -327,12 +327,10 @@ export default function SuperviosrRequests({ user }) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title">
-                {`${action} Topic`}
-              </DialogTitle>
+              <DialogTitle id="alert-dialog-title">Add Submission</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  {`Are you sure you want to ${action} the topic of group "${groupId}" ?`}
+                  description
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
