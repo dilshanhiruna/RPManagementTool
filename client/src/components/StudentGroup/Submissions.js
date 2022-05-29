@@ -40,6 +40,7 @@ export default function Submissions({ studentGroup }) {
   // ResearchLogBook
   // Thesis
 
+  // card to display active submission details from db
   const BasicCard = ({ submissionDetail }) => {
     return (
       <Card
@@ -87,6 +88,7 @@ export default function Submissions({ studentGroup }) {
     );
   };
 
+  // function to get active submission details from db
   const getSubmissionDetails = async () => {
     try {
       const result = await axios.get(`${API}/AssignmentSubmissions/active`);
@@ -97,6 +99,7 @@ export default function Submissions({ studentGroup }) {
     }
   };
 
+  // function to get existing student sbmission from db
   const getExisitingStudentSubmissions = async (submissionDetailsId) => {
     try {
       const submissionObj = {
@@ -117,8 +120,11 @@ export default function Submissions({ studentGroup }) {
     setFileIsLoading(false);
   };
 
+  //function to confrim student submission and save in db
   const onSubmitConfirm = async (submissionDetailsId) => {
     try {
+      setFileIsLoading(true);
+
       const submissionObj = {
         file: studentSubmission,
         submissionDetailsId,
@@ -140,30 +146,39 @@ export default function Submissions({ studentGroup }) {
     }
   };
 
+  //function to handle close of submission modal
   const handleModalClose = () => {
     setOpenConfirmModal(false);
     setFileIsLoading(true);
   };
 
+  //function to handle open of submission modal
   const handleModalOpen = async (submissionDetail) => {
     setOpenConfirmModal(true);
     setSelectedSubmissionDetail(submissionDetail);
     await getExisitingStudentSubmissions(submissionDetail._id);
   };
 
+  //function to upload file
   const onFileUpload = (file) => {
     setStudentSubmission(file);
     console.log(file);
   };
 
-  const deleteStudentSubmission = () => {};
+  //function to delete student submission from db
+  const deleteStudentSubmission = async () => {
+    setFileIsLoading(true);
+    const id = existingSubmission._id;
+    const result = await axios.delete(`${API}/studentSubmission/${id}`);
+    setFileIsLoading(false);
+    setExistingSubmission(null);
+  };
 
   useEffect(() => {
     getSubmissionDetails();
   }, []);
   return (
     <>
-      {" "}
       <div>
         <div style={{ textAlign: "left" }}>
           <h4>Group ID: {studentGroup.groupID} </h4>

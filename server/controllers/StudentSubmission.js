@@ -8,19 +8,21 @@ const { find } = require("../models/StudentGroups");
 //@route POST /api/v1/studentSubmission
 exports.createStudentSubmission = async (req, res) => {
   try {
-    const submissionDetailsId = req.body.submissionDetailsId;
-    const studentGroupId = req.body.studentGroupId;
+    const submissionDetailsId = mongoose.Types.ObjectId(
+      req.body.submissionDetailsId
+    );
+    const studentGroupId = mongoose.Types.ObjectId(req.body.studentGroupId);
 
-    // //validation
-    // const existingSubmission = await StudentSubmission.find({
-    //   submissionDetailsId,
-    //   studentGroupId,
-    // });
-    // if (existingSubmission) {
-    //   return res
-    //     .status(400)
-    //     .json({ success: false, msg: "submission already exists" });
-    // }
+    //validation
+    const existingSubmission = await StudentSubmission.findOne({
+      submissionDetailsId,
+      studentGroupId,
+    });
+    if (existingSubmission) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "submission already exists" });
+    }
     await StudentSubmission.create(req.body);
 
     return res.status(200).json({ success: true });
@@ -43,6 +45,21 @@ exports.getSpecificStudentSubmission = async (req, res) => {
       studentGroupId,
     });
     res.status(200).json({ success: true, data: existingSubmission });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
+
+//@desc delete student submission
+//@route DELETE /api/v1/studentSubmission/:id
+exports.deleteStudentSubmission = async (req, res) => {
+  try {
+    const _id = req.params.id;
+
+    const deleteStudentSubmission = await StudentSubmission.findByIdAndDelete(
+      _id
+    );
+    res.status(200).json({ success: true, data: deleteStudentSubmission });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
   }
