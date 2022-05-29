@@ -37,7 +37,7 @@ exports.createSubmission = async (req, res) => {
 };
 
 //@desc   View all submissions
-//@route  GET /api/v1/allsubmissions
+//@route  GET /api/v1/AssignmentSubmissions/
 //@access Public
 exports.getSubmissions = async (req, res) => {
   try {

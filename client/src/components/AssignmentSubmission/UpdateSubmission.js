@@ -10,15 +10,11 @@ import {
   Select,
   Button,
   Input,
-  Snackbar,
 } from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router";
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-export default function CreateSubmission() {
+export default function UpdateSubmission() {
   const [sType, setsType] = useState("");
   const [submissionName, setsubmissionName] = useState("");
   const [sDescription, setsDescription] = useState("");
@@ -26,42 +22,31 @@ export default function CreateSubmission() {
   const [sMarkingScheme, setsMarkingScheme] = useState();
   const [sDeadline, setsDeadline] = useState("");
   const [sVisibility, setsVisibility] = useState(false);
-
-  const [openAlert, setopenAlert] = useState(false);
   const API = process.env.REACT_APP_API;
+  const history = useHistory();
+  //   id = useParams();
 
-  const sendNewSubmissionTypeToAPI = () => {
-    Axios.post(`${API}/AssignmentSubmissions`, {
-      submissionName,
-      sType,
+  const updateSubmissionTypeToAPI = () => {
+    const data = {
       sDescription,
-      sDeadline,
       sTemplate,
       sMarkingScheme,
+      sDeadline,
       sVisibility,
-    })
-      .then((res) => {
-        setopenAlert(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    };
+    //update theater details
+    Axios.put(`${API}/AssignmentSubmissions/${id}`, data).then((res) => {
+      history.push("/getAllSubmissions");
+    });
   };
 
   const Input = styled("input")({
     display: "none",
   });
 
-  const handleAlertClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setopenAlert(false);
-  };
-
   return (
     <div>
-      <div className="createsubmission__form">
+      <div className="form">
         <div>
           <p>Submission Type </p>
           <FormControl fullWidth>
@@ -74,6 +59,7 @@ export default function CreateSubmission() {
               onChange={(event) => {
                 setsType(event.target.value);
               }}
+              size="small"
               style={{ width: "350px" }}
             >
               <MenuItem value={"Document"}>Document</MenuItem>
@@ -84,16 +70,18 @@ export default function CreateSubmission() {
 
         <div>
           <p>Category </p>
+
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Category</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={submissionName}
-              label="Category"
+              label="Type"
               onChange={(event) => {
                 setsubmissionName(event.target.value);
               }}
+              size="small"
               style={{ width: "350px" }}
             >
               <MenuItem value={"Topic Assignment Form"}>
@@ -140,13 +128,14 @@ export default function CreateSubmission() {
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
+                    console.log(reader.result);
                     // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
                     setsTemplate(reader.result);
                   };
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="outlined" component="span">
+              <Button variant="contained" component="span">
                 Upload
               </Button>
             </label>
@@ -165,13 +154,14 @@ export default function CreateSubmission() {
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
+                    console.log(reader.result);
                     // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
                     setsMarkingScheme(reader.result);
                   };
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="outlined" component="span">
+              <Button variant="contained" component="span">
                 Upload
               </Button>
             </label>
@@ -192,6 +182,7 @@ export default function CreateSubmission() {
               onChange={(event) => {
                 setsDeadline(event.target.value);
               }}
+              size="small"
             />
           </FormControl>
         </div>
@@ -200,31 +191,15 @@ export default function CreateSubmission() {
           <div>
             <FormControl fullWidth>
               <Button
-                variant="contained"
-                size="large"
-                style={{
-                  height: "60px",
-                  width: "200px",
-                  borderRadius: "40px",
-                  marginTop: "35px",
-                }}
-                onClick={sendNewSubmissionTypeToAPI}
+                variant="outlined"
+                style={{ width: "350px" }}
+                onClick={updateSubmissionTypeToAPI}
               >
-                Create Submission
+                Update Submission
               </Button>
             </FormControl>
           </div>
         </div>
-        <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={openAlert}
-          autoHideDuration={5000}
-          onClose={handleAlertClose}
-        >
-          <Alert severity="success" sx={{ width: "100%" }}>
-            Submission created successfully!
-          </Alert>
-        </Snackbar>
       </div>
     </div>
   );
