@@ -106,17 +106,27 @@ export default function Submissions({ studentGroup }) {
   };
 
   const onFileUpload = (file) => {
-    setStudentSubmission({ file });
+    setStudentSubmission(file);
     console.log(file);
   };
 
-  const onSubmitConfirm = async () => {
+  const onSubmitConfirm = async (submissionDetailsId) => {
     try {
-      const result = await axios.post(`${API}/`, studentSubmission);
+      const submissionObj = {
+        file: studentSubmission,
+        submissionDetailsId,
+        studentGroupId: studentGroup._id,
+      };
+      const result = await axios.post(
+        `${API}/studentSubmission`,
+        submissionObj
+      );
       if (result.data.success) {
         alert("submission success");
+        setOpenConfirmModal(false);
       } else {
         alert("error");
+        setOpenConfirmModal(false);
       }
     } catch (err) {
       console.error(err);
@@ -203,9 +213,9 @@ export default function Submissions({ studentGroup }) {
                   Cancel
                 </Button>
                 <Button
-                  // onClick={() => {
-                  //   acceptOrReject();
-                  // }}
+                  onClick={() => {
+                    onSubmitConfirm(selectedSubmissionDetail._id);
+                  }}
                   autoFocus
                   color="error"
                 >
