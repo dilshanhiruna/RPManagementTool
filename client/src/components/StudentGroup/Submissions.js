@@ -18,6 +18,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import FileBase64 from "react-file-base64";
+import "./Submissions.css";
 
 const API = process.env.REACT_APP_API;
 import axios from "axios";
