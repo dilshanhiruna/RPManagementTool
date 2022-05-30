@@ -690,6 +690,36 @@ export default function StudentDashboard({ user }) {
                   <Skeleton variant="text" width={320} height={30} />
                   <Skeleton variant="text" width={300} height={30} />
                 </div>
+                <Divider />
+                <div style={{ marginLeft: "70px" }}>
+                  <Skeleton variant="text" width={300} height={70} />
+                  <div>
+                    <Skeleton
+                      variant="rectangle"
+                      width={"99%"}
+                      height={160}
+                      sx={{
+                        marginBottom: "10px",
+                      }}
+                    />
+                    <Skeleton
+                      variant="rectangle"
+                      width={"99%"}
+                      height={160}
+                      sx={{
+                        marginBottom: "10px",
+                      }}
+                    />
+                    <Skeleton
+                      variant="rectangle"
+                      width={"99%"}
+                      height={160}
+                      sx={{
+                        marginBottom: "10px",
+                      }}
+                    />
+                  </div>
+                </div>
               </Item>
             </Grid>
           </Grid>
