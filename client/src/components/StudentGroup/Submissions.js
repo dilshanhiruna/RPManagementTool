@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Submissions.css";
 import Box from "@mui/material/Box";
-import { Divider } from "@mui/material";
+import { Chip, Divider } from "@mui/material";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -44,7 +44,12 @@ export default function Submissions({ studentGroup }) {
   const BasicCard = ({ submissionDetail }) => {
     return (
       <Card
-        sx={{ minWidth: 275, marginBottom: 2, backgroundColor: "#edf4fa" }}
+        sx={{
+          minWidth: 275,
+          maxWidth: "98%",
+          marginBottom: 0,
+          backgroundColor: "#edf4fa",
+        }}
         elevation="4"
       >
         <CardContent>
@@ -59,7 +64,7 @@ export default function Submissions({ studentGroup }) {
           <Typography sx={{ mb: 1.5 }} color="grey">
             {submissionDetail.sType}
           </Typography>
-          <Typography sx={{ fontSize: 12 }} gutterBottom>
+          <Typography sx={{ fontSize: 12 }}>
             {submissionDetail.sDeadline}
           </Typography>
           <Typography variant="body2">
@@ -218,7 +223,7 @@ export default function Submissions({ studentGroup }) {
           <div className="student__dashboard">
             {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
           </div>
-          <div style={{ maxHeight: 600, overflow: "auto" }}>
+          <div style={{ maxHeight: 550, overflow: "auto" }}>
             {submissionDetails.map((submissionDetail) => {
               return (
                 <>
@@ -233,16 +238,22 @@ export default function Submissions({ studentGroup }) {
               // onClose={handleCloseRemoveMember}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
+              sx={{
+                minWidth: 700,
+              }}
             >
               <DialogTitle id="alert-dialog-title">
                 {selectedSubmissionDetail.submissionName}
               </DialogTitle>
               <DialogContent>
-                <DialogContentText>
-                  Type: {selectedSubmissionDetail.sType}
+                <DialogContentText sx={{ marginBottom: 1 }}>
+                  <Chip label={`${selectedSubmissionDetail.sType}`} />
                 </DialogContentText>
-                <DialogContentText color={"error"}>
-                  Deadline: {selectedSubmissionDetail.sDeadline}
+                <DialogContentText>
+                  <Chip
+                    label={`Deadline: ${selectedSubmissionDetail.sDeadline}`}
+                    color="warning"
+                  />
                 </DialogContentText>
                 <br></br>
                 <DialogContentText id="alert-dialog-description">
@@ -250,22 +261,24 @@ export default function Submissions({ studentGroup }) {
                 </DialogContentText>
               </DialogContent>
 
-              <DialogContent className="centerItems">
+              <DialogContent className="centerItems" sx={{ minWidth: "550px" }}>
                 {fileIsLoadig ? (
                   <CircularProgress color="inherit" />
                 ) : (
                   <div>
                     {existingSubmission ? (
                       <>
-                        {existingSubmission.file.name}
                         <Button
                           onClick={() => {
                             deleteStudentSubmission();
                           }}
                           color="error"
+                          size="small"
+                          variant="contained"
                         >
                           Remove
-                        </Button>
+                        </Button>{" "}
+                        {existingSubmission.file.name}
                       </>
                     ) : (
                       <FileBase64
