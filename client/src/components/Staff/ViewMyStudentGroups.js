@@ -219,10 +219,10 @@ export default function ViewMyStudentGroups({ user }) {
   };
 
   //functions to handle view student members
-  const handleClickOpenGroupMemberModal = (students) => {
-    console.log(students);
+  const handleClickOpenGroupMemberModal = (groupId, students) => {
     setOpenGroupMemberModal(true);
     setStudents(students);
+    setGroupId(groupId);
   };
   const handleCloseOpenGroupMemberModal = () => {
     setOpenGroupMemberModal(false);
@@ -302,6 +302,7 @@ export default function ViewMyStudentGroups({ user }) {
                                     <Button
                                       onClick={() => {
                                         handleClickOpenGroupMemberModal(
+                                          row["groupID"],
                                           row["students"]
                                         );
                                       }}
@@ -406,7 +407,7 @@ export default function ViewMyStudentGroups({ user }) {
             id="customized-dialog-title"
             onClose={handleCloseOpenGroupMemberModal}
           >
-            Student Group Members
+            Group {groupId} : Members
           </BootstrapDialogTitle>
           <DialogContent dividers>
             <TableContainer component={Paper}>
