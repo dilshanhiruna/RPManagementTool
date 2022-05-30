@@ -10,21 +10,26 @@ import {
   Select,
   Button,
   Input,
+  Snackbar,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router";
+import MuiAlert from "@mui/material/Alert";
+import { useHistory, useLocation } from "react-router";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function UpdateSubmission() {
-  const [sType, setsType] = useState("");
-  const [submissionName, setsubmissionName] = useState("");
-  const [sDescription, setsDescription] = useState("");
-  const [sTemplate, setsTemplate] = useState();
-  const [sMarkingScheme, setsMarkingScheme] = useState();
-  const [sDeadline, setsDeadline] = useState("");
-  const [sVisibility, setsVisibility] = useState(false);
+  const location = useLocation();
+  console.log(location.id);
+  const [sType, setsType] = useState(location.sType);
+  const [submissionName, setsubmissionName] = useState(location.submissionName);
+  const [sDescription, setsDescription] = useState(location.sDescription);
+  const [sTemplate, setsTemplate] = useState(location.sTemplate);
+  const [sMarkingScheme, setsMarkingScheme] = useState(location.sMarkingScheme);
+  const [sDeadline, setsDeadline] = useState(location.sDeadline);
+  const [openAlert, setopenAlert] = useState(false);
   const API = process.env.REACT_APP_API;
-  const history = useHistory();
-  //   id = useParams();
 
   const updateSubmissionTypeToAPI = () => {
     const data = {
@@ -32,21 +37,31 @@ export default function UpdateSubmission() {
       sTemplate,
       sMarkingScheme,
       sDeadline,
-      sVisibility,
     };
     //update theater details
-    Axios.put(`${API}/AssignmentSubmissions/${id}`, data).then((res) => {
-      history.push("/getAllSubmissions");
-    });
+    Axios.put(`${API}/AssignmentSubmissions/${location.id}`, data)
+      .then((res) => {
+        setopenAlert(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const Input = styled("input")({
     display: "none",
   });
 
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setopenAlert(false);
+  };
+
   return (
     <div>
-      <div className="form">
+      <div className="createsubmission__form">
         <div>
           <p>Submission Type </p>
           <FormControl fullWidth>
@@ -59,8 +74,8 @@ export default function UpdateSubmission() {
               onChange={(event) => {
                 setsType(event.target.value);
               }}
-              size="small"
               style={{ width: "350px" }}
+              disabled
             >
               <MenuItem value={"Document"}>Document</MenuItem>
               <MenuItem value={"Presentation"}>Presentation</MenuItem>
@@ -70,19 +85,18 @@ export default function UpdateSubmission() {
 
         <div>
           <p>Category </p>
-
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Category</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={submissionName}
-              label="Type"
+              label="Category"
               onChange={(event) => {
                 setsubmissionName(event.target.value);
               }}
-              size="small"
               style={{ width: "350px" }}
+              disabled
             >
               <MenuItem value={"Topic Assignment Form"}>
                 Topic Assignment Form
@@ -128,14 +142,13 @@ export default function UpdateSubmission() {
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
-                    console.log(reader.result);
                     // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
                     setsTemplate(reader.result);
                   };
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="contained" component="span">
+              <Button variant="outlined" component="span">
                 Upload
               </Button>
             </label>
@@ -154,14 +167,13 @@ export default function UpdateSubmission() {
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
-                    console.log(reader.result);
                     // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
                     setsMarkingScheme(reader.result);
                   };
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="contained" component="span">
+              <Button variant="outlined" component="span">
                 Upload
               </Button>
             </label>
@@ -182,7 +194,6 @@ export default function UpdateSubmission() {
               onChange={(event) => {
                 setsDeadline(event.target.value);
               }}
-              size="small"
             />
           </FormControl>
         </div>
@@ -191,8 +202,14 @@ export default function UpdateSubmission() {
           <div>
             <FormControl fullWidth>
               <Button
-                variant="outlined"
-                style={{ width: "350px" }}
+                variant="contained"
+                size="large"
+                style={{
+                  height: "60px",
+                  width: "200px",
+                  borderRadius: "40px",
+                  marginTop: "35px",
+                }}
                 onClick={updateSubmissionTypeToAPI}
               >
                 Update Submission
@@ -200,6 +217,16 @@ export default function UpdateSubmission() {
             </FormControl>
           </div>
         </div>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={openAlert}
+          autoHideDuration={5000}
+          onClose={handleAlertClose}
+        >
+          <Alert severity="success" sx={{ width: "100%" }}>
+            Submission updated successfully!
+          </Alert>
+        </Snackbar>
       </div>
     </div>
   );
