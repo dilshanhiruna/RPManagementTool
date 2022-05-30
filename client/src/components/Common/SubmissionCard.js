@@ -6,7 +6,6 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
-import { color } from "@mui/system";
 import Axios from "axios";
 import "../AssignmentSubmission/ViewSubmission.css";
 const API = process.env.REACT_APP_API;
@@ -40,31 +39,10 @@ export default function SubmissionCard({
     console.log(id);
     history.push({ pathname: `/admin/updatesubmission/${id}` });
   };
-  // const Delete = (id) => {
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     text: "You won't be able to revert this!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, delete it!",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Axios.delete(`${API}/AssignmentSubmissions/${id}`).then((res) => {
-  //         Swal.fire({
-  //           position: "top-end",
-  //           icon: "success",
-  //           title: "Your work has been saved",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //         getAllSubmissions();
-  //         Swal.fire("Deleted!", "Your file has been deleted.", "success");
-  //       });
-  //     }
-  //   });
-  const Delete = (id) => {
+
+  const DeleteSubmission = (id) => {
+    console.log("delete.....");
+    console.log(id);
     Axios.delete(`${API}/AssignmentSubmissions/${id}`).then((res) => {
       alert("success");
     });
@@ -102,9 +80,9 @@ export default function SubmissionCard({
         <Button
           size="small"
           variant="outlined"
-          style={{ width: "85px", marginLeft: "1150px" }}
+          style={{ width: "85px" }}
           onClick={() => {
-            updateSubmission({ id });
+            updateSubmission(id);
           }}
         >
           {btn1}
@@ -115,7 +93,7 @@ export default function SubmissionCard({
           color="error"
           style={{ width: "85px" }}
           onClick={() => {
-            Delete({ id });
+            DeleteSubmission(id);
           }}
         >
           {btn2}
