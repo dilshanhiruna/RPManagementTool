@@ -38,10 +38,11 @@ export default function SubmissionCard({
   };
 
   let history = useHistory();
-  // id = useParams();
-  //   const viewDetails = () => {
-  //     history.push({ pathname: '/customer/reservation', id });
-  //   };
+
+  const viewDetails = () => {
+    console.log("viewdeatils");
+    history.push("/admin/getAllSubmissions");
+  };
 
   const updateSubmission = () => {
     console.log("update...");
@@ -64,6 +65,7 @@ export default function SubmissionCard({
     console.log(id);
     Axios.delete(`${API}/AssignmentSubmissions/${id}`).then((res) => {
       alert("success");
+      viewDetails();
     });
   };
   return (

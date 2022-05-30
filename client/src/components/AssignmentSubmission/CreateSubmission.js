@@ -13,6 +13,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import { useHistory } from "react-router";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -29,6 +30,7 @@ export default function CreateSubmission() {
 
   const [openAlert, setopenAlert] = useState(false);
   const API = process.env.REACT_APP_API;
+  let history = useHistory();
 
   const sendNewSubmissionTypeToAPI = () => {
     Axios.post(`${API}/AssignmentSubmissions`, {
@@ -42,6 +44,7 @@ export default function CreateSubmission() {
     })
       .then((res) => {
         setopenAlert(true);
+        history.push("/admin/getAllSubmissions");
       })
       .catch((err) => {
         console.log(err);
@@ -164,7 +167,8 @@ export default function CreateSubmission() {
                 onChange={(event) => {
                   // Get a reference to the file
                   const file = event.target.files[0];
-
+                  const filename = event.target.filename;
+                  console.log(filename);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
