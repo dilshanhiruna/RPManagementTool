@@ -8,6 +8,12 @@ export default function Header({ userType }) {
       <header>
         <div className="header__component">
           <div className="header__left">
+            <img
+              src={require("../../assets/images/logo.png")}
+              alt=""
+              width="50"
+              style={{ marginRight: "10px" }}
+            />
             <div>
               <p>Research Project Management</p>
               <p>{userType} Portal</p>
