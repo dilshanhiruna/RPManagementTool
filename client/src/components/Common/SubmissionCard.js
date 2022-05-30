@@ -34,10 +34,26 @@ export default function SubmissionCard({
   //     history.push({ pathname: '/customer/reservation', id });
   //   };
 
-  const updateSubmission = () => {
+  // const updateSubmission = (id) => {
+  //   console.log("update...");
+  //   console.log(id);
+  //   history.push({ pathname: `/admin/updatesubmission/${id}` });
+  // };
+
+  const updateSubmission = (id) => {
     console.log("update...");
     console.log(id);
-    history.push({ pathname: `/admin/updatesubmission/${id}` });
+    history.push({
+      pathname: `/admin/updatesubmission/`,
+      submissionName,
+      sType,
+      sDescription,
+      sTemplate,
+      sDeadline,
+      sVisibility,
+      sMarkingScheme,
+      id,
+    });
   };
 
   const DeleteSubmission = (id) => {
