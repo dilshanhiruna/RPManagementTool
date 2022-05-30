@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import "./Header.css";
+import { useHistory } from "react-router-dom";
 
 export default function StaffHeader({ userType }) {
+  const history = useHistory();
   const redirect = () => {};
   return (
     <>
@@ -24,16 +26,16 @@ export default function StaffHeader({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  window.location.href = "/staff/mygroups";
+                  history.push("/staff/mygrosups");
                 }}
               >
-                My Groups
+                My Groupss
               </Button>
               <Button
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  window.location.href = "/staff/supervisor/topicReq";
+                  history.push("/staff/supervisor/topicReq");
                 }}
               >
                 Supervisor Requests
@@ -42,7 +44,7 @@ export default function StaffHeader({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  window.location.href = "/staff/cosupervisor/topicReq";
+                  history.push("/staff/cosupervisor/topicReq");
                 }}
               >
                 Co-Supervisor Requests
