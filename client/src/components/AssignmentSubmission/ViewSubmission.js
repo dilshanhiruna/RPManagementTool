@@ -29,6 +29,7 @@ export default function ViewSubmission() {
               submissionName={submission.submissionName}
               sType={submission.sType}
               sDescription={submission.sDescription}
+              sDeadline={submission.sDeadline}
               sTemplate={submission.sTemplate}
               sMarkingScheme={submission.sMarkingScheme}
               sVisisbility={submission.sVisibility}

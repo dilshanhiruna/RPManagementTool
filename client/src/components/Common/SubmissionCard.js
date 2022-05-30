@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import Axios from "axios";
 import "../AssignmentSubmission/ViewSubmission.css";
 const API = process.env.REACT_APP_API;
-import { useParams } from "react-router-dom";
 import { useHistory } from "react-router";
 
 export default function SubmissionCard({
@@ -25,7 +24,17 @@ export default function SubmissionCard({
   btn2,
 }) {
   const handleChange = (event) => {
-    setsVisibility(event.target.sVisibility);
+    setsVisibility((event.target.value = true));
+  };
+
+  const updateVisibility = () => {
+    const data = {
+      sVisibility,
+    };
+    //update theater details
+    Axios.put(`${API}/AssignmentSubmissions/${id}`, data).then((res) => {
+      alert("success");
+    });
   };
 
   let history = useHistory();
@@ -34,17 +43,11 @@ export default function SubmissionCard({
   //     history.push({ pathname: '/customer/reservation', id });
   //   };
 
-  // const updateSubmission = (id) => {
-  //   console.log("update...");
-  //   console.log(id);
-  //   history.push({ pathname: `/admin/updatesubmission/${id}` });
-  // };
-
-  const updateSubmission = (id) => {
+  const updateSubmission = () => {
     console.log("update...");
     console.log(id);
     history.push({
-      pathname: `/admin/updatesubmission/`,
+      pathname: `/admin/updatesubmission`,
       submissionName,
       sType,
       sDescription,
@@ -76,20 +79,15 @@ export default function SubmissionCard({
             inputProps={{ "aria-label": "controlled" }}
           />
         </CardActions>
-
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          style={{ textAlign: "left" }}
-        >
-          {sDescription}
+        <Typography variant="body2" color="red" style={{ textAlign: "left" }}>
+          {sDeadline}
         </Typography>
         <Typography
           variant="body2"
           color="text.secondary"
           style={{ textAlign: "left" }}
         >
-          {/* {sTemplate} */}
+          {sDescription}
         </Typography>
       </CardContent>
       <CardActions>
@@ -98,7 +96,7 @@ export default function SubmissionCard({
           variant="outlined"
           style={{ width: "85px" }}
           onClick={() => {
-            updateSubmission(id);
+            updateSubmission();
           }}
         >
           {btn1}
