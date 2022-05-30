@@ -23,6 +23,7 @@ const user = require("./routes/User");
 const supervisorRequests = require("./routes/supervisorRequests");
 const cosupervisorRequests = require("./routes/CoSupervisorRequests");
 const submissions = require("./routes/Submissions");
+const studentSubmission = require("./routes/StudentSubmission");
 
 // Mount routers
 app.use("/api/v1/studentgroups", studentGroups);
@@ -30,6 +31,7 @@ app.use("/api/v1/users", user);
 app.use("/api/v1/supervisorRequests", supervisorRequests);
 app.use("/api/v1/cosupervisorRequests", cosupervisorRequests);
 app.use("/api/v1/AssignmentSubmissions", submissions);
+app.use("/api/v1/studentSubmission", studentSubmission);
 
 const PORT = process.env.PORT || 5001;
 
