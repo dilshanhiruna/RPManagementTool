@@ -48,9 +48,21 @@ export default function SearchSupervisor({ user }) {
         //set the supervisor and cosupervisor
         if (isNaN(res.data.data.supervisor)) {
           setSupervisor(res.data.data.supervisor.name);
+          if (res.data.data.supervisorStatus == "accepted") {
+            setSelectedResearchArea(
+              res.data.data.supervisor.interestedResearchField
+            );
+          }
+          if (
+            res.data.data.supervisorStatus == "accepted" &&
+            res.data.data.cosupervisorStatus == "accepted"
+          ) {
+            setSelectedResearchArea("");
+          }
         }
         if (isNaN(res.data.data.cosupervisor)) {
           setCoSupervisor(res.data.data.cosupervisor.name);
+          setSelectedResearchArea("");
         }
         //set the supervisor status and cosupervisor status
         setSupervisorStatus(res.data.data.supervisorStatus);
@@ -97,7 +109,7 @@ export default function SearchSupervisor({ user }) {
         .then((res) => {
           console.log(res);
           //refresh the page
-          history.push("/student/searchsupervisor");
+          history.go(0);
         });
     } else {
       const data = {
@@ -109,7 +121,7 @@ export default function SearchSupervisor({ user }) {
         .then((res) => {
           console.log(res);
           //refresh the page
-          history.push("/student/searchsupervisor");
+          history.go(0);
         });
     }
   };
@@ -139,6 +151,7 @@ export default function SearchSupervisor({ user }) {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={selectedResearchArea}
+                    disabled={SupervisorStatus === "accepted"}
                     label="Area"
                     onChange={(e) => {
                       onSelecteResearchArea(e);
@@ -347,7 +360,10 @@ export default function SearchSupervisor({ user }) {
                             id: row._id,
                           });
                         }}
-                        disabled={selectedSupervisor === row.name}
+                        disabled={
+                          selectedSupervisor === row.name ||
+                          row.name === Supervisor
+                        }
                       >
                         Yes
                       </Button>

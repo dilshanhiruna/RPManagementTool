@@ -7,7 +7,7 @@ import Admin from "./routes/Admin";
 // import Supervisor from "./routes/Supervisor";
 
 function App() {
-  const [userType, setuserType] = useState("admin");
+  const [userType, setuserType] = useState("student");
   return (
     <Router>
       <div className="App">
