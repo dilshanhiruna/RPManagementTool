@@ -89,7 +89,7 @@ export default function SubmissionCard({
           color="text.secondary"
           style={{ textAlign: "left" }}
         >
-          {sTemplate}
+          {/* {sTemplate} */}
         </Typography>
       </CardContent>
       <CardActions>

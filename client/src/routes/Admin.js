@@ -26,7 +26,7 @@ export default function Admin() {
           <Route exact path="/admin/updatesubmission">
             <UpdateSubmission />
           </Route>
-          <Redirect to="/admin/404" />
+          <Redirect to="/admin/getAllSubmissions" />
         </Switch>
       </Router>
       <footer />

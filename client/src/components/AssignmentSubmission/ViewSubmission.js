@@ -12,8 +12,6 @@ export default function ViewSubmission() {
   const getAllSubmissions = () => {
     Axios.get(`${API}/AssignmentSubmissions/`).then((res) => {
       setsubmissions(res.data.data);
-      console.log(res.data.data);
-      submissions.map((submission) => {});
     });
   };
 
