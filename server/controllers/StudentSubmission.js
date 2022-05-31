@@ -3,15 +3,20 @@ const User = require("../models/User");
 var mongoose = require("mongoose");
 const StudentSubmission = require("../models/StudentSubmission");
 const { find } = require("../models/StudentGroups");
+const { getStudentGroupById } = require("./StudentGroups");
 
 //@desc create new submissoin
 //@route POST /api/v1/studentSubmission
 exports.createStudentSubmission = async (req, res) => {
   try {
+    const submitionObject = req.body;
+
     const submissionDetailsId = mongoose.Types.ObjectId(
-      req.body.submissionDetailsId
+      submitionObject.submissionDetailsId
     );
-    const studentGroupId = mongoose.Types.ObjectId(req.body.studentGroupId);
+    const studentGroupId = mongoose.Types.ObjectId(
+      submitionObject.studentGroupId
+    );
 
     //validation
     const existingSubmission = await StudentSubmission.findOne({
@@ -23,7 +28,14 @@ exports.createStudentSubmission = async (req, res) => {
         .status(400)
         .json({ success: false, msg: "submission already exists" });
     }
-    await StudentSubmission.create(req.body);
+
+    //find supervisor/co-supervisor and panel members of student groups
+    const studentGroup = await StudentGroups.findById(studentGroupId);
+    submitionObject.supervisor = studentGroup.supervisor;
+    submitionObject.cosupervisor = studentGroup.cosupervisor;
+    submitionObject.panelmember = studentGroup.panelmember;
+
+    await StudentSubmission.create(submitionObject);
 
     return res.status(200).json({ success: true });
   } catch (err) {
