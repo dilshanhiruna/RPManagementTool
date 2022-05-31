@@ -84,9 +84,10 @@ exports.getSubmissionOfSupervisor = async (req, res) => {
     const staffId = req.params.id;
     const studentSubmissions = await StudentSubmission.find({
       $or: [{ supervisor: staffId }, { cosupervisor: staffId }],
-    });
+    }).populate("submissionDetailsId studentGroupId");
     res.status(200).json({ success: true, data: studentSubmissions });
   } catch (err) {
+    console.error(err);
     res.status(400).json({ success: false, error: err });
   }
 };

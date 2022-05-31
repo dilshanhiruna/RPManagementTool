@@ -9,12 +9,15 @@ const StudentSubmissionSchema = new Schema({
   },
   submissionDetailsId: {
     type: Schema.Types.ObjectId,
+    ref: "SubmissionDetails",
   },
   obtainedMarks: {
     type: Number,
+    default: null,
   },
   studentGroupId: {
     type: Schema.Types.ObjectId,
+    ref: "StudentGroups",
   },
   supervisor: {
     type: Schema.Types.ObjectId,

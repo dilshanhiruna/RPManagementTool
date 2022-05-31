@@ -7,30 +7,49 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { useEffect, useState } from "react";
+import axios, { Axios } from "axios";
+import { Button } from "@mui/material";
+import { triggerBase64Download } from "common-base64-downloader-react";
+import { color } from "@mui/system";
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "code", label: "ISO\u00a0Code", minWidth: 100 },
+  { id: "groupID", label: "Group ID", minWidth: 100, align: "center" },
   {
-    id: "population",
-    label: "Population",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
+    id: "submissionName",
+    label: "Submission Name",
+    minWidth: 100,
+    align: "center",
   },
   {
-    id: "size",
-    label: "Size\u00a0(km\u00b2)",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
+    id: "deadline",
+    label: "Deadline",
+    minWidth: 100,
+    align: "center",
   },
   {
-    id: "density",
-    label: "Density",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toFixed(2),
+    id: "submittedOn",
+    label: "Submitted On",
+    minWidth: 100,
+    align: "center",
+  },
+  {
+    id: "marking",
+    label: "Marking Scheme",
+    minWidth: 100,
+    align: "center",
+  },
+  {
+    id: "submission",
+    label: "Submission",
+    minWidth: 100,
+    align: "center",
+  },
+  {
+    id: "marks",
+    label: "Provided Marks",
+    minWidth: 100,
+    align: "center",
   },
 ];
 
@@ -39,29 +58,73 @@ function createData(name, code, population, size) {
   return { name, code, population, size, density };
 }
 
-const rows = [
-  createData("India", "IN", 1324171354, 3287263),
-  createData("China", "CN", 1403500365, 9596961),
-  createData("Italy", "IT", 60483973, 301340),
-  createData("United States", "US", 327167434, 9833520),
-  createData("Canada", "CA", 37602103, 9984670),
-  createData("Australia", "AU", 25475400, 7692024),
-  createData("Germany", "DE", 83019200, 357578),
-  createData("Ireland", "IE", 4857000, 70273),
-  createData("Mexico", "MX", 126577691, 1972550),
-  createData("Japan", "JP", 126317000, 377973),
-  createData("France", "FR", 67022000, 640679),
-  createData("United Kingdom", "GB", 67545757, 242495),
-  createData("Russia", "RU", 146793744, 17098246),
-  createData("Nigeria", "NG", 200962417, 923768),
-  createData("Brazil", "BR", 210147125, 8515767),
-];
 const API = process.env.REACT_APP_API;
 
 export default function ViewStudentSubmissions({ user }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState([]);
+  const [pageIsLoadig, setPageIsLoading] = useState(true);
 
+  //calling server endpoint through use effect hook
+  useEffect(() => {
+    getStudentSubmissions();
+  }, []);
+  //function to get student submissions of supervior and cosupervisor
+  const getStudentSubmissions = async () => {
+    try {
+      let objArray = [];
+
+      await axios
+
+        .get(`${API}/studentSubmission/staff/${user._id}`)
+        .then((res) => {
+          if (res.data.data.length == 0) {
+            console.log("No topic reqs");
+          } else {
+            console.log(res.data.data);
+            res.data.data.map((data) => {
+              let obj = createObjResponse(res, data);
+              objArray.push(obj);
+            });
+          }
+        });
+
+      setPageIsLoading(false);
+      setRows(objArray);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //function to create obj from server response
+  const createObjResponse = (res, data) => {
+    let obj = {
+      _id: data._id,
+      groupID: data.studentGroupId.groupID,
+      submissionName: data.submissionDetailsId.submissionName,
+      deadline: data.submissionDetailsId.sDeadline,
+      submittedOn: formatDate(data.submittedOn),
+      marking: data.submissionDetailsId.sMarkingScheme,
+      // marking: data.studentGroupId.groupID,
+      submission: data.file,
+      marks: data.obtainedMarks,
+    };
+    return obj;
+  };
+
+  //function to format js date
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -74,7 +137,7 @@ export default function ViewStudentSubmissions({ user }) {
     <>
       <div className="student__dashboard">
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <TableContainer sx={{ maxHeight: 440 }}>
+          <TableContainer sx={{ maxHeight: 450 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
@@ -104,9 +167,39 @@ export default function ViewStudentSubmissions({ user }) {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === "number"
-                                ? column.format(value)
-                                : value}
+                              {column.id == "marking" ? (
+                                <Button
+                                  onClick={() =>
+                                    triggerBase64Download(
+                                      row["marking"],
+                                      `${row["submissionName"]} markig`
+                                    )
+                                  }
+                                >
+                                  Download
+                                </Button>
+                              ) : column.id == "submission" ? (
+                                <Button
+                                  style={{
+                                    textTransform: "none",
+                                  }}
+                                  onClick={() =>
+                                    triggerBase64Download(
+                                      row["submission"].base64,
+                                      `${row["submission"].name}`
+                                    )
+                                  }
+                                >
+                                  {row["submission"].name}
+                                </Button>
+                              ) : (
+                                <>
+                                  {" "}
+                                  {column.format && typeof value === "number"
+                                    ? column.format(value)
+                                    : value}
+                                </>
+                              )}
                             </TableCell>
                           );
                         })}
