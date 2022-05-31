@@ -103,3 +103,21 @@ exports.getSubmissionsOfPanelMember = async (req, res) => {
     res.status(400).json({ success: false, error: err });
   }
 };
+
+//@desc update obtainedmarks filed (CAN BE USED TO BOTH ADD AND UPDATE MARKS FUNCTIONS)
+//@route put /api/v1/studentSubmission/addMarks/:id
+exports.addMarks = async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const obtainedMarks = req.params.marks;
+    const newStudentSubmission = await StudentSubmission.findByIdAndUpdate(
+      _id,
+      {
+        obtainedMarks,
+      }
+    );
+    res.status(200).json({ success: true, data: newStudentSubmission });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
