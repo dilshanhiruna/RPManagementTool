@@ -200,7 +200,7 @@ export default function ViewMyStudentGroups({ user }) {
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h3>Groups you have registered as supervisor or co-supervisor: </h3>
+            <h1 className="centerItems">Your Groups </h1>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -211,7 +211,6 @@ export default function ViewMyStudentGroups({ user }) {
                           key={column.id}
                           align={column.align}
                           style={{ minWidth: column.minWidth }}
-                          className="hash-table-border"
                         >
                           {column.label}
                         </TableCell>
@@ -240,7 +239,6 @@ export default function ViewMyStudentGroups({ user }) {
                                   <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    className="hash-table-border"
                                   >
                                     <Button
                                       onClick={() => {
@@ -252,8 +250,7 @@ export default function ViewMyStudentGroups({ user }) {
                                     >
                                       members
                                     </Button>
-                                    <br></br>
-                                    <Divider light />
+
                                     <IconButton
                                       color="success"
                                       onClick={() => {
@@ -270,11 +267,7 @@ export default function ViewMyStudentGroups({ user }) {
                                 );
                               }
                               return (
-                                <TableCell
-                                  key={column.id}
-                                  align={column.align}
-                                  className="hash-table-border"
-                                >
+                                <TableCell key={column.id} align={column.align}>
                                   {column.format && typeof value === "number"
                                     ? column.format(value)
                                     : value}

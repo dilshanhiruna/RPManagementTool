@@ -38,7 +38,7 @@ export default function StaffHeader({ userType }) {
                   history.push("/staff/supervisor/topicReq");
                 }}
               >
-                Supervisor Requests
+                Supervisor Req
               </Button>
               <Button
                 variant="outlined"
@@ -47,7 +47,7 @@ export default function StaffHeader({ userType }) {
                   history.push("/staff/cosupervisor/topicReq");
                 }}
               >
-                Co-Supervisor Requests
+                Co-Supervisor Req
               </Button>
               <Button
                 variant="outlined"
