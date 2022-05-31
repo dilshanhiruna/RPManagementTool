@@ -19,6 +19,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
+import ChatIcon from "@mui/icons-material/Chat";
 
 import {
   Button,
@@ -48,7 +49,7 @@ const columns = [
     minWidth: 90,
     align: "center",
   },
-  { id: "chat", label: "Chat", minWidth: 100, align: "center" },
+  // { id: "chat", label: "Chat", minWidth: 100, align: "center" },
 ];
 
 export default function ViewMyStudentGroups({ user }) {
@@ -160,25 +161,6 @@ export default function ViewMyStudentGroups({ user }) {
     }
   };
 
-  //function to get student of a given ID
-  // const getStudent = (id) => {
-  //   try {
-  //     let uid;
-  //     const response = axios.get(`${API}/users/${id}`).then((res) => {
-  //       uid = res.data.data.uid;
-  //     });
-
-  //     return uid;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  //function to accept/reject topic reqest
-  const openChat = () => {
-    setOpenConfirmModal(false);
-    console.log(_id);
-  };
   const handleCloseBackdrop = () => {
     setOpenBackdrop(false);
   };
@@ -186,19 +168,13 @@ export default function ViewMyStudentGroups({ user }) {
     setOpenBackdrop(!openBackdrop);
   };
 
-  //get confirmation to accept or reject action
-  const getConfirmation = (groupId, _id, action) => {
+  //function to open relevant student group chat
+  const openStudentChat = (groupId, _id, action) => {
     handleToggle();
     setGroupId(groupId);
     set_id(_id);
     setAction(action);
     setOpenConfirmModal(true);
-
-    if (confirmAction) {
-      console.log("true");
-    } else {
-      console.log("false");
-    }
   };
 
   useEffect(() => {
@@ -212,10 +188,6 @@ export default function ViewMyStudentGroups({ user }) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
-
-  const handleModalClose = () => {
-    setOpenConfirmModal(false);
   };
 
   //functions to handle view student members
@@ -269,28 +241,6 @@ export default function ViewMyStudentGroups({ user }) {
                           >
                             {columns.map((column) => {
                               const value = row[column.id];
-                              if (column.id == "accept") {
-                                return (
-                                  <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    className="hash-table-border"
-                                  >
-                                    <Button
-                                      color="success"
-                                      onClick={() => {
-                                        getConfirmation(
-                                          row["groupID"],
-                                          row["_id"],
-                                          "Accept"
-                                        );
-                                      }}
-                                    >
-                                      Accept
-                                    </Button>
-                                  </TableCell>
-                                );
-                              }
 
                               if (column.id == "students") {
                                 return (
@@ -307,34 +257,34 @@ export default function ViewMyStudentGroups({ user }) {
                                         );
                                       }}
                                     >
-                                      details
+                                      members
                                     </Button>
-                                  </TableCell>
-                                );
-                              }
-
-                              if (column.id == "chat") {
-                                return (
-                                  <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    className="hash-table-border"
-                                  >
-                                    <Button
+                                    {/* <Button color="success">Chat</Button> */}
+                                    <br></br>
+                                    <ChatIcon
+                                      style={{ marginLeft: "5px" }}
                                       color="success"
                                       onClick={() => {
-                                        getConfirmation(
+                                        openStudentChat(
                                           row["groupID"],
                                           row["_id"],
                                           "Reject"
                                         );
                                       }}
-                                    >
-                                      Chat
-                                    </Button>
+                                    />
                                   </TableCell>
                                 );
                               }
+
+                              // if (column.id == "chat") {
+                              //   return (
+                              //     <TableCell
+                              //       key={column.id}
+                              //       align={column.align}
+                              //       className="hash-table-border"
+                              //     ></TableCell>
+                              //   );
+                              // }
                               return (
                                 <TableCell
                                   key={column.id}
