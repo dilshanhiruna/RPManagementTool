@@ -16,6 +16,15 @@ const StudentSubmissionSchema = new Schema({
   studentGroupId: {
     type: Schema.Types.ObjectId,
   },
+  supervisor: {
+    type: Schema.Types.ObjectId,
+  },
+  cosupervisor: {
+    type: Schema.Types.ObjectId,
+  },
+  panelmember: {
+    type: Schema.Types.ObjectId,
+  },
   submittedOn: {
     type: Date,
     default: new Date(),
