@@ -12,6 +12,15 @@ import axios, { Axios } from "axios";
 import { Button } from "@mui/material";
 import { triggerBase64Download } from "common-base64-downloader-react";
 import { color } from "@mui/system";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid";
 
 const columns = [
   { id: "groupID", label: "Group ID", minWidth: 100, align: "center" },
@@ -61,10 +70,24 @@ function createData(name, code, population, size) {
 const API = process.env.REACT_APP_API;
 
 export default function ViewStudentSubmissions({ user }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
   const [pageIsLoadig, setPageIsLoading] = useState(true);
+
+  //modal varivales
+  const [openAddModal, setopenAddModal] = useState(false);
+  const [openEditModal, setopenEditModal] = useState(false);
+
+  const [valError, setValError] = useState(false);
+  const [helperText, setHelperText] = useState("");
+  const [marks, setMarks] = useState(50);
+
+  //submission details of selected row (cuurent context)
+  const [currentSubmissionId, setcurrentSubmissionId] = useState();
+  const [currentgroupId, setcurrentgroupId] = useState();
+  const [currentsubmissionName, setcurrentsubmissionName] = useState();
+  const [currentMarks, setcurrentMarks] = useState();
 
   //calling server endpoint through use effect hook
   useEffect(() => {
@@ -125,14 +148,84 @@ export default function ViewStudentSubmissions({ user }) {
 
     return [year, month, day].join("-");
   }
+
+  //function to handle marks form input
+  const handleMarkChange = async (e) => {
+    await validateInput(e.target.value);
+    setMarks(e.target.value);
+  };
+
+  //function to validate input
+  const validateInput = (marks) => {
+    if (marks < 0) {
+      setHelperText("Marks cannot be a negetive value");
+      setValError(true);
+      console.log(marks + "..." + 1);
+    } else if (marks > 100) {
+      setHelperText("Marks cannot exceed 100");
+      setValError(true);
+      console.log(marks + "..." + 2);
+    } else {
+      setValError(false);
+      setHelperText("");
+      console.log(marks + "..." + 3);
+    }
+  };
+  //function to provide marks for student submissions
+  const addMarks = async () => {
+    if (valError == false) {
+      const result = await axios.put(
+        `${API}/studentSubmission/addMarks/${currentSubmissionId}`,
+        {
+          marks,
+        }
+      );
+      if (result.data.success) {
+        alert("success");
+        handleCloseAdd();
+        handleCloseEdit();
+        window.location.reload();
+      } else {
+        alert("error");
+        handleCloseAdd();
+        handleCloseEdit();
+      }
+    }
+  };
+  //functions to manage table pagination
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  //functions to handle add dialog
+  const handleClickOpenAdd = (_id, groupId, submissionName) => {
+    setcurrentSubmissionId(_id);
+    setcurrentgroupId(groupId);
+    setcurrentsubmissionName(submissionName);
+    setopenAddModal(true);
+  };
+
+  const handleCloseAdd = () => {
+    setopenAddModal(false);
+  };
+
+  //functions to handle edit dialog
+  const handleClickOpenEdit = (_id, groupId, submissionName, currentMarks) => {
+    setcurrentSubmissionId(_id);
+    setcurrentgroupId(groupId);
+    setcurrentsubmissionName(submissionName);
+    setcurrentMarks(currentMarks);
+    setopenEditModal(true);
+  };
+
+  const handleCloseEdit = () => {
+    setopenEditModal(false);
+  };
+
   return (
     <>
       <div className="student__dashboard">
@@ -164,6 +257,127 @@ export default function ViewStudentSubmissions({ user }) {
                         key={row.code}
                       >
                         {columns.map((column) => {
+                          if (column.id == "marks") {
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                {row["marks"] ? (
+                                  <>
+                                    <Grid container spacing={1}>
+                                      <Grid item xs={4}></Grid>
+                                      <Grid item xs={2}>
+                                        {row["marks"]}{" "}
+                                      </Grid>
+                                      <Grid item xs={2}>
+                                        <EditIcon
+                                          color="success"
+                                          fontSize="small"
+                                          onClick={() => {
+                                            handleClickOpenEdit(
+                                              row["_id"],
+                                              row["groupID"],
+                                              row["submissionName"],
+                                              row["marks"]
+                                            );
+                                          }}
+                                        />
+                                      </Grid>
+                                    </Grid>
+                                    <Dialog
+                                      open={openEditModal}
+                                      onClose={handleCloseEdit}
+                                    >
+                                      <DialogTitle>
+                                        {currentsubmissionName}
+                                      </DialogTitle>
+                                      <DialogContent>
+                                        <DialogContentText>
+                                          Please provide marks for group-
+                                          {currentgroupId} to the '
+                                          {currentsubmissionName}' below
+                                        </DialogContentText>
+                                        <TextField
+                                          error={valError}
+                                          helperText={helperText}
+                                          type="number"
+                                          autoFocus
+                                          margin="dense"
+                                          id="name"
+                                          label="Marks"
+                                          fullWidth
+                                          variant="outlined"
+                                          onChange={handleMarkChange}
+                                          defaultValue={currentMarks}
+                                          InputProps={{
+                                            inputProps: { min: 0, max: 100 },
+                                          }}
+                                        />
+                                      </DialogContent>
+                                      <DialogActions>
+                                        <Button onClick={handleCloseEdit}>
+                                          Cancel
+                                        </Button>
+                                        <Button onClick={() => addMarks()}>
+                                          Submit
+                                        </Button>
+                                      </DialogActions>
+                                    </Dialog>
+                                  </>
+                                ) : (
+                                  <>
+                                    <AddIcon
+                                      fontSize="small"
+                                      color="primary"
+                                      onClick={() => {
+                                        handleClickOpenAdd(
+                                          row["_id"],
+                                          row["groupID"],
+                                          row["submissionName"]
+                                        );
+                                      }}
+                                    />
+                                    <Dialog
+                                      open={openAddModal}
+                                      onClose={handleCloseAdd}
+                                    >
+                                      <DialogTitle>
+                                        {currentsubmissionName}
+                                      </DialogTitle>
+                                      <DialogContent>
+                                        <DialogContentText>
+                                          Please provide marks for group-
+                                          {currentgroupId} to the '
+                                          {currentsubmissionName}' below
+                                        </DialogContentText>
+                                        <TextField
+                                          error={valError}
+                                          helperText={helperText}
+                                          type="number"
+                                          autoFocus
+                                          margin="dense"
+                                          id="name"
+                                          label="Marks"
+                                          fullWidth
+                                          variant="outlined"
+                                          onChange={handleMarkChange}
+                                          InputProps={{
+                                            inputProps: { min: 0, max: 100 },
+                                          }}
+                                        />
+                                      </DialogContent>
+                                      <DialogActions>
+                                        <Button onClick={handleCloseAdd}>
+                                          Cancel
+                                        </Button>
+                                        <Button onClick={() => addMarks()}>
+                                          Submit
+                                        </Button>
+                                      </DialogActions>
+                                    </Dialog>
+                                  </>
+                                )}
+                              </TableCell>
+                            );
+                          }
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>

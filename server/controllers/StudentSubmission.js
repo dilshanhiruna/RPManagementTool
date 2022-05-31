@@ -109,7 +109,8 @@ exports.getSubmissionsOfPanelMember = async (req, res) => {
 exports.addMarks = async (req, res) => {
   try {
     const _id = req.params.id;
-    const obtainedMarks = req.params.marks;
+    const obtainedMarks = req.body.marks;
+
     const newStudentSubmission = await StudentSubmission.findByIdAndUpdate(
       _id,
       {
