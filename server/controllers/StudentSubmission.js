@@ -76,3 +76,29 @@ exports.deleteStudentSubmission = async (req, res) => {
     res.status(400).json({ success: false, error: err });
   }
 };
+
+//@desc get all submissions done by student groups of a specific staff member who is either the supervisor or cosuperfisor of the group
+//@route GET /api/v1/studentSubmission/staff/:id
+exports.getSubmissionOfSupervisor = async (req, res) => {
+  try {
+    const staffId = req.params.staffId;
+    const studentSubmissions = await StudentSubmission.find({
+      $or: [{ supervisor: staffId }, { cosupervisor: staffId }],
+    });
+    res.status(200).json({ success: true, data: studentSubmissions });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
+
+//@desc get all submissions done by student groups of a specific panel member
+//@route GET /api/v1/studentSubmission/panel/:id
+exports.getSubmissionsOfPanelMember = async (req, res) => {
+  try {
+    const panelmember = req.params.panelmember;
+    const studentSubmissions = await StudentSubmission.find({ panelmember });
+    res.status(200).json({ success: true, data: studentSubmissions });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
