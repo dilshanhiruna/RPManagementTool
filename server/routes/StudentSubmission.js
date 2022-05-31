@@ -9,8 +9,8 @@ const {
   getSubmissionsOfPanelMember,
 } = require("../controllers/StudentSubmission");
 
-router.get("staff/:id", getSubmissionOfSupervisor);
-router.get("panel/:id", getSubmissionsOfPanelMember);
+router.get("/staff/:id", getSubmissionOfSupervisor);
+router.get("/panel/:id", getSubmissionsOfPanelMember);
 router.post("/", createStudentSubmission);
 router.delete("/:id", deleteStudentSubmission);
 router.post("/getSpecific", getSpecificStudentSubmission);
