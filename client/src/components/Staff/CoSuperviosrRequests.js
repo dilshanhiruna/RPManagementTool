@@ -10,6 +10,11 @@ import TableRow from "@mui/material/TableRow";
 import { LinearProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
+import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
+import ChatIcon from "@mui/icons-material/Chat";
+import CloseIcon from "@mui/icons-material/Close";
+
 import {
   Button,
   Dialog,
@@ -17,6 +22,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  IconButton,
 } from "@mui/material";
 import "./SupervisorDashboard.css";
 
@@ -24,34 +30,16 @@ const API = process.env.REACT_APP_API;
 
 //table columns
 const columns = [
-  { id: "groupID", label: "Group ID", minWidth: 70, align: "center" },
-  { id: "reTopic", label: "Research Topic", minWidth: 100, align: "center" },
+  { id: "groupID", label: "Group ID", minWidth: 100, align: "center" },
+  { id: "reTopic", label: "Research Topic", minWidth: 0, align: "center" },
   {
-    id: "student1",
-    label: "Student 1",
-    minWidth: 90,
+    id: "students",
+    label: "Students",
+    minWidth: 300,
     align: "center",
   },
-  {
-    id: "student2",
-    label: "Student 2",
-    minWidth: 90,
-    align: "center",
-  },
-  {
-    id: "student3",
-    label: "Student 3",
-    minWidth: 90,
-    align: "center",
-  },
-  {
-    id: "student4",
-    label: "Student 4",
-    minWidth: 90,
-    align: "center",
-  },
-  { id: "accept", label: "", minWidth: 100, align: "center" },
-  { id: "reject", label: "", minWidth: 100, align: "center" },
+  { id: "accept", label: "", minWidth: 50, align: "center" },
+  { id: "reject", label: "", minWidth: 50, align: "center" },
 ];
 
 export default function CoSuperviosrRequests({ user }) {
@@ -61,6 +49,8 @@ export default function CoSuperviosrRequests({ user }) {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [confirmAction, setConfirmAction] = useState();
   const [pageIsLoadig, setPageIsLoading] = useState(true);
+  const [Students, setStudents] = useState([]);
+  const [openGroupMemberModal, setOpenGroupMemberModal] = useState(false);
 
   //set group id and action for topic request accept and reject
   const [groupId, setGroupId] = useState();
@@ -80,34 +70,17 @@ export default function CoSuperviosrRequests({ user }) {
           let student1, student2, student3, student4;
 
           res.data.data.map((data) => {
-            if (data.student1) {
-              student1 = data.student1.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student2) {
-              student2 = data.student2.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student3) {
-              student3 = data.student3.uid;
-            } else {
-              student1 = "Not Avaialable";
-            }
-            if (data.student4) {
-              student4 = data.student4.uid;
-            } else {
-              student4 = "Not Avaialable";
-            }
+            const studentsArray = [
+              data.student1,
+              data.student2 ? data.student2 : "",
+              data.student3 ? data.student3 : "",
+              data.student4 ? data.student4 : "",
+            ];
             const obj = {
               _id: data._id,
               groupID: data.groupID,
               reTopic: data.researchTopic,
-              student1,
-              student2,
-              student3,
-              student4,
+              students: studentsArray,
             };
             objArray.push(obj);
           });
@@ -120,20 +93,56 @@ export default function CoSuperviosrRequests({ user }) {
     }
   };
 
-  //function to get student of a given ID
-  // const getStudent = (id) => {
-  //   try {
-  //     let uid;
-  //     const response = axios.get(`${API}/users/${id}`).then((res) => {
-  //       uid = res.data.data.uid;
-  //     });
+  // show group memebrs dialog
+  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    "& .MuiDialogContent-root": {
+      padding: theme.spacing(2),
+    },
+    "& .MuiDialogActions-root": {
+      padding: theme.spacing(1),
+    },
+  }));
 
-  //     return uid;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  // create BootstrapDialogTitle component to display group name on chat
+  const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props;
+    return (
+      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+        {children}
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </DialogTitle>
+    );
+  };
+  BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+  };
 
+  //functions to handle view student members
+  const handleClickOpenGroupMemberModal = (groupId, students) => {
+    console.log(students);
+    console.log(groupId);
+
+    setOpenGroupMemberModal(true);
+    setStudents(students);
+    setGroupId(groupId);
+  };
+  const handleCloseOpenGroupMemberModal = () => {
+    setOpenGroupMemberModal(false);
+  };
   //function to accept/reject topic reqest
   const acceptOrReject = () => {
     console.log(_id);
@@ -190,43 +199,19 @@ export default function CoSuperviosrRequests({ user }) {
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h3>
-              Following groups have requested you to be their co-supervisor:
-            </h3>{" "}
+            <h1 className="centerItems">Co-Supervioser Requests</h1>
+
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
-                    <TableRow>
-                      <TableCell
-                        align="center"
-                        colSpan={2}
-                        className="hash-table-border"
-                      >
-                        Group Detaials
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        colSpan={4}
-                        className="hash-table-border"
-                      >
-                        Students
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        colSpan={2}
-                        className="hash-table-border"
-                      >
-                        Action
-                      </TableCell>
-                    </TableRow>
                     <TableRow>
                       {columns.map((column) => (
                         <TableCell
                           key={column.id}
                           align={column.align}
                           style={{ minWidth: column.minWidth }}
-                          className="hash-table-border"
+                          // className="hash-table-border"
                         >
                           {column.label}
                         </TableCell>
@@ -249,12 +234,31 @@ export default function CoSuperviosrRequests({ user }) {
                           >
                             {columns.map((column) => {
                               const value = row[column.id];
+                              if (column.id == "students") {
+                                return (
+                                  <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                  >
+                                    <Button
+                                      onClick={() => {
+                                        handleClickOpenGroupMemberModal(
+                                          row["groupID"],
+                                          row["students"]
+                                        );
+                                      }}
+                                    >
+                                      members
+                                    </Button>
+                                  </TableCell>
+                                );
+                              }
                               if (column.id == "accept") {
                                 return (
                                   <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    className="hash-table-border"
+                                    // className="hash-table-border"
                                   >
                                     <Button
                                       color="success"
@@ -276,7 +280,7 @@ export default function CoSuperviosrRequests({ user }) {
                                   <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    className="hash-table-border"
+                                    // className="hash-table-border"
                                   >
                                     <Button
                                       color="error"
@@ -297,7 +301,7 @@ export default function CoSuperviosrRequests({ user }) {
                                 <TableCell
                                   key={column.id}
                                   align={column.align}
-                                  className="hash-table-border"
+                                  // className="hash-table-border"
                                 >
                                   {column.format && typeof value === "number"
                                     ? column.format(value)
@@ -359,6 +363,60 @@ export default function CoSuperviosrRequests({ user }) {
         ) : (
           ""
         )}
+        <BootstrapDialog
+          onClose={handleCloseOpenGroupMemberModal}
+          aria-labelledby="customized-dialog-title"
+          open={openGroupMemberModal}
+        >
+          <BootstrapDialogTitle
+            id="customized-dialog-title"
+            onClose={handleCloseOpenGroupMemberModal}
+          >
+            Group {groupId} : Members
+          </BootstrapDialogTitle>
+          <DialogContent dividers>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 500 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>SID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>Role</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {Students.filter((std) => {
+                    return std !== "";
+                  }).map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.uid}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.email}</TableCell>
+
+                      <TableCell>
+                        {Students.indexOf(row) == 0 ? (
+                          <div style={{ color: "red" }}>Leader</div>
+                        ) : (
+                          <div style={{ color: "green" }}>Member</div>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </DialogContent>
+        </BootstrapDialog>
       </div>
       <div>
         {pageIsLoadig == false && rows.length == 0 ? (

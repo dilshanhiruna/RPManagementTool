@@ -30,12 +30,12 @@ const API = process.env.REACT_APP_API;
 
 //table columns
 const columns = [
-  { id: "groupID", label: "Group ID", minWidth: 70, align: "center" },
-  { id: "reTopic", label: "Research Topic", minWidth: 100, align: "center" },
+  { id: "groupID", label: "Group ID", minWidth: 100, align: "center" },
+  { id: "reTopic", label: "Research Topic", minWidth: 0, align: "center" },
   {
     id: "students",
     label: "Students",
-    minWidth: 350,
+    minWidth: 300,
     align: "center",
   },
   { id: "accept", label: "", minWidth: 50, align: "center" },
