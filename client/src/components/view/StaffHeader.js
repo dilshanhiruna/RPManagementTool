@@ -29,7 +29,7 @@ export default function StaffHeader({ userType }) {
                   history.push("/staff/mygrosups");
                 }}
               >
-                My Groupss
+                My Groups
               </Button>
               <Button
                 variant="outlined"
@@ -48,6 +48,15 @@ export default function StaffHeader({ userType }) {
                 }}
               >
                 Co-Supervisor Requests
+              </Button>
+              <Button
+                variant="outlined"
+                className="header__button"
+                onClick={() => {
+                  history.push("/staff/studentSubmissions");
+                }}
+              >
+                Submissions
               </Button>
             </div>
           </div>
