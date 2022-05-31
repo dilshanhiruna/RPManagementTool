@@ -11,15 +11,11 @@ import { LinearProgress } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
+import Divider from "@mui/material/Divider";
 
 import {
   Button,
@@ -257,8 +253,8 @@ export default function ViewMyStudentGroups({ user }) {
                                       members
                                     </Button>
                                     <br></br>
-                                    <ChatIcon
-                                      style={{ marginLeft: "5px" }}
+                                    <Divider light />
+                                    <IconButton
                                       color="success"
                                       onClick={() => {
                                         openStudentChat(
@@ -267,7 +263,9 @@ export default function ViewMyStudentGroups({ user }) {
                                           "Reject"
                                         );
                                       }}
-                                    />
+                                    >
+                                      <ChatIcon />
+                                    </IconButton>
                                   </TableCell>
                                 );
                               }
