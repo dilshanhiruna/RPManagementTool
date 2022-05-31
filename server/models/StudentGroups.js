@@ -22,6 +22,7 @@ const StudentGroups = new Schema({
   },
   groupID: {
     type: String,
+    unique: true,
     require: true,
   },
   groupClosed: {

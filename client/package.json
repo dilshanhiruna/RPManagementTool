@@ -5,7 +5,8 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html",
+    "test": "react-scripts test"
   },
   "author": "",
   "license": "ISC",
@@ -21,13 +22,23 @@
     "react-dom": "^18.1.0",
     "react-file-base64": "^1.0.3",
     "react-router-dom": "^5.3.0",
+    "react-scripts": "^5.0.1",
     "react-scroll-to-bottom": "^4.2.0",
     "socket.io-client": "^4.5.1"
   },
   "devDependencies": {
     "@parcel/transformer-image": "^2.0.0-rc.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.2.0",
     "buffer": "^6.0.3",
     "parcel": "^2.0.0-rc.0",
     "process": "^0.11.10"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   }
 }
