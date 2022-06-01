@@ -60,7 +60,11 @@ import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import Chat from "./Chat";
 
-const socket = io.connect("http://localhost:5001");
+const API = process.env.REACT_APP_CHAT_API;
+
+const socket = io.connect(API, {
+  transports: ["websocket"],
+});
 
 function ChatMenu({ studentGroup, user }) {
   const [showChat, setShowChat] = useState(false);
