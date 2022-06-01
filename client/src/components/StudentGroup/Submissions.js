@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./Submissions.css";
 import Box from "@mui/material/Box";
 import { Chip, Divider } from "@mui/material";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -26,9 +25,10 @@ import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { triggerBase64Download } from "common-base64-downloader-react";
+import axios from "axios";
 
 const API = process.env.REACT_APP_API;
-import axios from "axios";
+
 export default function Submissions({ studentGroup }) {
   const [Group, setGroup] = useState(studentGroup);
   const [submissionDetails, setSubmissionDetails] = useState([]);
