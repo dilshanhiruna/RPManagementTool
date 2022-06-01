@@ -31,7 +31,7 @@ const StudentGroups = new Schema({
     type: String,
   },
   topicFeedback: {
-    type: Number,
+    type: Object,
   },
   topicDetailDocument: {
     type: Number,

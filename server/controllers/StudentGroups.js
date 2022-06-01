@@ -226,7 +226,6 @@ exports.updatePanelmember = async (req, res) => {
 //@route PUT /api/v1/studentgroups/topicfeedback/:id
 exports.updateTopicFeedback = async (req, res) => {
   const { topicFeedback } = req.body;
-
   try {
     const updatedStudentGroup = await StudentGroups.findByIdAndUpdate(
       req.params.id,
