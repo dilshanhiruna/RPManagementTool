@@ -21,37 +21,47 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function UpdateSubmission() {
   const location = useLocation();
-  console.log(location.id);
+  // console.log(location.id);
   const [sType, setsType] = useState(location.sType);
   const [submissionName, setsubmissionName] = useState(location.submissionName);
   const [sDescription, setsDescription] = useState(location.sDescription);
-  const [sTemplate, setsTemplate] = useState(location.sTemplate);
-  const [sMarkingScheme, setsMarkingScheme] = useState(location.sMarkingScheme);
-  const [sDeadline, setsDeadline] = useState(location.sDeadline);
-  const [tempName, settempName] = useState(location.sTemplate.tempName);
-  const [markingName, setmarkingName] = useState(
-    location.sMarkingScheme.markingName
+  const [sTemplate, setsTemplate] = useState(location.sTemplate.file);
+  const [sMarkingScheme, setsMarkingScheme] = useState(
+    location.sMarkingScheme.file
   );
+  const [sDeadline, setsDeadline] = useState(location.sDeadline);
+  const [tempName, settempName] = useState(location.sTemplate.name);
+  const [markingName, setmarkingName] = useState(location.sMarkingScheme.name);
+
   const [openAlert, setopenAlert] = useState(false);
   const API = process.env.REACT_APP_API;
 
   const updateSubmissionTypeToAPI = () => {
     const tempobj = {
-      sTemplate,
-      tempName,
+      file: sTemplate,
+      name: tempName,
     };
+    console.log("tempobj : ");
+    console.log(tempobj);
+    console.log("tempName : ");
+    console.log(tempName);
+    // console.log("sTemplate : "+sTemplate);
     const markingobj = {
-      sMarkingScheme,
-      markingName,
+      file: sMarkingScheme,
+      name: markingName,
     };
+    console.log("markingobj : " + markingobj);
+    console.log("markingName : " + markingobj.markingName);
+    // console.log("sMarkingScheme : "+sMarkingScheme);
     const data = {
       sDescription,
       sTemplate: tempobj,
       sMarkingScheme: markingobj,
       sDeadline,
     };
+    console.log("data : ");
     console.log(data);
-    console.log(sTemplate);
+
     //update theater details
     Axios.put(`${API}/AssignmentSubmissions/${location.id}`, data)
       .then((res) => {
@@ -149,12 +159,13 @@ export default function UpdateSubmission() {
               <Input
                 id="contained-button-file"
                 type="file"
+                //accept="image/*"
                 onChange={(event) => {
                   // Get a reference to the file
                   const file = event.target.files[0];
 
                   settempName(event.target.files[0].name);
-                  console.log(tempName);
+                  // console.log(tempName);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
@@ -180,23 +191,22 @@ export default function UpdateSubmission() {
           <div style={{ width: "380px" }}>
             <p>Upload Marking Scheme</p>
 
-            <label htmlFor="contained-button-file">
+            <label htmlFor="contained-ms-button-file">
               <Input
-                id="contained-button-file"
+                id="contained-ms-button-file"
                 type="file"
                 onChange={(event) => {
                   // Get a reference to the file
-                  const file = event.target.files[0];
-
+                  const fileM = event.target.files[0];
                   setmarkingName(event.target.files[0].name);
-                  console.log(markingName);
+                  // console.log(markingName);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
                     // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
                     setsMarkingScheme(reader.result);
                   };
-                  reader.readAsDataURL(file);
+                  reader.readAsDataURL(fileM);
                 }}
               />
               <div style={{ display: "flex", flexDirection: "row" }}>
@@ -205,7 +215,7 @@ export default function UpdateSubmission() {
                   component="span"
                   style={{ width: "80px", height: "37px" }}
                 >
-                  Upload
+                  upload
                 </Button>
                 <h5 style={{ marginLeft: "15px" }}>{markingName}</h5>
               </div>
