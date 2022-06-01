@@ -18,10 +18,12 @@ import UserDetails from "./components/UserDetails";
 function App() {
   const token = localStorage.getItem("token");
   let role = "";
+  let userObj = "";
 
   if (token) {
     const payload = jwt(token);
     role = payload.role;
+    userObj = payload;
   }
 
   const [userType, setUserType] = useState(role);
@@ -33,7 +35,7 @@ function App() {
       <div className="App">
         {userType === "" ? <Signin /> : ""}
         {userType === "student" ? <Student /> : ""}
-        {userType === "staff" ? <Staff /> : ""}
+        {userType === "staff" ? <Staff user={userObj} /> : ""}
         {userType === "admin" ? <Admin /> : ""}
 
         {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
