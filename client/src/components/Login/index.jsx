@@ -3,6 +3,7 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import { useHistory } from 'react-router-dom';
+const API = process.env.REACT_APP_API;
 
 const Login = () => {
 	const [data, setData] = useState({ email: "", password: "" });
@@ -17,7 +18,7 @@ const Login = () => {
 		console.log("Inside handle submit");
 		e.preventDefault();
 
-		Axios.post("/userlogin", data)
+		Axios.post(`${API}/auth/userlogin`, data)
 		.then((res) => {
 		  alert("Logged In");
 		localStorage.setItem("token", res.data.data);

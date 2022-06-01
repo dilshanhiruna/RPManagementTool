@@ -9,6 +9,7 @@ import Signup from "./components/view/Signup";
 import Signin from "./components/view/Signin";
 // import Supervisor from "./routes/Supervisor";
 import LoginRouter from "./routes/LoginRouter";
+import Login from "./components/Login";
 
 import Home from './components/Home';
 import EditUser from './components/EditUser';
@@ -31,6 +32,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        {userType === "" ? <Login /> : ""}
         {userType === "student" ? <Student /> : ""}
         {userType === "staff" ? <Staff /> : ""}
         {userType === "admin" ? <Admin /> : ""}
