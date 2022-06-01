@@ -362,3 +362,20 @@ exports.getAcceptedGroupsOfCoSupervisor = async (req, res) => {
     res.status(400).json({ success: false, error: err });
   }
 };
+//@desc check if the entered group id is unique
+//@route GET /api/v1/studentgroups/checkgroupid/:id
+exports.checkGroupId = async (req, res) => {
+  try {
+    const studentGroup = await StudentGroups.findOne({
+      groupID: req.params.id,
+    });
+    if (studentGroup) {
+      return res
+        .status(200)
+        .json({ success: false, error: "Group id already exists" });
+    }
+    res.status(200).json({ success: true });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
