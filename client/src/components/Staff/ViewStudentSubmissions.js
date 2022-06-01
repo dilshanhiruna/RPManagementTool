@@ -22,6 +22,12 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { LinearProgress } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const columns = [
   { id: "groupID", label: "Group ID", minWidth: 100, align: "center" },
@@ -93,6 +99,10 @@ export default function ViewStudentSubmissions({ user }) {
   //handle search vars
   const [searchByGroupId, setsearchByGroupId] = useState(null);
   const [searchBySubmissionName, setsearchBySubmissionName] = useState(null);
+
+  //for confirmation snackbar
+  const [openAlert, setopenAlert] = useState(false);
+  const [showErrorr, setshowErrorr] = useState(false);
 
   //calling server endpoint through use effect hook
   useEffect(() => {
@@ -178,25 +188,37 @@ export default function ViewStudentSubmissions({ user }) {
   };
   //function to provide marks for student submissions
   const addMarks = async () => {
-    if (valError == false) {
-      const result = await axios.put(
-        `${API}/studentSubmission/addMarks/${currentSubmissionId}`,
-        {
-          marks,
+    setshowErrorr(false);
+    try {
+      if (valError == false) {
+        const result = await axios.put(
+          `${API}/studentSubmission/addMarks/${currentSubmissionId}`,
+          {
+            marks,
+          }
+        );
+        if (result.data.success) {
+          handleCloseAdd();
+          handleCloseEdit();
+          setopenAlert(true);
+
+          setTimeout(function () {
+            window.location.reload();
+          }, 1300);
+        } else {
+          setopenAlert(true);
+          handleCloseAdd();
+          handleCloseEdit();
         }
-      );
-      if (result.data.success) {
-        alert("success");
-        handleCloseAdd();
-        handleCloseEdit();
-        window.location.reload();
-      } else {
-        alert("error");
-        handleCloseAdd();
-        handleCloseEdit();
       }
+    } catch (error) {
+      await setshowErrorr(true);
+      setopenAlert(true);
+      handleCloseAdd();
+      handleCloseEdit();
     }
   };
+
   //functions to manage table pagination
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -239,6 +261,14 @@ export default function ViewStudentSubmissions({ user }) {
   const searchBySubmissionNameMethod = (e) => {
     setsearchBySubmissionName(e.target.value);
     console.log(e.target.value);
+  };
+
+  //function to close confirmation snackbar
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setopenAlert(false);
   };
 
   return (
@@ -531,6 +561,22 @@ export default function ViewStudentSubmissions({ user }) {
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </Paper>
+            <Snackbar
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              open={openAlert}
+              autoHideDuration={5000}
+              onClose={handleAlertClose}
+            >
+              {showErrorr ? (
+                <Alert severity="error" sx={{ width: "100%" }}>
+                  Error Ocuured!
+                </Alert>
+              ) : (
+                <Alert severity="success" sx={{ width: "100%" }}>
+                  Assignment marks updated!
+                </Alert>
+              )}
+            </Snackbar>
           </div>
         </>
       ) : (

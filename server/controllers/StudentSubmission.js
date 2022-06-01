@@ -110,6 +110,7 @@ exports.addMarks = async (req, res) => {
   try {
     const _id = req.params.id;
     const obtainedMarks = req.body.marks;
+    console.log(obtainedMarks);
 
     const newStudentSubmission = await StudentSubmission.findByIdAndUpdate(
       _id,
