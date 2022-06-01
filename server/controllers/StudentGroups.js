@@ -317,7 +317,7 @@ exports.deleteStudentGroup = async (req, res) => {
 //@route GET /api/v1/studentgroups/addstudents
 exports.getAllStudentsWithoutAGroup = async (req, res) => {
   try {
-    const students = await Students.find({ studentGrouped: null });
+    const students = await User.find({ studentGrouped: null });
     res.status(200).json({ success: true, data: students });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
