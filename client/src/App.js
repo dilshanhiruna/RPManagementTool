@@ -16,6 +16,7 @@ function App() {
         {userType === "student" ? <Student /> : ""}
         {userType === "staff" ? <Staff /> : ""}
         {userType === "admin" ? <Admin /> : ""}
+
         {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
       </div>
     </Router>
