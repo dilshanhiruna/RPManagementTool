@@ -1,11 +1,16 @@
 const express = require("express");
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+require("./common/db")();
+require("dotenv").config();
+const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 require("./common/db")();
 require("dotenv").config();
-const app = express();
+
 const server = http.createServer(app);
 const Msg = require("./models/messages");
 
@@ -19,12 +24,16 @@ app.use(express.urlencoded({ limit: "50mb" }));
 // Cookie parser
 app.use(cookieParser());
 
+app.use(bodyParser.json());
+
 // Route files
 const studentGroups = require("./routes/StudentGroups");
 const user = require("./routes/User");
 const supervisorRequests = require("./routes/supervisorRequests");
 const cosupervisorRequests = require("./routes/CoSupervisorRequests");
 const submissions = require("./routes/Submissions");
+//const userRoutes = require('./routes/User');
+const authRoutes = require("./routes/Auth");
 const studentSubmission = require("./routes/StudentSubmission");
 
 // Mount routers
@@ -34,6 +43,8 @@ app.use("/api/v1/supervisorRequests", supervisorRequests);
 app.use("/api/v1/cosupervisorRequests", cosupervisorRequests);
 app.use("/api/v1/AssignmentSubmissions", submissions);
 app.use("/api/v1/studentSubmission", studentSubmission);
+//app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 const io = new Server(server, {
   cors: {
