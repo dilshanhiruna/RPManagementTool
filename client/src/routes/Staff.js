@@ -17,21 +17,24 @@ import PanelmHeader from "../components/view/PanelmHeader";
 import ViewStudentSubmissionsPanel from "../components/Staff/Panel-Member/ViewStudentSubmissionsPanel";
 import TopicRequrestsForPanel from "../components/Staff/Panel-Member/TopicRequrestsForPanel";
 
-export default function Staff() {
+export default function Staff({ user }) {
   const API = process.env.REACT_APP_API;
 
-  const user = {
-    _id: "628d0363cec8f51cfb6dd746",
-    uid: "ST22000001",
-    name: "Nuwan Kodagoda (SE, HPC, PC,PL, ADD)",
-    email: "st22000001@sliit.lk",
-    password: "password",
-    role: "staff",
-    interestedResearchField: "Artificial Intelligence and Machine Learning",
-    staffType: "supervisor",
-    studentGrouped: null,
-    studentGroupID: null,
-  };
+  // user = {
+  //   _id: "628d0363cec8f51cfb6dd746",
+  //   uid: "ST22000001",
+  //   name: "Nuwan Kodagoda (SE, HPC, PC,PL, ADD)",
+  //   email: "st22000001@sliit.lk",
+  //   password: "password",
+  //   role: "staff",
+  //   interestedResearchField: "Artificial Intelligence and Machine Learning",
+  //   staffType: "supervisors",
+  //   studentGrouped: null,
+  //   studentGroupID: null,
+  // };
+
+  console.log(user);
+  console.log("Halo......." + user._id);
 
   return (
     <div className="student__dashboard">

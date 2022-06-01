@@ -66,7 +66,7 @@ exports.getSpecificStudentSubmission = async (req, res) => {
 //@route DELETE /api/v1/studentSubmission/:id
 exports.deleteStudentSubmission = async (req, res) => {
   try {
-    const _id = req.params.id;
+    const _id = mongoose.Types.ObjectId(req.params.id);
 
     const deleteStudentSubmission = await StudentSubmission.findByIdAndDelete(
       _id
@@ -81,7 +81,7 @@ exports.deleteStudentSubmission = async (req, res) => {
 //@route GET /api/v1/studentSubmission/staff/:id
 exports.getSubmissionOfSupervisor = async (req, res) => {
   try {
-    const staffId = req.params.id;
+    const staffId = mongoose.Types.ObjectId(req.params.id);
     const studentSubmissions = await StudentSubmission.find({
       $or: [{ supervisor: staffId }, { cosupervisor: staffId }],
     })
@@ -101,7 +101,7 @@ exports.getSubmissionOfSupervisor = async (req, res) => {
 //@route GET /api/v1/studentSubmission/panel/:id
 exports.getSubmissionsOfPanelMember = async (req, res) => {
   try {
-    const panelmember = req.params.id;
+    const panelmember = mongoose.Types.ObjectId(req.params.id);
     const studentSubmissions = await StudentSubmission.find({
       panelmember,
     })
@@ -121,6 +121,7 @@ exports.getSubmissionsOfPanelMember = async (req, res) => {
 exports.getTopicSubmissionsOfPanelMember = async (req, res) => {
   try {
     const panelmember = req.params.id;
+    console.log("damn............" + panelmember);
     const studentSubmissions = await StudentSubmission.find({
       panelmember,
       evaluated: false,
@@ -132,6 +133,7 @@ exports.getTopicSubmissionsOfPanelMember = async (req, res) => {
       .populate("studentGroupId");
     res.status(200).json({ success: true, data: studentSubmissions });
   } catch (err) {
+    // console.error(err);
     res.status(400).json({ success: false, error: err });
   }
 };
@@ -140,7 +142,7 @@ exports.getTopicSubmissionsOfPanelMember = async (req, res) => {
 //@route put /api/v1/studentSubmission/addMarks/:id
 exports.addMarks = async (req, res) => {
   try {
-    const _id = req.params.id;
+    const _id = mongoose.Types.ObjectId(req.params.id);
     const obtainedMarks = req.body.marks;
     console.log(obtainedMarks);
 
