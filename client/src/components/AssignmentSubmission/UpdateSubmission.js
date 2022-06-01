@@ -28,16 +28,30 @@ export default function UpdateSubmission() {
   const [sTemplate, setsTemplate] = useState(location.sTemplate);
   const [sMarkingScheme, setsMarkingScheme] = useState(location.sMarkingScheme);
   const [sDeadline, setsDeadline] = useState(location.sDeadline);
+  const [tempName, settempName] = useState(location.sTemplate.tempName);
+  const [markingName, setmarkingName] = useState(
+    location.sMarkingScheme.markingName
+  );
   const [openAlert, setopenAlert] = useState(false);
   const API = process.env.REACT_APP_API;
 
   const updateSubmissionTypeToAPI = () => {
+    const tempobj = {
+      sTemplate,
+      tempName,
+    };
+    const markingobj = {
+      sMarkingScheme,
+      markingName,
+    };
     const data = {
       sDescription,
-      sTemplate,
-      sMarkingScheme,
+      sTemplate: tempobj,
+      sMarkingScheme: markingobj,
       sDeadline,
     };
+    console.log(data);
+    console.log(sTemplate);
     //update theater details
     Axios.put(`${API}/AssignmentSubmissions/${location.id}`, data)
       .then((res) => {
@@ -139,6 +153,8 @@ export default function UpdateSubmission() {
                   // Get a reference to the file
                   const file = event.target.files[0];
 
+                  settempName(event.target.files[0].name);
+                  console.log(tempName);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
@@ -148,22 +164,32 @@ export default function UpdateSubmission() {
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="outlined" component="span">
-                Upload
-              </Button>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Button
+                  variant="outlined"
+                  component="span"
+                  style={{ width: "80px", height: "37px" }}
+                >
+                  Upload
+                </Button>
+                <h5 style={{ marginLeft: "15px" }}>{tempName}</h5>
+              </div>
             </label>
           </div>
 
           <div style={{ width: "380px" }}>
             <p>Upload Marking Scheme</p>
-            <label htmlFor="contained-ms-button-file">
+
+            <label htmlFor="contained-button-file">
               <Input
-                id="contained-ms-button-file"
+                id="contained-button-file"
                 type="file"
                 onChange={(event) => {
                   // Get a reference to the file
                   const file = event.target.files[0];
 
+                  setmarkingName(event.target.files[0].name);
+                  console.log(markingName);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
@@ -173,9 +199,16 @@ export default function UpdateSubmission() {
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="outlined" component="span">
-                Upload
-              </Button>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Button
+                  variant="outlined"
+                  component="span"
+                  style={{ width: "80px", height: "37px" }}
+                >
+                  Upload
+                </Button>
+                <h5 style={{ marginLeft: "15px" }}>{markingName}</h5>
+              </div>
             </label>
           </div>
         </div>
@@ -220,7 +253,7 @@ export default function UpdateSubmission() {
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={openAlert}
-          autoHideDuration={5000}
+          autoHideDuration={4000}
           onClose={handleAlertClose}
         >
           <Alert severity="success" sx={{ width: "100%" }}>

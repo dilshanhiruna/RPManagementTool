@@ -13,6 +13,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import { useHistory } from "react-router";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -26,22 +27,34 @@ export default function CreateSubmission() {
   const [sMarkingScheme, setsMarkingScheme] = useState();
   const [sDeadline, setsDeadline] = useState("");
   const [sVisibility, setsVisibility] = useState(false);
+  const [tempName, settempName] = useState("");
+  const [markingName, setmarkingName] = useState("");
 
   const [openAlert, setopenAlert] = useState(false);
   const API = process.env.REACT_APP_API;
+  let history = useHistory();
 
   const sendNewSubmissionTypeToAPI = () => {
+    const tempobj = {
+      sTemplate,
+      tempName,
+    };
+    const markingobj = {
+      sMarkingScheme,
+      markingName,
+    };
     Axios.post(`${API}/AssignmentSubmissions`, {
       submissionName,
       sType,
       sDescription,
       sDeadline,
-      sTemplate,
-      sMarkingScheme,
+      sTemplate: tempobj,
+      sMarkingScheme: markingobj,
       sVisibility,
     })
       .then((res) => {
         setopenAlert(true);
+        history.push("/admin/getAllSubmissions");
       })
       .catch((err) => {
         console.log(err);
@@ -133,10 +146,13 @@ export default function CreateSubmission() {
               <Input
                 id="contained-button-file"
                 type="file"
+                //accept="image/*"
                 onChange={(event) => {
                   // Get a reference to the file
                   const file = event.target.files[0];
 
+                  settempName(event.target.files[0].name);
+                  console.log(tempName);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
@@ -146,37 +162,50 @@ export default function CreateSubmission() {
                   reader.readAsDataURL(file);
                 }}
               />
-              <Button variant="outlined" component="span">
-                Upload
-              </Button>
-              {/* <p>
-
-              </p> */}
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Button
+                  variant="outlined"
+                  component="span"
+                  style={{ width: "80px", height: "37px" }}
+                >
+                  Upload
+                </Button>
+                <h5 style={{ marginLeft: "15px" }}>{tempName}</h5>
+              </div>
             </label>
           </div>
 
           <div style={{ width: "380px" }}>
             <p>Upload Marking Scheme</p>
+
             <label htmlFor="contained-ms-button-file">
               <Input
                 id="contained-ms-button-file"
                 type="file"
                 onChange={(event) => {
                   // Get a reference to the file
-                  const file = event.target.files[0];
-
+                  const fileM = event.target.files[0];
+                  setmarkingName(event.target.files[0].name);
+                  console.log(markingName);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
                     // Logs data:<type>;base64,wL2dvYWwgbW9yZ...
                     setsMarkingScheme(reader.result);
                   };
-                  reader.readAsDataURL(file);
+                  reader.readAsDataURL(fileM);
                 }}
               />
-              <Button variant="outlined" component="span">
-                Upload
-              </Button>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Button
+                  variant="outlined"
+                  component="span"
+                  style={{ width: "80px", height: "37px" }}
+                >
+                  Upload
+                </Button>
+                <h5 style={{ marginLeft: "15px" }}>{markingName}</h5>
+              </div>
             </label>
           </div>
         </div>

@@ -14,10 +14,12 @@ const SubmissionDetails = new Schema({
     type: String,
   },
   sTemplate: {
-    type: String,
+    // type: String,
+    type: Object,
   },
   sMarkingScheme: {
-    type: String,
+    // type: String,
+    type: Object,
   },
   sDeadline: {
     type: String,
