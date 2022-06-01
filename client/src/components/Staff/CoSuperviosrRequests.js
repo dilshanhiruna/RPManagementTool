@@ -34,7 +34,7 @@ const columns = [
   { id: "reTopic", label: "Research Topic", minWidth: 0, align: "center" },
   {
     id: "students",
-    label: "Students",
+    label: "Members",
     minWidth: 300,
     align: "center",
   },
@@ -248,7 +248,7 @@ export default function CoSuperviosrRequests({ user }) {
                                         );
                                       }}
                                     >
-                                      members
+                                      view
                                     </Button>
                                   </TableCell>
                                 );

@@ -41,8 +41,8 @@ const columns = [
   { id: "role", label: "Your Role", minWidth: 100, align: "center" },
   {
     id: "students",
-    label: "Students",
-    minWidth: 90,
+    label: "Members",
+    minWidth: 140,
     align: "center",
   },
 ];
@@ -248,7 +248,7 @@ export default function ViewMyStudentGroups({ user }) {
                                         );
                                       }}
                                     >
-                                      members
+                                      view
                                     </Button>
 
                                     <IconButton
