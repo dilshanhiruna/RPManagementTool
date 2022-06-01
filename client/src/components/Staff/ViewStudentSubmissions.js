@@ -278,7 +278,9 @@ export default function ViewStudentSubmissions({ user }) {
       </div>
       {rows.length != 0 ? (
         <>
-          {" "}
+          <h1 className="centerItems" style={{ marginBottom: "40px" }}>
+            Student Submissions
+          </h1>{" "}
           <div className="student__dashboard">
             <TextField
               style={{ backgroundColor: "#fcfcfc" }}
@@ -290,7 +292,7 @@ export default function ViewStudentSubmissions({ user }) {
 
             <TextField
               style={{
-                marginLeft: "25px",
+                marginLeft: "20px",
                 width: 270,
                 backgroundColor: "#fcfcfc",
               }}
