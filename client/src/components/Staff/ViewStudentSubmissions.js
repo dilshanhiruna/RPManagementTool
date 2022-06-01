@@ -123,7 +123,7 @@ export default function ViewStudentSubmissions({ user }) {
             console.log(res.data.data);
             res.data.data.map((data) => {
               let obj = createObjResponse(res, data);
-              objArray.push(obj);
+              if (obj) objArray.push(obj);
             });
           }
         });
@@ -137,6 +137,9 @@ export default function ViewStudentSubmissions({ user }) {
 
   //function to create obj from server response
   const createObjResponse = (res, data) => {
+    if (!data.submissionDetailsId || !data.studentGroupId) {
+      return null;
+    }
     let obj = {
       _id: data._id,
       groupID: data.studentGroupId.groupID,
