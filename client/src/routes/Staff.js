@@ -12,6 +12,7 @@ import SupervisorDashboard from "../components/Staff/SupervisorDashboard";
 import SuperviosrRequests from "../components/Staff/SuperviosrRequests";
 import CoSuperviosrRequests from "../components/Staff/CoSuperviosrRequests";
 import ViewMyStudentGroups from "../components/Staff/ViewMyStudentGroups";
+import ViewStudentSubmissions from "../components/Staff/ViewStudentSubmissions";
 
 export default function Staff() {
   const API = process.env.REACT_APP_API;
@@ -45,6 +46,9 @@ export default function Staff() {
         </Route>
         <Route exact path="/staff/mygroups">
           <ViewMyStudentGroups user={user} />
+        </Route>
+        <Route exact path="/staff/studentSubmissions">
+          <ViewStudentSubmissions user={user} />
         </Route>
         <Redirect to="/staff/mygroups" />
       </Switch>

@@ -5,9 +5,15 @@ const {
   createStudentSubmission,
   getSpecificStudentSubmission,
   deleteStudentSubmission,
+  getSubmissionOfSupervisor,
+  getSubmissionsOfPanelMember,
+  addMarks,
 } = require("../controllers/StudentSubmission");
 
+router.get("/staff/:id", getSubmissionOfSupervisor);
+router.get("/panel/:id", getSubmissionsOfPanelMember);
 router.post("/", createStudentSubmission);
+router.put("/addMarks/:id", addMarks);
 router.delete("/:id", deleteStudentSubmission);
 router.post("/getSpecific", getSpecificStudentSubmission);
 

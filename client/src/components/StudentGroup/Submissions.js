@@ -18,6 +18,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import FileBase64 from "react-file-base64";
+import "./Submissions.css";
+import { triggerBase64Download } from "common-base64-downloader-react";
 
 const API = process.env.REACT_APP_API;
 import axios from "axios";
@@ -30,6 +32,7 @@ export default function Submissions({ studentGroup }) {
     useState(false);
   const [studentSubmission, setStudentSubmission] = useState({});
   const [existingSubmission, setExistingSubmission] = useState(null);
+  const [base64File, setBase64File] = useState();
   const [fileIsLoadig, setFileIsLoading] = useState(true);
 
   // Submission Types
@@ -82,10 +85,28 @@ export default function Submissions({ studentGroup }) {
           >
             Submit
           </Button>
-          <Button size="small" variant="text">
+          <Button
+            size="small"
+            variant="text"
+            onClick={() => {
+              triggerBase64Download(
+                submissionDetail.sTemplate,
+                `${submissionDetail.submissionName} template`
+              );
+            }}
+          >
             Template
           </Button>
-          <Button size="small" variant="text">
+          <Button
+            size="small"
+            variant="text"
+            onClick={() => {
+              triggerBase64Download(
+                submissionDetail.sMarkingScheme,
+                `${submissionDetail.submissionName} marking scheme`
+              );
+            }}
+          >
             Marking
           </Button>
         </CardActions>
@@ -117,6 +138,7 @@ export default function Submissions({ studentGroup }) {
         submissionObj
       );
       setExistingSubmission(result.data.data);
+      setBase64File(result.data.data.file.base64);
       // console.log("olaaaaaaa" + result.data.data);
       // setPageIsLoading(false);
     } catch (err) {
@@ -178,6 +200,11 @@ export default function Submissions({ studentGroup }) {
     setFileIsLoading(false);
     setExistingSubmission(null);
   };
+
+  //function to download uploaded student submissions
+  // const downloadStudentSubmission = async () => {
+  //   const base64File = existingSubmission.file.base64;
+  // };
 
   useEffect(() => {
     getSubmissionDetails();
@@ -277,8 +304,18 @@ export default function Submissions({ studentGroup }) {
                           variant="contained"
                         >
                           Remove
-                        </Button>{" "}
-                        {existingSubmission.file.name}
+                        </Button>
+                        <Button
+                          style={{ textTransform: "none" }}
+                          onClick={() => {
+                            triggerBase64Download(
+                              base64File,
+                              existingSubmission.file.name
+                            );
+                          }}
+                        >
+                          {existingSubmission.file.name}
+                        </Button>
                       </>
                     ) : (
                       <FileBase64

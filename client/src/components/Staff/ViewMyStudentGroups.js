@@ -11,6 +11,12 @@ import { LinearProgress } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
+import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
+import CloseIcon from "@mui/icons-material/Close";
+import ChatIcon from "@mui/icons-material/Chat";
+import Divider from "@mui/material/Divider";
+
 import {
   Button,
   Dialog,
@@ -31,86 +37,37 @@ const API = process.env.REACT_APP_API;
 const columns = [
   { id: "groupID", label: "Group ID", minWidth: 70, align: "center" },
   { id: "reTopic", label: "Research Topic", minWidth: 100, align: "center" },
-  {
-    id: "student1",
-    label: "Student 1",
-    minWidth: 90,
-    align: "center",
-  },
-  {
-    id: "student2",
-    label: "Student 2",
-    minWidth: 90,
-    align: "center",
-  },
-  {
-    id: "student3",
-    label: "Student 3",
-    minWidth: 90,
-    align: "center",
-  },
-  {
-    id: "student4",
-    label: "Student 4",
-    minWidth: 90,
-    align: "center",
-  },
+
   { id: "role", label: "Your Role", minWidth: 100, align: "center" },
-  { id: "chat", label: "Chat", minWidth: 100, align: "center" },
+  {
+    id: "students",
+    label: "Members",
+    minWidth: 140,
+    align: "center",
+  },
 ];
 
 export default function ViewMyStudentGroups({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [openBackdrop, setOpenBackdrop] = React.useState(false);
-  const [confirmAction, setConfirmAction] = useState();
   const [pageIsLoadig, setPageIsLoading] = useState(true);
+  const [openGroupMemberModal, setOpenGroupMemberModal] = useState(false);
+  const [Students, setStudents] = useState([]);
 
   //set group id and action for topic request accept and reject
   const [groupId, setGroupId] = useState();
   const [_id, set_id] = useState();
   const [action, setAction] = useState();
 
-  //function to create obj from response
-  const createObjResponse = (res, data) => {
-    let student1, student2, student3, student4;
+  //calling server endpoint through use effect hook
+  useEffect(() => {
+    getMyGroups();
+  }, []);
 
-    if (data.student1) {
-      student1 = data.student1.uid;
-    } else {
-      student1 = "Not Avaialable";
-    }
-    if (data.student2) {
-      student2 = data.student2.uid;
-    } else {
-      student1 = "Not Avaialable";
-    }
-    if (data.student3) {
-      student3 = data.student3.uid;
-    } else {
-      student1 = "Not Avaialable";
-    }
-    if (data.student4) {
-      student4 = data.student4.uid;
-    } else {
-      student4 = "Not Avaialable";
-    }
-    let obj = {
-      _id: data._id,
-      groupID: data.groupID,
-      reTopic: data.researchTopic,
-      student1,
-      student2,
-      student3,
-      student4,
-      role: res.data.type,
-    };
-    return obj;
-  };
-  //function to get topic requests of the relevant supervisor
-  const getTopicReqs = async () => {
+  //function to get student groups of supervior and cosupervisor
+  const getMyGroups = async () => {
     try {
       let objArray = [];
 
@@ -145,25 +102,70 @@ export default function ViewMyStudentGroups({ user }) {
     }
   };
 
-  //function to get student of a given ID
-  // const getStudent = (id) => {
-  //   try {
-  //     let uid;
-  //     const response = axios.get(`${API}/users/${id}`).then((res) => {
-  //       uid = res.data.data.uid;
-  //     });
+  //function to create obj from server response
+  const createObjResponse = (res, data) => {
+    const studentsArray = [
+      data.student1,
+      data.student2 ? data.student2 : "",
+      data.student3 ? data.student3 : "",
+      data.student4 ? data.student4 : "",
+    ];
 
-  //     return uid;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  //function to accept/reject topic reqest
-  const openChat = () => {
-    setOpenConfirmModal(false);
-    console.log(_id);
+    let obj = {
+      _id: data._id,
+      groupID: data.groupID,
+      reTopic: data.researchTopic,
+      role: res.data.type,
+      students: studentsArray,
+    };
+    return obj;
   };
+  // show group memebrs dialog
+  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    "& .MuiDialogContent-root": {
+      padding: theme.spacing(2),
+    },
+    "& .MuiDialogActions-root": {
+      padding: theme.spacing(1),
+    },
+  }));
+
+  // create BootstrapDialogTitle component to display group name on chat
+  const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props;
+    return (
+      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+        {children}
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </DialogTitle>
+    );
+  };
+  BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+  };
+
+  //function to open relevant student group chat
+  const openStudentChat = (groupId, _id, action) => {
+    handleToggle();
+    setGroupId(groupId);
+    set_id(_id);
+    setAction(action);
+  };
+  //suppoert functions for chat modal
   const handleCloseBackdrop = () => {
     setOpenBackdrop(false);
   };
@@ -171,36 +173,23 @@ export default function ViewMyStudentGroups({ user }) {
     setOpenBackdrop(!openBackdrop);
   };
 
-  //get confirmation to accept or reject action
-  const getConfirmation = (groupId, _id, action) => {
-    handleToggle();
-    setGroupId(groupId);
-    set_id(_id);
-    setAction(action);
-    setOpenConfirmModal(true);
-
-    if (confirmAction) {
-      console.log("true");
-    } else {
-      console.log("false");
-    }
-  };
-
-  useEffect(() => {
-    getTopicReqs();
-  }, []);
-
+  //functions to handle table pagination
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
-  const handleModalClose = () => {
-    setOpenConfirmModal(false);
+  //functions to handle view student members
+  const handleClickOpenGroupMemberModal = (groupId, students) => {
+    setOpenGroupMemberModal(true);
+    setStudents(students);
+    setGroupId(groupId);
+  };
+  const handleCloseOpenGroupMemberModal = () => {
+    setOpenGroupMemberModal(false);
   };
 
   return (
@@ -211,39 +200,17 @@ export default function ViewMyStudentGroups({ user }) {
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h3>Groups you have registered as supervisor or co-supervisor: </h3>
+            <h1 className="centerItems">Your Groups </h1>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
-                    <TableRow>
-                      <TableCell
-                        align="center"
-                        colSpan={2}
-                        className="hash-table-border"
-                      >
-                        Group Detaials
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        colSpan={4}
-                        className="hash-table-border"
-                      >
-                        Students
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        colSpan={2}
-                        className="hash-table-border"
-                      ></TableCell>
-                    </TableRow>
                     <TableRow>
                       {columns.map((column) => (
                         <TableCell
                           key={column.id}
                           align={column.align}
                           style={{ minWidth: column.minWidth }}
-                          className="hash-table-border"
                         >
                           {column.label}
                         </TableCell>
@@ -266,56 +233,41 @@ export default function ViewMyStudentGroups({ user }) {
                           >
                             {columns.map((column) => {
                               const value = row[column.id];
-                              if (column.id == "accept") {
+
+                              if (column.id == "students") {
                                 return (
                                   <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    className="hash-table-border"
                                   >
                                     <Button
-                                      color="success"
                                       onClick={() => {
-                                        getConfirmation(
+                                        handleClickOpenGroupMemberModal(
                                           row["groupID"],
-                                          row["_id"],
-                                          "Accept"
+                                          row["students"]
                                         );
                                       }}
                                     >
-                                      Accept
+                                      view
                                     </Button>
-                                  </TableCell>
-                                );
-                              }
-                              if (column.id == "chat") {
-                                return (
-                                  <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    className="hash-table-border"
-                                  >
-                                    <Button
+
+                                    <IconButton
                                       color="success"
                                       onClick={() => {
-                                        getConfirmation(
+                                        openStudentChat(
                                           row["groupID"],
                                           row["_id"],
                                           "Reject"
                                         );
                                       }}
                                     >
-                                      Chat
-                                    </Button>
+                                      <ChatIcon />
+                                    </IconButton>
                                   </TableCell>
                                 );
                               }
                               return (
-                                <TableCell
-                                  key={column.id}
-                                  align={column.align}
-                                  className="hash-table-border"
-                                >
+                                <TableCell key={column.id} align={column.align}>
                                   {column.format && typeof value === "number"
                                     ? column.format(value)
                                     : value}
@@ -372,6 +324,61 @@ export default function ViewMyStudentGroups({ user }) {
         ) : (
           ""
         )}
+
+        <BootstrapDialog
+          onClose={handleCloseOpenGroupMemberModal}
+          aria-labelledby="customized-dialog-title"
+          open={openGroupMemberModal}
+        >
+          <BootstrapDialogTitle
+            id="customized-dialog-title"
+            onClose={handleCloseOpenGroupMemberModal}
+          >
+            Group {groupId} : Members
+          </BootstrapDialogTitle>
+          <DialogContent dividers>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 500 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>SID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>Role</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {Students.filter((std) => {
+                    return std !== "";
+                  }).map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.uid}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.email}</TableCell>
+
+                      <TableCell>
+                        {Students.indexOf(row) == 0 ? (
+                          <div style={{ color: "red" }}>Leader</div>
+                        ) : (
+                          <div style={{ color: "green" }}>Member</div>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </DialogContent>
+        </BootstrapDialog>
       </div>
       <div>
         {pageIsLoadig == false && rows.length == 0 ? (
