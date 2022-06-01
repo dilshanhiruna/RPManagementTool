@@ -87,28 +87,28 @@ export default function Submissions({ studentGroup }) {
           </Button>
           <Button
             size="small"
-            variant="text"
+            variant="outlined"
             onClick={() => {
               triggerBase64Download(
-                submissionDetail.sTemplate,
+                submissionDetail.sTemplate.file,
                 `${submissionDetail.submissionName} template`
               );
             }}
           >
             Template
           </Button>
-          <Button
+          {/* <Button
             size="small"
             variant="text"
             onClick={() => {
               triggerBase64Download(
-                submissionDetail.sMarkingScheme,
+                submissionDetail.sMarkingScheme.file,
                 `${submissionDetail.submissionName} marking scheme`
               );
             }}
           >
             Marking
-          </Button>
+          </Button> */}
         </CardActions>
       </Card>
     );
