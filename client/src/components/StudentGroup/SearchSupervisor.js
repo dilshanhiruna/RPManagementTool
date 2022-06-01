@@ -48,14 +48,14 @@ export default function SearchSupervisor({ user }) {
         //set the supervisor and cosupervisor
         if (isNaN(res.data.data.supervisor)) {
           setSupervisor(res.data.data.supervisor.name);
-          if (res.data.data.supervisorStatus == "accepted") {
+          if (res.data.data.supervisorStatus === "accepted") {
             setSelectedResearchArea(
               res.data.data.supervisor.interestedResearchField
             );
           }
           if (
-            res.data.data.supervisorStatus == "accepted" &&
-            res.data.data.cosupervisorStatus == "accepted"
+            res.data.data.supervisorStatus === "accepted" &&
+            res.data.data.cosupervisorStatus === "accepted"
           ) {
             setSelectedResearchArea("");
           }
