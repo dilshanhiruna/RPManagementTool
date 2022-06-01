@@ -19,32 +19,29 @@ export default function SubmissionCard({
   sDeadline,
   sVisibility,
   sMarkingScheme,
+  changeVisibility,
   id,
   btn1,
   btn2,
 }) {
-  const handleChange = (event) => {
-    setsVisibility((event.target.value = true));
+  console.log(sVisibility);
+
+  let history = useHistory();
+
+  const viewDetails = () => {
+    console.log("viewdeatils");
+    history.push("/admin/getAllSubmissions");
   };
 
-  const updateVisibility = () => {
-    const data = {
-      sVisibility,
-    };
-    //update theater details
-    Axios.put(`${API}/AssignmentSubmissions/${id}`, data).then((res) => {
-      alert("success");
+  //get all theaters from the database
+  const getAllSubmissions = () => {
+    Axios.get(`${API}/AssignmentSubmissions/`).then((res) => {
+      setsubmissions(res.data.data);
+      console.log(res.data.data);
     });
   };
 
-  let history = useHistory();
-  // id = useParams();
-  //   const viewDetails = () => {
-  //     history.push({ pathname: '/customer/reservation', id });
-  //   };
-
   const updateSubmission = () => {
-    console.log("update...");
     console.log(id);
     history.push({
       pathname: `/admin/updatesubmission`,
@@ -64,18 +61,28 @@ export default function SubmissionCard({
     console.log(id);
     Axios.delete(`${API}/AssignmentSubmissions/${id}`).then((res) => {
       alert("success");
+      getAllSubmissions();
     });
   };
   return (
-    <Card sx={{ maxWidth: 1350, marginTop: "30px", marginLeft: "80px" }}>
+    <Card
+      sx={{
+        maxWidth: 1350,
+        marginTop: "25px",
+        marginLeft: "80px",
+        backgroundColor: "#edf4fa",
+      }}
+    >
       <CardContent>
         <CardActions>
           <Typography gutterBottom variant="h5" component="div">
             {submissionName}
           </Typography>
           <Switch
-            // checked={sVisibility}
-            onChange={handleChange}
+            checked={sVisibility}
+            onChange={(e) => {
+              changeVisibility(e, id);
+            }}
             inputProps={{ "aria-label": "controlled" }}
           />
         </CardActions>

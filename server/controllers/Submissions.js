@@ -118,6 +118,38 @@ exports.updateSubmission = async (req, res, next) => {
   }
 };
 
+//@desc Update a visibility
+//@route PUT /api/v1/submission/:id
+//@access private
+exports.updateVisibility = async (req, res, next) => {
+  try {
+    const submission = await SubmissionDetails.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!submission) {
+      return res.status(404).json({
+        success: false,
+        msg: "Could not find a submission with the given ID",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: submission,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      msg: "Server error",
+    });
+  }
+};
 //@desc Delete a submission
 //@route DELETE /api/v1/submission/:id
 //@access private
