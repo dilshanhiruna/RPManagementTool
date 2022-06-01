@@ -206,16 +206,18 @@ export default function TopicRequrestsForPanel({ user }) {
     }
     try {
       if (isValid) {
-        let topicFeedback = {
-          approveOrReject,
-          feedback,
+        let requestBody = {
+          currentSubmissionId,
+          topicFeedback: {
+            approveOrReject,
+            feedback,
+          },
         };
 
         const result = await axios.put(
           `${API}/studentgroups/topicfeedback/${currentgroupObjectID}`,
-          {
-            topicFeedback,
-          }
+
+          requestBody
         );
         if (result.data.success) {
           handleCloseAdd();
@@ -562,7 +564,7 @@ export default function TopicRequrestsForPanel({ user }) {
 
       {pageIsLoadig == false && rows.length == 0 ? (
         <div className="student__dashboard">
-          <div>Oops no submision yet</div>{" "}
+          <div>Oops no topic requests</div>{" "}
         </div>
       ) : (
         ""

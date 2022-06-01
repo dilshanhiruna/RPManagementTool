@@ -123,6 +123,7 @@ exports.getTopicSubmissionsOfPanelMember = async (req, res) => {
     const panelmember = req.params.id;
     const studentSubmissions = await StudentSubmission.find({
       panelmember,
+      evaluated: false,
     })
       .populate({
         path: "submissionDetailsId",
