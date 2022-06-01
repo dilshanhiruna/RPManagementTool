@@ -84,7 +84,12 @@ exports.getSubmissionOfSupervisor = async (req, res) => {
     const staffId = req.params.id;
     const studentSubmissions = await StudentSubmission.find({
       $or: [{ supervisor: staffId }, { cosupervisor: staffId }],
-    }).populate("submissionDetailsId studentGroupId");
+    })
+      .populate({
+        path: "submissionDetailsId",
+        match: { sType: { $eq: "Document" } },
+      })
+      .populate("studentGroupId");
     res.status(200).json({ success: true, data: studentSubmissions });
   } catch (err) {
     console.error(err);
@@ -97,7 +102,14 @@ exports.getSubmissionOfSupervisor = async (req, res) => {
 exports.getSubmissionsOfPanelMember = async (req, res) => {
   try {
     const panelmember = req.params.id;
-    const studentSubmissions = await StudentSubmission.find({ panelmember });
+    const studentSubmissions = await StudentSubmission.find({
+      panelmember,
+    })
+      .populate({
+        path: "submissionDetailsId",
+        match: { sType: { $eq: "Presentation" } },
+      })
+      .populate("studentGroupId");
     res.status(200).json({ success: true, data: studentSubmissions });
   } catch (err) {
     res.status(400).json({ success: false, error: err });

@@ -76,7 +76,7 @@ function createData(name, code, population, size) {
 
 const API = process.env.REACT_APP_API;
 
-export default function ViewStudentSubmissions({ user }) {
+export default function ViewStudentSubmissionsPanel({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
@@ -115,7 +115,7 @@ export default function ViewStudentSubmissions({ user }) {
 
       await axios
 
-        .get(`${API}/studentSubmission/staff/${user._id}`)
+        .get(`${API}/studentSubmission/panel/${user._id}`)
         .then((res) => {
           if (res.data.data.length == 0) {
             console.log("No topic reqs");
