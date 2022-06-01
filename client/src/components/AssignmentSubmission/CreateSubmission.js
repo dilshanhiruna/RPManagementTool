@@ -91,6 +91,7 @@ export default function CreateSubmission() {
             >
               <MenuItem value={"Document"}>Document</MenuItem>
               <MenuItem value={"Presentation"}>Presentation</MenuItem>
+              <MenuItem value={"Topic"}>Topic</MenuItem>
             </Select>
           </FormControl>
         </div>

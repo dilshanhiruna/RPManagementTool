@@ -6,10 +6,13 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
+// import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import Axios from "axios";
-import "../AssignmentSubmission/ViewSubmission.css";
 const API = process.env.REACT_APP_API;
 import { useHistory } from "react-router";
+
+import "../AssignmentSubmission/Submissioncard.css";
+import "../AssignmentSubmission/ViewSubmission.css";
 
 export default function SubmissionCard({
   submissionName,
@@ -64,6 +67,7 @@ export default function SubmissionCard({
       getAllSubmissions();
     });
   };
+
   return (
     <Card
       sx={{
@@ -97,29 +101,82 @@ export default function SubmissionCard({
           {sDescription}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button
-          size="small"
-          variant="outlined"
-          style={{ width: "85px" }}
-          onClick={() => {
-            updateSubmission();
-          }}
-        >
-          {btn1}
-        </Button>
-        <Button
-          size="small"
-          variant="outlined"
-          color="error"
-          style={{ width: "85px" }}
-          onClick={() => {
-            DeleteSubmission(id);
-          }}
-        >
-          {btn2}
-        </Button>
-      </CardActions>
+
+      <div className="file_download">
+        <CardActions>
+          <Button
+            size="small"
+            variant="outlined"
+            color="success"
+            style={{ width: "85px" }}
+            onClick={() => {
+              updateSubmission();
+            }}
+          >
+            Template
+          </Button>
+          <Button
+            size="small"
+            variant="outlined"
+            color="success"
+            style={{ width: "85px" }}
+            onClick={() => {
+              updateSubmission();
+            }}
+          >
+            Marking
+          </Button>
+          {/* <div className="file_download">
+            <p>File Template</p>
+            <div>
+              <InsertDriveFileIcon
+                size="large"
+                variant="outlined"
+                color="primary"
+                style={{ width: "80px" }}
+                onClick={() => {}}
+              />
+              <h5>{sTemplate.file}</h5>
+            </div>
+
+            <div>
+              <p>Marking Rubric</p>
+              <InsertDriveFileIcon
+                size="large"
+                variant="outlined"
+                color="primary"
+                style={{ width: "80px" }}
+                onClick={() => {}}
+              />
+              <h5>{sMarkingScheme.file}</h5>
+            </div>
+          </div> */}
+        </CardActions>
+
+        <CardActions>
+          <Button
+            size="small"
+            variant="outlined"
+            style={{ width: "85px" }}
+            onClick={() => {
+              updateSubmission();
+            }}
+          >
+            {btn1}
+          </Button>
+          <Button
+            size="small"
+            variant="outlined"
+            color="error"
+            style={{ width: "85px" }}
+            onClick={() => {
+              DeleteSubmission(id);
+            }}
+          >
+            {btn2}
+          </Button>
+        </CardActions>
+      </div>
     </Card>
   );
 }
