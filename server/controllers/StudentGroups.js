@@ -18,7 +18,10 @@ exports.createGroup = async (req, res) => {
     groupID: GroupID,
     groupClosed: null,
     researchTopic: null,
-    topicFeedback: null,
+    topicFeedback: {
+      approveOrReject: null,
+      feedback: null,
+    },
     topicDetailDocument: null,
     supervisor: null,
     supervisorStatus: "none",
@@ -279,7 +282,7 @@ exports.getAllStudentGroups = async (req, res) => {
 exports.getStudentGroupById = async (req, res) => {
   try {
     const studentGroup = await StudentGroups.findById(req.params.id).populate(
-      "student1 student2 student3 student4 supervisor cosupervisor"
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
     );
 
     res.status(200).json({ success: true, data: studentGroup });
@@ -314,7 +317,7 @@ exports.deleteStudentGroup = async (req, res) => {
 //@route GET /api/v1/studentgroups/addstudents
 exports.getAllStudentsWithoutAGroup = async (req, res) => {
   try {
-    const students = await Students.find({ studentGrouped: null });
+    const students = await User.find({ studentGrouped: null });
     res.status(200).json({ success: true, data: students });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
@@ -329,7 +332,9 @@ exports.getAcceptedGroupsOfSupervisor = async (req, res) => {
     const studentGroups = await StudentGroups.find({
       supervisor,
       supervisorStatus: "accepted",
-    }).populate("student1 student2 student3 student4 supervisor cosupervisor");
+    }).populate(
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
+    );
     res
       .status(200)
       .json({ success: true, data: studentGroups, type: "supervisor" });
@@ -347,10 +352,29 @@ exports.getAcceptedGroupsOfCoSupervisor = async (req, res) => {
     const studentGroups = await StudentGroups.find({
       cosupervisor,
       cosupervisorStatus: "accepted",
-    }).populate("student1 student2 student3 student4 supervisor cosupervisor");
+    }).populate(
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
+    );
     res
       .status(200)
       .json({ success: true, data: studentGroups, type: "cosupervisor" });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
+//@desc check if the entered group id is unique
+//@route GET /api/v1/studentgroups/checkgroupid/:id
+exports.checkGroupId = async (req, res) => {
+  try {
+    const studentGroup = await StudentGroups.findOne({
+      groupID: req.params.id,
+    });
+    if (studentGroup) {
+      return res
+        .status(200)
+        .json({ success: false, error: "Group id already exists" });
+    }
+    res.status(200).json({ success: true });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
   }

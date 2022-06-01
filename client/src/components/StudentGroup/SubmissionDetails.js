@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
 export default function SubmissionDetails() {
   const location = useLocation();
   const [submissionDetails, setSubmissionDetails] = useState(

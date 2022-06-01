@@ -6,14 +6,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./TopicReg.css";
 
-export default function TopicReg({ user }) {
+export default function TopicReg({ user, testLoad, testTopic }) {
   const API = process.env.REACT_APP_API;
   const [NewTopic, setNewTopic] = useState("");
-  const [hasTopic, sethasTopic] = useState("");
+  const [hasTopic, sethasTopic] = useState(testTopic || "");
   const [showAlert, setshowAlert] = useState(false);
   const [showError, setshowError] = useState(false);
 
-  const [Loading, setLoading] = useState(true);
+  const [Loading, setLoading] = useState(testLoad === false ? false : true);
 
   const fetchTopic = async () => {
     try {

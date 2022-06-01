@@ -36,12 +36,12 @@ export default function CreateSubmission() {
 
   const sendNewSubmissionTypeToAPI = () => {
     const tempobj = {
-      sTemplate,
-      tempName,
+      file: sTemplate,
+      name: tempName,
     };
     const markingobj = {
-      sMarkingScheme,
-      markingName,
+      file: sMarkingScheme,
+      name: markingName,
     };
     Axios.post(`${API}/AssignmentSubmissions`, {
       submissionName,
