@@ -2,7 +2,7 @@
 // import { useEffect, useState } from "react";
 // import Chat from "./Chat";
 
-// const socket = io.connect("http://localhost:5002");
+// const socket = io.connect("http://localhost:5001");
 
 // function ChatMenu({ studentGroup, user }) {
 //   const [username, setUsername] = useState("");
@@ -60,7 +60,7 @@ import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import Chat from "./Chat";
 
-const socket = io.connect("http://localhost:5002");
+const socket = io.connect("http://localhost:5001");
 
 function ChatMenu({ studentGroup, user }) {
   const [showChat, setShowChat] = useState(false);

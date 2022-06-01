@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import Header from "../components/view/Header";
 import CreateSubmission from "../components/AssignmentSubmission/CreateSubmission";
+import ViewSubmission from "../components/AssignmentSubmission/ViewSubmission";
+import UpdateSubmission from "../components/AssignmentSubmission/UpdateSubmission";
 
 export default function Admin() {
   return (
@@ -15,10 +17,16 @@ export default function Admin() {
       <Router>
         <Switch>
           {/* <Route exact path="/admin"></Route> */}
-          <Route exact path="/admin/create">
+          <Route exact path="/admin/createsubmission">
             <CreateSubmission />
           </Route>
-          <Redirect to="/admin/create" />
+          <Route exact path="/admin/getAllSubmissions">
+            <ViewSubmission />
+          </Route>
+          <Route exact path="/admin/updatesubmission">
+            <UpdateSubmission />
+          </Route>
+          <Redirect to="/admin/getAllSubmissions" />
         </Switch>
       </Router>
       <footer />

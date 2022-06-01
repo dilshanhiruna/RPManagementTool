@@ -12,6 +12,10 @@ import SupervisorDashboard from "../components/Staff/SupervisorDashboard";
 import SuperviosrRequests from "../components/Staff/SuperviosrRequests";
 import CoSuperviosrRequests from "../components/Staff/CoSuperviosrRequests";
 import ViewMyStudentGroups from "../components/Staff/ViewMyStudentGroups";
+import ViewStudentSubmissions from "../components/Staff/ViewStudentSubmissions";
+import PanelmHeader from "../components/view/PanelmHeader";
+import ViewStudentSubmissionsPanel from "../components/Staff/Panel-Member/ViewStudentSubmissionsPanel";
+import TopicRequrestsForPanel from "../components/Staff/Panel-Member/TopicRequrestsForPanel";
 
 export default function Staff() {
   const API = process.env.REACT_APP_API;
@@ -31,23 +35,39 @@ export default function Staff() {
 
   return (
     <div className="student__dashboard">
-      <StaffHeader userType={"Staff"} />
-      <Switch>
-        <Route exact path="/staff"></Route>
-        {/* <Route exact path="/supervisor">
-            <SupervisorDashboard user={user} />
-          </Route> */}
-        <Route exact path="/staff/supervisor/topicReq">
-          <SuperviosrRequests user={user} />
-        </Route>
-        <Route exact path="/staff/cosupervisor/topicReq">
-          <CoSuperviosrRequests user={user} />
-        </Route>
-        <Route exact path="/staff/mygroups">
-          <ViewMyStudentGroups user={user} />
-        </Route>
-        <Redirect to="/staff/mygroups" />
-      </Switch>
+      <Router>
+        {" "}
+        {user.staffType === "supervisor" ? (
+          <StaffHeader userType={"Staff"} />
+        ) : (
+          <PanelmHeader userType={"Staff"} />
+        )}
+        <Switch>
+          <Route exact path="/staff"></Route>
+          {/* routes of supervisor */}
+          <Route exact path="/staff/supervisor/topicReq">
+            <SuperviosrRequests user={user} />
+          </Route>
+          <Route exact path="/staff/cosupervisor/topicReq">
+            <CoSuperviosrRequests user={user} />
+          </Route>
+          <Route exact path="/staff/mygroups">
+            <ViewMyStudentGroups user={user} />
+          </Route>
+          <Route exact path="/staff/studentSubmissions">
+            <ViewStudentSubmissions user={user} />
+          </Route>
+          {/* routes of panele members */}
+          {/* <Route exact path="/staff/panelmember"></Route> */}
+          <Route exact path="/staff/panelmember/topicReq">
+            <TopicRequrestsForPanel user={user} />
+          </Route>
+          <Route exact path="/staff/panelmember/studentSubmissions">
+            <ViewStudentSubmissionsPanel user={user} />
+          </Route>
+          <Redirect to="/staff/mygroups" />
+        </Switch>
+      </Router>
 
       <footer />
     </div>

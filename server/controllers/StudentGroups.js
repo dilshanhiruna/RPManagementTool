@@ -1,6 +1,7 @@
 const StudentGroups = require("../models/StudentGroups");
 const User = require("../models/User");
 var mongoose = require("mongoose");
+const StudentSubmission = require("../models/StudentSubmission");
 
 //@desc create a student group
 //@route POST /api/v1/studentgroups
@@ -17,7 +18,10 @@ exports.createGroup = async (req, res) => {
     groupID: GroupID,
     groupClosed: null,
     researchTopic: null,
-    topicFeedback: null,
+    topicFeedback: {
+      approveOrReject: null,
+      feedback: null,
+    },
     topicDetailDocument: null,
     supervisor: null,
     supervisorStatus: "none",
@@ -226,6 +230,7 @@ exports.updatePanelmember = async (req, res) => {
 //@route PUT /api/v1/studentgroups/topicfeedback/:id
 exports.updateTopicFeedback = async (req, res) => {
   const { topicFeedback } = req.body;
+  const { currentSubmissionId } = req.body;
 
   try {
     const updatedStudentGroup = await StudentGroups.findByIdAndUpdate(
@@ -233,6 +238,11 @@ exports.updateTopicFeedback = async (req, res) => {
       { topicFeedback },
       { new: true }
     );
+
+    //update student submission as evaluated
+    await StudentSubmission.findByIdAndUpdate(currentSubmissionId, {
+      evaluated: true,
+    });
     res.status(200).json({ success: true, data: updatedStudentGroup });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
@@ -272,7 +282,7 @@ exports.getAllStudentGroups = async (req, res) => {
 exports.getStudentGroupById = async (req, res) => {
   try {
     const studentGroup = await StudentGroups.findById(req.params.id).populate(
-      "student1 student2 student3 student4 supervisor cosupervisor"
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
     );
 
     res.status(200).json({ success: true, data: studentGroup });
@@ -322,7 +332,9 @@ exports.getAcceptedGroupsOfSupervisor = async (req, res) => {
     const studentGroups = await StudentGroups.find({
       supervisor,
       supervisorStatus: "accepted",
-    }).populate("student1 student2 student3 student4 supervisor cosupervisor");
+    }).populate(
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
+    );
     res
       .status(200)
       .json({ success: true, data: studentGroups, type: "supervisor" });
@@ -340,10 +352,29 @@ exports.getAcceptedGroupsOfCoSupervisor = async (req, res) => {
     const studentGroups = await StudentGroups.find({
       cosupervisor,
       cosupervisorStatus: "accepted",
-    }).populate("student1 student2 student3 student4 supervisor cosupervisor");
+    }).populate(
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
+    );
     res
       .status(200)
       .json({ success: true, data: studentGroups, type: "cosupervisor" });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
+//@desc check if the entered group id is unique
+//@route GET /api/v1/studentgroups/checkgroupid/:id
+exports.checkGroupId = async (req, res) => {
+  try {
+    const studentGroup = await StudentGroups.findOne({
+      groupID: req.params.id,
+    });
+    if (studentGroup) {
+      return res
+        .status(200)
+        .json({ success: false, error: "Group id already exists" });
+    }
+    res.status(200).json({ success: true });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
   }

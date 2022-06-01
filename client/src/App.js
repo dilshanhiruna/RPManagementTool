@@ -5,6 +5,8 @@ import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import Student from "./routes/Student";
 import Staff from "./routes/Staff";
 import Admin from "./routes/Admin";
+import Signup from "./components/view/Signup";
+import Signin from "./components/view/Signin";
 // import Supervisor from "./routes/Supervisor";
 import LoginRouter from "./routes/LoginRouter";
 
@@ -27,35 +29,15 @@ function App() {
   //const [userType, setuserType] = useState("student");
 
   return (
-    // <Router>
-    //   <div className="App">
-    //     {userType === "student" ? <Student /> : ""}
-    //     {userType === "staff" ? <Staff /> : ""}
-    //     {userType === "admin" ? <Admin /> : ""}
-    //     {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
-    //   </div>
-    // </Router>
+    <Router>
+      <div className="App">
+        {userType === "student" ? <Student /> : ""}
+        {userType === "staff" ? <Staff /> : ""}
+        {userType === "admin" ? <Admin /> : ""}
 
-    <div className="App">
-      <BrowserRouter>
-      <div className="container"> 
-        <Switch>
-          {userType === "" ? <LoginRouter /> : ""}
-          {userType === "Student" ? <Student /> : ""}
-          {userType === "Admin" ? <Home /> : ""}
-          {userType === "Staff" ? <Staff /> : ""}
-          {/* {userType === "Supervisor" ? <Supervisor /> : ""}
-          {userType === "CoSupervisor" ? <CoSupervisor /> : ""} */}
-        </Switch>   
-        <Route path="/allusers" exact component ={Home}></Route>
-        <Route path="/add" component={CreateUser}></Route>
-        <Route path="/edit/:id" component={EditUser}></Route>
-        <Route path="/user/:id" component={UserDetails}></Route> 
-        {/* <Route path="/student" component={Student}></Route>  */}
-        </div>  
-      </BrowserRouter>
-    </div>
-
+        {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
+      </div>
+    </Router>
   );
 }
 
