@@ -41,20 +41,17 @@ const columns = [
   { id: "role", label: "Your Role", minWidth: 100, align: "center" },
   {
     id: "students",
-    label: "Students",
-    minWidth: 90,
+    label: "Members",
+    minWidth: 140,
     align: "center",
   },
-  // { id: "chat", label: "Chat", minWidth: 100, align: "center" },
 ];
 
 export default function ViewMyStudentGroups({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [openBackdrop, setOpenBackdrop] = React.useState(false);
-  const [confirmAction, setConfirmAction] = useState();
   const [pageIsLoadig, setPageIsLoading] = useState(true);
   const [openGroupMemberModal, setOpenGroupMemberModal] = useState(false);
   const [Students, setStudents] = useState([]);
@@ -64,65 +61,13 @@ export default function ViewMyStudentGroups({ user }) {
   const [_id, set_id] = useState();
   const [action, setAction] = useState();
 
-  //function to create obj from response
-  const createObjResponse = (res, data) => {
-    const studentsArray = [
-      data.student1,
-      data.student2 ? data.student2 : "",
-      data.student3 ? data.student3 : "",
-      data.student4 ? data.student4 : "",
-    ];
+  //calling server endpoint through use effect hook
+  useEffect(() => {
+    getMyGroups();
+  }, []);
 
-    let obj = {
-      _id: data._id,
-      groupID: data.groupID,
-      reTopic: data.researchTopic,
-      role: res.data.type,
-      students: studentsArray,
-    };
-    return obj;
-  };
-
-  // show group memebrs dialog
-  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    "& .MuiDialogContent-root": {
-      padding: theme.spacing(2),
-    },
-    "& .MuiDialogActions-root": {
-      padding: theme.spacing(1),
-    },
-  }));
-
-  const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props;
-
-    return (
-      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-        {children}
-        {onClose ? (
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </DialogTitle>
-    );
-  };
-
-  BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-  };
-  //function to get topic requests of the relevant supervisor
-  const getTopicReqs = async () => {
+  //function to get student groups of supervior and cosupervisor
+  const getMyGroups = async () => {
     try {
       let objArray = [];
 
@@ -157,11 +102,60 @@ export default function ViewMyStudentGroups({ user }) {
     }
   };
 
-  const handleCloseBackdrop = () => {
-    setOpenBackdrop(false);
+  //function to create obj from server response
+  const createObjResponse = (res, data) => {
+    const studentsArray = [
+      data.student1,
+      data.student2 ? data.student2 : "",
+      data.student3 ? data.student3 : "",
+      data.student4 ? data.student4 : "",
+    ];
+
+    let obj = {
+      _id: data._id,
+      groupID: data.groupID,
+      reTopic: data.researchTopic,
+      role: res.data.type,
+      students: studentsArray,
+    };
+    return obj;
   };
-  const handleToggle = () => {
-    setOpenBackdrop(!openBackdrop);
+  // show group memebrs dialog
+  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    "& .MuiDialogContent-root": {
+      padding: theme.spacing(2),
+    },
+    "& .MuiDialogActions-root": {
+      padding: theme.spacing(1),
+    },
+  }));
+
+  // create BootstrapDialogTitle component to display group name on chat
+  const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props;
+    return (
+      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+        {children}
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </DialogTitle>
+    );
+  };
+  BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
   };
 
   //function to open relevant student group chat
@@ -170,17 +164,19 @@ export default function ViewMyStudentGroups({ user }) {
     setGroupId(groupId);
     set_id(_id);
     setAction(action);
-    setOpenConfirmModal(true);
+  };
+  //suppoert functions for chat modal
+  const handleCloseBackdrop = () => {
+    setOpenBackdrop(false);
+  };
+  const handleToggle = () => {
+    setOpenBackdrop(!openBackdrop);
   };
 
-  useEffect(() => {
-    getTopicReqs();
-  }, []);
-
+  //functions to handle table pagination
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -195,6 +191,7 @@ export default function ViewMyStudentGroups({ user }) {
   const handleCloseOpenGroupMemberModal = () => {
     setOpenGroupMemberModal(false);
   };
+
   return (
     <>
       <div>
@@ -203,7 +200,7 @@ export default function ViewMyStudentGroups({ user }) {
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h3>Groups you have registered as supervisor or co-supervisor: </h3>
+            <h1 className="centerItems">Your Groups </h1>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -214,7 +211,6 @@ export default function ViewMyStudentGroups({ user }) {
                           key={column.id}
                           align={column.align}
                           style={{ minWidth: column.minWidth }}
-                          className="hash-table-border"
                         >
                           {column.label}
                         </TableCell>
@@ -243,7 +239,6 @@ export default function ViewMyStudentGroups({ user }) {
                                   <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    className="hash-table-border"
                                   >
                                     <Button
                                       onClick={() => {
@@ -253,11 +248,9 @@ export default function ViewMyStudentGroups({ user }) {
                                         );
                                       }}
                                     >
-                                      members
+                                      view
                                     </Button>
-                                    {/* <Button color="success">Chat</Button> */}
-                                    <br></br>
-                                    <Divider light />
+
                                     <IconButton
                                       color="success"
                                       onClick={() => {
@@ -273,22 +266,8 @@ export default function ViewMyStudentGroups({ user }) {
                                   </TableCell>
                                 );
                               }
-
-                              // if (column.id == "chat") {
-                              //   return (
-                              //     <TableCell
-                              //       key={column.id}
-                              //       align={column.align}
-                              //       className="hash-table-border"
-                              //     ></TableCell>
-                              //   );
-                              // }
                               return (
-                                <TableCell
-                                  key={column.id}
-                                  align={column.align}
-                                  className="hash-table-border"
-                                >
+                                <TableCell key={column.id} align={column.align}>
                                   {column.format && typeof value === "number"
                                     ? column.format(value)
                                     : value}

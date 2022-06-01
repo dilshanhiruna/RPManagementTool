@@ -9,7 +9,7 @@ import Signin from "./components/view/Signin";
 // import Supervisor from "./routes/Supervisor";
 
 function App() {
-  const [userType, setuserType] = useState("student");
+  const [userType, setuserType] = useState("staff");
   return (
     <Router>
       <div className="App">
