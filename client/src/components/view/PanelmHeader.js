@@ -50,6 +50,10 @@ export default function PanelmHeader({ userType }) {
                 backgroundColor: "rgb(60, 60, 60)",
               }}
               className="header__button"
+              onClick={() => {
+                localStorage.removeItem("token");
+                window.location.reload();
+              }}
             >
               Profile
             </Button>
