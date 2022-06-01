@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./CreateSubmission.css";
 import { styled } from "@mui/material/styles";
+import Collapse from "@mui/material/Collapse";
 import Axios from "axios";
 import {
   FormControl,
@@ -31,10 +32,25 @@ export default function CreateSubmission() {
   const [markingName, setmarkingName] = useState("");
 
   const [openAlert, setopenAlert] = useState(false);
+  const [showError, setshowError] = useState(false);
+
   const API = process.env.REACT_APP_API;
   let history = useHistory();
 
-  const sendNewSubmissionTypeToAPI = () => {
+  const sendNewSubmissionTypeToAPI = (e) => {
+    e.preventDefault();
+    if (
+      submissionName == null ||
+      sType == null ||
+      sDescription.length < 1 ||
+      sDeadline == null
+    ) {
+      setshowError(true);
+      setTimeout(() => {
+        setshowError(false);
+      }, 5000);
+      return;
+    }
     const tempobj = {
       file: sTemplate,
       name: tempName,
@@ -228,7 +244,21 @@ export default function CreateSubmission() {
             />
           </FormControl>
         </div>
-
+        <Collapse in={showError}>
+          <Alert
+            hidden
+            severity="error"
+            color="error"
+            sx={{
+              width: "100%",
+              marginTop: "1rem",
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
+            Error, please filled the required details!
+          </Alert>
+        </Collapse>
         <div className="Btn">
           <div>
             <FormControl fullWidth>
@@ -248,6 +278,7 @@ export default function CreateSubmission() {
             </FormControl>
           </div>
         </div>
+
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={openAlert}
