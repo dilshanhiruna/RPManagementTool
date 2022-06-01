@@ -4,6 +4,8 @@ import { Switch, BrowserRouter as Router } from "react-router-dom";
 import Student from "./routes/Student";
 import Staff from "./routes/Staff";
 import Admin from "./routes/Admin";
+import Signup from "./components/view/Signup";
+import Signin from "./components/view/Signin";
 // import Supervisor from "./routes/Supervisor";
 
 function App() {
@@ -14,6 +16,7 @@ function App() {
         {userType === "student" ? <Student /> : ""}
         {userType === "staff" ? <Staff /> : ""}
         {userType === "admin" ? <Admin /> : ""}
+
         {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
       </div>
     </Router>

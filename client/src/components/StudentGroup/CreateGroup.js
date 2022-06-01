@@ -1,8 +1,10 @@
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, CircularProgress } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CreateGroup.css";
@@ -18,6 +20,7 @@ export default function CreateGroup({ user }) {
     { id: user._id, name: user.name },
   ]);
   const [showError, setshowError] = useState(false);
+  const [groupIDValid, setgroupIDValid] = useState(true);
 
   const fetchStudentsByKeyword = async (keyword) => {
     if (keyword.length < 3) {
@@ -26,6 +29,22 @@ export default function CreateGroup({ user }) {
     try {
       const response = await axios.get(`${API}/users/students/${keyword}`);
       setStudent(response.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const checkGroupID = async (id) => {
+    setGroupID("");
+    try {
+      const response = await axios.get(
+        `${API}/studentgroups/checkgroupid/${id}`
+      );
+      if (!response.data.success) {
+        setgroupIDValid(false);
+      } else {
+        setGroupID(id);
+        setgroupIDValid(true);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -82,8 +101,11 @@ export default function CreateGroup({ user }) {
             label="Enter Group ID"
             variant="outlined"
             sx={{ width: 250 }}
-            onChange={(e) => setGroupID(e.target.value)}
+            onChange={(e) => checkGroupID(e.target.value)}
+            error={!groupIDValid}
+            helperText={!groupIDValid ? "This group id already exists" : ""}
           />
+
           <h3>Search members to your group</h3>
           <div style={{ display: "flex" }}>
             <Autocomplete

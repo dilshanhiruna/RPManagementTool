@@ -13,48 +13,59 @@ import {
   Snackbar,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function CreateSubmission() {
-  const [sType, setsType] = useState("");
-  const [submissionName, setsubmissionName] = useState("");
-  const [sDescription, setsDescription] = useState("");
-  const [sTemplate, setsTemplate] = useState();
-  const [sMarkingScheme, setsMarkingScheme] = useState();
-  const [sDeadline, setsDeadline] = useState("");
-  const [sVisibility, setsVisibility] = useState(false);
-  const [tempName, settempName] = useState("");
-  const [markingName, setmarkingName] = useState("");
+export default function UpdateSubmission() {
+  const location = useLocation();
+  // console.log(location.id);
+  const [sType, setsType] = useState(location.sType);
+  const [submissionName, setsubmissionName] = useState(location.submissionName);
+  const [sDescription, setsDescription] = useState(location.sDescription);
+  const [sTemplate, setsTemplate] = useState(location.sTemplate.file);
+  const [sMarkingScheme, setsMarkingScheme] = useState(
+    location.sMarkingScheme.file
+  );
+  const [sDeadline, setsDeadline] = useState(location.sDeadline);
+  const [tempName, settempName] = useState(location.sTemplate.name);
+  const [markingName, setmarkingName] = useState(location.sMarkingScheme.name);
 
   const [openAlert, setopenAlert] = useState(false);
   const API = process.env.REACT_APP_API;
-  let history = useHistory();
 
-  const sendNewSubmissionTypeToAPI = () => {
+  const updateSubmissionTypeToAPI = () => {
     const tempobj = {
       file: sTemplate,
       name: tempName,
     };
+    console.log("tempobj : ");
+    console.log(tempobj);
+    console.log("tempName : ");
+    console.log(tempName);
+    // console.log("sTemplate : "+sTemplate);
     const markingobj = {
       file: sMarkingScheme,
       name: markingName,
     };
-    Axios.post(`${API}/AssignmentSubmissions`, {
-      submissionName,
-      sType,
+    console.log("markingobj : " + markingobj);
+    console.log("markingName : " + markingobj.markingName);
+    // console.log("sMarkingScheme : "+sMarkingScheme);
+    const data = {
       sDescription,
-      sDeadline,
       sTemplate: tempobj,
       sMarkingScheme: markingobj,
-      sVisibility,
-    })
+      sDeadline,
+    };
+    console.log("data : ");
+    console.log(data);
+
+    //update theater details
+    Axios.put(`${API}/AssignmentSubmissions/${location.id}`, data)
       .then((res) => {
         setopenAlert(true);
-        history.push("/admin/getAllSubmissions");
       })
       .catch((err) => {
         console.log(err);
@@ -88,6 +99,7 @@ export default function CreateSubmission() {
                 setsType(event.target.value);
               }}
               style={{ width: "350px" }}
+              disabled
             >
               <MenuItem value={"Document"}>Document</MenuItem>
               <MenuItem value={"Presentation"}>Presentation</MenuItem>
@@ -108,6 +120,7 @@ export default function CreateSubmission() {
                 setsubmissionName(event.target.value);
               }}
               style={{ width: "350px" }}
+              disabled
             >
               <MenuItem value={"Topic Assignment Form"}>
                 Topic Assignment Form
@@ -152,7 +165,7 @@ export default function CreateSubmission() {
                   const file = event.target.files[0];
 
                   settempName(event.target.files[0].name);
-                  console.log(tempName);
+                  // console.log(tempName);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
@@ -186,7 +199,7 @@ export default function CreateSubmission() {
                   // Get a reference to the file
                   const fileM = event.target.files[0];
                   setmarkingName(event.target.files[0].name);
-                  console.log(markingName);
+                  // console.log(markingName);
                   // Encode the file using the FileReader API
                   const reader = new FileReader();
                   reader.onloadend = () => {
@@ -202,7 +215,7 @@ export default function CreateSubmission() {
                   component="span"
                   style={{ width: "80px", height: "37px" }}
                 >
-                  Upload
+                  upload
                 </Button>
                 <h5 style={{ marginLeft: "15px" }}>{markingName}</h5>
               </div>
@@ -240,9 +253,9 @@ export default function CreateSubmission() {
                   borderRadius: "40px",
                   marginTop: "35px",
                 }}
-                onClick={sendNewSubmissionTypeToAPI}
+                onClick={updateSubmissionTypeToAPI}
               >
-                Create Submission
+                Update Submission
               </Button>
             </FormControl>
           </div>
@@ -250,11 +263,11 @@ export default function CreateSubmission() {
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           open={openAlert}
-          autoHideDuration={5000}
+          autoHideDuration={4000}
           onClose={handleAlertClose}
         >
           <Alert severity="success" sx={{ width: "100%" }}>
-            Submission created successfully!
+            Submission updated successfully!
           </Alert>
         </Snackbar>
       </div>

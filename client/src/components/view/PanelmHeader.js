@@ -3,9 +3,8 @@ import Button from "@mui/material/Button";
 import "./Header.css";
 import { useHistory } from "react-router-dom";
 
-export default function StaffHeader({ userType }) {
+export default function PanelmHeader({ userType }) {
   const history = useHistory();
-  const redirect = () => {};
   return (
     <>
       <header>
@@ -26,34 +25,16 @@ export default function StaffHeader({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  history.push("/staff/mygrosups");
+                  history.push("/staff/panelmember/topicReq");
                 }}
               >
-                My Groups
+                Topic Req
               </Button>
               <Button
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  history.push("/staff/supervisor/topicReq");
-                }}
-              >
-                Supervisor Req
-              </Button>
-              <Button
-                variant="outlined"
-                className="header__button"
-                onClick={() => {
-                  history.push("/staff/cosupervisor/topicReq");
-                }}
-              >
-                Co-Supervisor Req
-              </Button>
-              <Button
-                variant="outlined"
-                className="header__button"
-                onClick={() => {
-                  history.push("/staff/studentSubmissions");
+                  history.push("/staff/panelmember/studentSubmissions");
                 }}
               >
                 Submissions

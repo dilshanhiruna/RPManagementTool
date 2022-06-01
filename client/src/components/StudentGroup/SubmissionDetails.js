@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
 export default function SubmissionDetails() {
   const location = useLocation();
   const [submissionDetails, setSubmissionDetails] = useState(
@@ -14,6 +13,7 @@ export default function SubmissionDetails() {
       <div> {submissionDetails.sDescription}</div>
       <div> {submissionDetails.sTemplate}</div>
       <div> {submissionDetails.sMarkingScheme}</div>
+      <div> {submissionDetails.sDeadline}</div>
       <div> {submissionDetails.sDeadline}</div>
     </>
   );

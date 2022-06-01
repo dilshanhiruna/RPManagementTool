@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const Submissions = new Schema({
+const SubmissionDetails = new Schema({
   submissionName: {
     type: String,
     require: true,
@@ -14,10 +14,12 @@ const Submissions = new Schema({
     type: String,
   },
   sTemplate: {
-    type: String,
+    // type: String,
+    type: Object,
   },
   sMarkingScheme: {
-    type: String,
+    // type: String,
+    type: Object,
   },
   sDeadline: {
     type: String,
@@ -26,5 +28,5 @@ const Submissions = new Schema({
     type: Boolean,
   },
 });
-const submission = mongoose.model("Submissions", Submissions);
+const submission = mongoose.model("SubmissionDetails", SubmissionDetails);
 module.exports = submission;
