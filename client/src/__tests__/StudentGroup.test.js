@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CreateGroup from "../components/StudentGroup/CreateGroup";
 
@@ -20,4 +20,12 @@ test("Display user's name on the create group members chips", async () => {
   render(<CreateGroup user={user} />);
   const name = screen.getByText(/Andaraweera D.H./i);
   expect(name).toBeInTheDocument();
+});
+
+test("Check whether alerts works if grp id is empty in create group", async () => {
+  render(<CreateGroup user={user} />);
+  const btn = screen.getByRole("button", { name: "ADD" });
+  fireEvent.click(btn);
+  const groupID = screen.getByText(/Error, please check again!/i);
+  expect(groupID).toBeInTheDocument();
 });
