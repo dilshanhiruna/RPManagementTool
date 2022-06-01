@@ -1,6 +1,7 @@
 const StudentGroups = require("../models/StudentGroups");
 const User = require("../models/User");
 var mongoose = require("mongoose");
+const StudentSubmission = require("../models/StudentSubmission");
 
 //@desc create a student group
 //@route POST /api/v1/studentgroups
@@ -226,6 +227,7 @@ exports.updatePanelmember = async (req, res) => {
 //@route PUT /api/v1/studentgroups/topicfeedback/:id
 exports.updateTopicFeedback = async (req, res) => {
   const { topicFeedback } = req.body;
+  const { currentSubmissionId } = req.body;
 
   try {
     const updatedStudentGroup = await StudentGroups.findByIdAndUpdate(
@@ -233,6 +235,11 @@ exports.updateTopicFeedback = async (req, res) => {
       { topicFeedback },
       { new: true }
     );
+
+    //update student submission as evaluated
+    await StudentSubmission.findByIdAndUpdate(currentSubmissionId, {
+      evaluated: true,
+    });
     res.status(200).json({ success: true, data: updatedStudentGroup });
   } catch (err) {
     res.status(400).json({ success: false, error: err });

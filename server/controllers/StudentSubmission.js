@@ -116,6 +116,26 @@ exports.getSubmissionsOfPanelMember = async (req, res) => {
   }
 };
 
+//@desc get document submitted as topic requests for panel members
+//@route GET /api/v1/studentSubmission/panel/topic/:id
+exports.getTopicSubmissionsOfPanelMember = async (req, res) => {
+  try {
+    const panelmember = req.params.id;
+    const studentSubmissions = await StudentSubmission.find({
+      panelmember,
+      evaluated: false,
+    })
+      .populate({
+        path: "submissionDetailsId",
+        match: { sType: { $eq: "Topic" } },
+      })
+      .populate("studentGroupId");
+    res.status(200).json({ success: true, data: studentSubmissions });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
+
 //@desc update obtainedmarks filed (CAN BE USED TO BOTH ADD AND UPDATE MARKS FUNCTIONS)
 //@route put /api/v1/studentSubmission/addMarks/:id
 exports.addMarks = async (req, res) => {

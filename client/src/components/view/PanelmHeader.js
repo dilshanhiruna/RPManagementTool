@@ -28,7 +28,7 @@ export default function PanelmHeader({ userType }) {
                   history.push("/staff/panelmember/topicReq");
                 }}
               >
-                Supervisor Req
+                Topic Req
               </Button>
               <Button
                 variant="outlined"

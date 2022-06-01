@@ -32,6 +32,10 @@ const StudentSubmissionSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  evaluated: {
+    type: Boolean,
+    default: false,
+  },
 });
 const StudentSubmission = mongoose.model(
   "StudentSubmission",

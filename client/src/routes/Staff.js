@@ -15,6 +15,7 @@ import ViewMyStudentGroups from "../components/Staff/ViewMyStudentGroups";
 import ViewStudentSubmissions from "../components/Staff/ViewStudentSubmissions";
 import PanelmHeader from "../components/view/PanelmHeader";
 import ViewStudentSubmissionsPanel from "../components/Staff/Panel-Member/ViewStudentSubmissionsPanel";
+import TopicRequrestsForPanel from "../components/Staff/Panel-Member/TopicRequrestsForPanel";
 
 export default function Staff() {
   const API = process.env.REACT_APP_API;
@@ -27,7 +28,7 @@ export default function Staff() {
     password: "password",
     role: "staff",
     interestedResearchField: "Artificial Intelligence and Machine Learning",
-    staffType: "supervisors",
+    staffType: "panel",
     studentGrouped: null,
     studentGroupID: null,
   };
@@ -59,7 +60,7 @@ export default function Staff() {
           {/* routes of panele members */}
           {/* <Route exact path="/staff/panelmember"></Route> */}
           <Route exact path="/staff/panelmember/topicReq">
-            <ViewStudentSubmissionsPanel user={user} />
+            <TopicRequrestsForPanel user={user} />
           </Route>
           <Route exact path="/staff/panelmember/studentSubmissions">
             <ViewStudentSubmissionsPanel user={user} />
