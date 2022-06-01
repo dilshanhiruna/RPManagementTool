@@ -271,7 +271,7 @@ export default function Submissions({ studentGroup }) {
           <h4>
             Topic: {studentGroup.researchTopic}
             {studentGroup.topicFeedback &&
-            studentGroup.topicFeedback.approveOrReject == "Approved" ? (
+            studentGroup.topicFeedback?.approveOrReject === "Approved" ? (
               <>
                 <CheckCircleOutlineRoundedIcon
                   color="success"
@@ -298,7 +298,7 @@ export default function Submissions({ studentGroup }) {
               ""
             )}
             {studentGroup.topicFeedback &&
-            studentGroup.topicFeedback.approveOrReject == "Rejected" ? (
+            studentGroup.topicFeedback?.approveOrReject === "Rejected" ? (
               <>
                 <ErrorOutlineRoundedIcon
                   color="error"
@@ -467,11 +467,11 @@ export default function Submissions({ studentGroup }) {
                 id="customized-dialog-title"
                 onClose={openViewFeedbackModal}
               >
-                Topic Feedback - ({studentGroup.topicFeedback.approveOrReject})
+                Topic Feedback - ({studentGroup.topicFeedback?.approveOrReject})
               </BootstrapDialogTitle>
               <DialogContent dividers>
                 <Typography sx={{ minWidth: 400 }} gutterBottom>
-                  {studentGroup.topicFeedback.feedback}
+                  {studentGroup.topicFeedback?.feedback}
                 </Typography>
               </DialogContent>
             </BootstrapDialog>
