@@ -32,7 +32,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {userType === "" ? <Login /> : ""}
+        {userType === "" ? <Signin /> : ""}
         {userType === "student" ? <Student /> : ""}
         {userType === "staff" ? <Staff /> : ""}
         {userType === "admin" ? <Admin /> : ""}
