@@ -18,7 +18,10 @@ exports.createGroup = async (req, res) => {
     groupID: GroupID,
     groupClosed: null,
     researchTopic: null,
-    topicFeedback: null,
+    topicFeedback: {
+      approveOrReject: null,
+      feedback: null,
+    },
     topicDetailDocument: null,
     supervisor: null,
     supervisorStatus: "none",
@@ -279,7 +282,7 @@ exports.getAllStudentGroups = async (req, res) => {
 exports.getStudentGroupById = async (req, res) => {
   try {
     const studentGroup = await StudentGroups.findById(req.params.id).populate(
-      "student1 student2 student3 student4 supervisor cosupervisor"
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
     );
 
     res.status(200).json({ success: true, data: studentGroup });
@@ -329,7 +332,9 @@ exports.getAcceptedGroupsOfSupervisor = async (req, res) => {
     const studentGroups = await StudentGroups.find({
       supervisor,
       supervisorStatus: "accepted",
-    }).populate("student1 student2 student3 student4 supervisor cosupervisor");
+    }).populate(
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
+    );
     res
       .status(200)
       .json({ success: true, data: studentGroups, type: "supervisor" });
@@ -347,7 +352,9 @@ exports.getAcceptedGroupsOfCoSupervisor = async (req, res) => {
     const studentGroups = await StudentGroups.find({
       cosupervisor,
       cosupervisorStatus: "accepted",
-    }).populate("student1 student2 student3 student4 supervisor cosupervisor");
+    }).populate(
+      "student1 student2 student3 student4 supervisor cosupervisor panelmember"
+    );
     res
       .status(200)
       .json({ success: true, data: studentGroups, type: "cosupervisor" });

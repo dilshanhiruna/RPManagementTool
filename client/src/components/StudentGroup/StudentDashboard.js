@@ -17,6 +17,7 @@ import Check from "@mui/icons-material/Check";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import TextSnippetRoundedIcon from "@mui/icons-material/TextSnippetRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import PeopleIcon from "@mui/icons-material/People";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
@@ -104,6 +105,9 @@ export default function StudentDashboard({ user }) {
         if (studentGroup.cosupervisorStatus === "accepted") {
           setactiveStep(3);
         }
+        if (studentGroup.panelmember) {
+          setactiveStep(4);
+        }
         setLoading(false);
       });
     } catch (err) {
@@ -174,6 +178,7 @@ export default function StudentDashboard({ user }) {
     "Topic Registration",
     "Supervisor",
     "Co-Supervisor",
+    "Panel Member",
   ];
 
   const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
@@ -277,6 +282,7 @@ export default function StudentDashboard({ user }) {
       2: <TextSnippetRoundedIcon />,
       3: <PersonRoundedIcon />,
       4: <PersonRoundedIcon />,
+      5: <PeopleIcon />,
     };
 
     return (

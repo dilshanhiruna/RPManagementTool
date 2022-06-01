@@ -28,7 +28,7 @@ export default function Staff() {
     password: "password",
     role: "staff",
     interestedResearchField: "Artificial Intelligence and Machine Learning",
-    staffType: "panel",
+    staffType: "supervisor",
     studentGrouped: null,
     studentGroupID: null,
   };
