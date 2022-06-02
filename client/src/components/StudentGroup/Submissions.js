@@ -31,7 +31,12 @@ const API = process.env.REACT_APP_API;
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import styledComponents from "styled-components";
+import { Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 //colors for dropzone
 const getColor = (props) => {
   if (props.isDragAccept) {
@@ -78,6 +83,9 @@ export default function Submissions({ studentGroup }) {
   const [fileIsLoadig, setFileIsLoading] = useState(true);
   const [viewFeedbackModal, setviewFeedbackModal] = useState(false);
 
+  //for confirmation snackbar
+  const [openAlert, setopenAlert] = useState(false);
+  const [showErrorr, setshowErrorr] = useState(false);
   //new styled dropzone component
   function StyledDropzone(props) {
     let submissionObject = {
@@ -294,10 +302,16 @@ export default function Submissions({ studentGroup }) {
         submissionObj
       );
       if (result.data.success) {
-        alert("submission success");
+        // alert("submission success");
+        setopenAlert(true);
+        setshowErrorr(false);
+
         setOpenConfirmModal(false);
       } else {
-        alert("error");
+        // alert("error");
+        setopenAlert(true);
+        setshowErrorr(true);
+
         setOpenConfirmModal(false);
       }
     } catch (err) {
@@ -352,6 +366,13 @@ export default function Submissions({ studentGroup }) {
     }
   };
 
+  //function to close confirmation snackbar
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setopenAlert(false);
+  };
   return (
     <>
       <div>
@@ -473,7 +494,7 @@ export default function Submissions({ studentGroup }) {
               </DialogTitle>
               <DialogContent>
                 <DialogContentText sx={{ marginBottom: 1 }}>
-                  <Chip label={`Type:${selectedSubmissionDetail.sType}`} />
+                  <Chip label={`Type: ${selectedSubmissionDetail.sType}`} />
                   <Chip
                     label={`Deadline: ${selectedSubmissionDetail.sDeadline}`}
                     color="warning"
@@ -572,6 +593,22 @@ export default function Submissions({ studentGroup }) {
             </BootstrapDialog>
           </div>
         </div>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={openAlert}
+          autoHideDuration={5000}
+          onClose={handleAlertClose}
+        >
+          {showErrorr ? (
+            <Alert severity="error" sx={{ width: "100%" }}>
+              Error Ocuured!
+            </Alert>
+          ) : (
+            <Alert severity="success" sx={{ width: "100%" }}>
+              Submission success!
+            </Alert>
+          )}
+        </Snackbar>
         <Box sx={{ maxWidth: 400 }}></Box>
       </div>
     </>
