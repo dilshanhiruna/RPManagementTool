@@ -15,22 +15,7 @@ import StudentDashboard from "../components/StudentGroup/StudentDashboard";
 import StudentHeader from "../components/view/StudentHeader";
 import SubmissionDetails from "../components/StudentGroup/SubmissionDetails";
 
-export default function Student() {
-  const API = process.env.REACT_APP_API;
-
-  const user = {
-    _id: "628a4cd9c334a17636b35847",
-    uid: "IT19963884",
-    name: "Andaraweera D.H.",
-    email: "it19963884@my.sliit.lk",
-    password: "password",
-    role: "student",
-    interestedResearchField: null,
-    staffType: null,
-    studentGrouped: true,
-    studentGroupID: "628e55274a2760fe44048084",
-  };
-
+export default function Student({ user }) {
   return (
     <div className="student__dashboard">
       <StudentHeader userType={"Student"} />

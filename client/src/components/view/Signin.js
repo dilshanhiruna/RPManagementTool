@@ -5,13 +5,19 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import MLink from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
+import Axios from "axios";
+import { Link } from "react-router-dom";
+//import styles from "./styles.module.css";
+import { useHistory } from "react-router-dom";
+const API = process.env.REACT_APP_API;
 
 function Copyright(props) {
   return (
@@ -22,9 +28,9 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="">
+      <MLink color="inherit" href="">
         RPMT
-      </Link>{" "}
+      </MLink>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -34,6 +40,14 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Signin() {
+  // const [data, setData] = useState({ email: "", password: "" });
+  // const [error, setError] = useState("");
+  // const location = useHistory();
+
+  // const handleChange = ({ currentTarget: input }) => {
+  // 	setData({ ...data, [input.name]: input.value });
+  // };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -41,6 +55,27 @@ export default function Signin() {
       email: data.get("email"),
       password: data.get("password"),
     });
+
+    const reqBody = {
+      email: data.get("email"),
+      password: data.get("password"),
+    };
+
+    Axios.post(`${API}/auth/userlogin`, reqBody)
+      .then((res) => {
+        localStorage.setItem("token", res.data.data);
+        window.location = "/";
+        console.log(res.data.data);
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          //setError(error.response.data.message);
+        }
+      });
   };
 
   return (
