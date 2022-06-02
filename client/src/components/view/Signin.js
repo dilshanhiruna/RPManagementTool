@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import MLink from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -16,7 +16,7 @@ import { useState } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 //import styles from "./styles.module.css";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 const API = process.env.REACT_APP_API;
 
 function Copyright(props) {
@@ -28,9 +28,9 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="">
+      <MLink color="inherit" href="">
         RPMT
-      </Link>{" "}
+      </MLink>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -40,14 +40,13 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Signin() {
-
   // const [data, setData] = useState({ email: "", password: "" });
-	// const [error, setError] = useState("");
-	// const location = useHistory();
+  // const [error, setError] = useState("");
+  // const location = useHistory();
 
   // const handleChange = ({ currentTarget: input }) => {
-	// 	setData({ ...data, [input.name]: input.value });
-	// };
+  // 	setData({ ...data, [input.name]: input.value });
+  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -63,24 +62,21 @@ export default function Signin() {
     };
 
     Axios.post(`${API}/auth/userlogin`, reqBody)
-		.then((res) => {
-		  alert("Logged In");
-		localStorage.setItem("token", res.data.data);
-		window.location = "/";
-		console.log(res.data.data)
-		})
-		.catch((error) => {
-			if (
-				error.response &&
-				error.response.status >= 400 &&
-				error.response.status <= 500
-			) {
-				//setError(error.response.data.message);
-			}
-		});
-
+      .then((res) => {
+        localStorage.setItem("token", res.data.data);
+        window.location = "/";
+        console.log(res.data.data);
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          //setError(error.response.data.message);
+        }
+      });
   };
-
 
   return (
     <ThemeProvider theme={theme}>

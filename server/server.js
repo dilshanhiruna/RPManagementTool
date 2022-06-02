@@ -1,10 +1,8 @@
 const express = require("express");
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-require("./common/db")();
-require("dotenv").config();
 const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
@@ -29,11 +27,11 @@ app.use(bodyParser.json());
 // Route files
 const studentGroups = require("./routes/StudentGroups");
 const user = require("./routes/User");
-const supervisorRequests = require("./routes/supervisorRequests");
+const supervisorRequests = require("./routes/SupervisorRequests");
 const cosupervisorRequests = require("./routes/CoSupervisorRequests");
 const submissions = require("./routes/Submissions");
 //const userRoutes = require('./routes/User');
-const authRoutes = require("./routes/Auth");
+const authRoutes = require("./routes/auth");
 const studentSubmission = require("./routes/StudentSubmission");
 
 // Mount routers
@@ -48,7 +46,7 @@ app.use("/api/v1/auth", authRoutes);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:1234",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
