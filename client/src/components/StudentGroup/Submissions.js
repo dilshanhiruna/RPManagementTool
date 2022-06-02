@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./Submissions.css";
 import Box from "@mui/material/Box";
 import { Chip, Divider } from "@mui/material";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SubmissionItem from "./SubmissionItem";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 import { LinearProgress, CircularProgress } from "@mui/material";
 import {
   Dialog,
@@ -18,9 +19,16 @@ import {
   DialogActions,
 } from "@mui/material";
 import FileBase64 from "react-file-base64";
+import "./Submissions.css";
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import { triggerBase64Download } from "common-base64-downloader-react";
+import axios from "axios";
 
 const API = process.env.REACT_APP_API;
-import axios from "axios";
+
 export default function Submissions({ studentGroup }) {
   const [Group, setGroup] = useState(studentGroup);
   const [submissionDetails, setSubmissionDetails] = useState([]);
@@ -30,7 +38,9 @@ export default function Submissions({ studentGroup }) {
     useState(false);
   const [studentSubmission, setStudentSubmission] = useState({});
   const [existingSubmission, setExistingSubmission] = useState(null);
+  const [base64File, setBase64File] = useState();
   const [fileIsLoadig, setFileIsLoading] = useState(true);
+  const [viewFeedbackModal, setviewFeedbackModal] = useState(false);
 
   // Submission Types
   // TopicAssesmentForm
@@ -82,15 +92,71 @@ export default function Submissions({ studentGroup }) {
           >
             Submit
           </Button>
-          <Button size="small" variant="text">
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={() => {
+              triggerBase64Download(
+                submissionDetail.sTemplate.file,
+                `${submissionDetail.submissionName} template`
+              );
+            }}
+          >
             Template
           </Button>
-          <Button size="small" variant="text">
+          {/* <Button
+            size="small"
+            variant="text"
+            onClick={() => {
+              triggerBase64Download(
+                submissionDetail.sMarkingScheme.file,
+                `${submissionDetail.submissionName} marking scheme`
+              );
+            }}
+          >
             Marking
-          </Button>
+          </Button> */}
         </CardActions>
       </Card>
     );
+  };
+
+  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    "& .MuiDialogContent-root": {
+      padding: theme.spacing(2),
+    },
+    "& .MuiDialogActions-root": {
+      padding: theme.spacing(1),
+    },
+  }));
+
+  const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props;
+
+    return (
+      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+        {children}
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </DialogTitle>
+    );
+  };
+
+  BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
   };
 
   // function to get active submission details from db
@@ -117,6 +183,7 @@ export default function Submissions({ studentGroup }) {
         submissionObj
       );
       setExistingSubmission(result.data.data);
+      setBase64File(result.data.data.file.base64);
       // console.log("olaaaaaaa" + result.data.data);
       // setPageIsLoading(false);
     } catch (err) {
@@ -179,15 +246,85 @@ export default function Submissions({ studentGroup }) {
     setExistingSubmission(null);
   };
 
+  //function to download uploaded student submissions
+  // const downloadStudentSubmission = async () => {
+  //   const base64File = existingSubmission.file.base64;
+  // };
+
   useEffect(() => {
     getSubmissionDetails();
   }, []);
+
+  const openViewFeedbackModal = (submissionDetail) => {
+    if (viewFeedbackModal) {
+      setviewFeedbackModal(false);
+    } else {
+      setviewFeedbackModal(true);
+    }
+  };
+
   return (
     <>
       <div>
         <div style={{ textAlign: "left" }}>
-          <h4>Group ID: {studentGroup.groupID} </h4>
-          <h4>Topic: {studentGroup.researchTopic}</h4>
+          <h4>Group ID: {studentGroup.groupID}</h4>
+          <h4>
+            Topic: {studentGroup.researchTopic}
+            {studentGroup.topicFeedback &&
+            studentGroup.topicFeedback?.approveOrReject === "Approved" ? (
+              <>
+                <CheckCircleOutlineRoundedIcon
+                  color="success"
+                  sx={{
+                    fontSize: "15px",
+                    marginLeft: 1,
+                    position: "relative",
+                    top: 3,
+                  }}
+                />
+                <Chip
+                  label="View Feedback"
+                  size="small"
+                  sx={{
+                    marginLeft: 1,
+                    fontSize: "10px",
+                  }}
+                  onClick={() => {
+                    openViewFeedbackModal();
+                  }}
+                />
+              </>
+            ) : (
+              ""
+            )}
+            {studentGroup.topicFeedback &&
+            studentGroup.topicFeedback?.approveOrReject === "Rejected" ? (
+              <>
+                <ErrorOutlineRoundedIcon
+                  color="error"
+                  sx={{
+                    fontSize: "15px",
+                    marginLeft: 1,
+                    position: "relative",
+                    top: 3,
+                  }}
+                />
+                <Chip
+                  label="View Feedback"
+                  size="small"
+                  sx={{
+                    marginLeft: 1,
+                    fontSize: "10px",
+                  }}
+                  onClick={() => {
+                    openViewFeedbackModal();
+                  }}
+                />
+              </>
+            ) : (
+              ""
+            )}
+          </h4>
           <h4>
             Supervisor :
             {studentGroup.supervisor?.name
@@ -277,8 +414,18 @@ export default function Submissions({ studentGroup }) {
                           variant="contained"
                         >
                           Remove
-                        </Button>{" "}
-                        {existingSubmission.file.name}
+                        </Button>
+                        <Button
+                          style={{ textTransform: "none" }}
+                          onClick={() => {
+                            triggerBase64Download(
+                              base64File,
+                              existingSubmission.file.name
+                            );
+                          }}
+                        >
+                          {existingSubmission.file.name}
+                        </Button>
                       </>
                     ) : (
                       <FileBase64
@@ -310,6 +457,24 @@ export default function Submissions({ studentGroup }) {
                 </Button>
               </DialogActions>
             </Dialog>
+
+            <BootstrapDialog
+              onClose={openViewFeedbackModal}
+              aria-labelledby="customized-dialog-title"
+              open={viewFeedbackModal}
+            >
+              <BootstrapDialogTitle
+                id="customized-dialog-title"
+                onClose={openViewFeedbackModal}
+              >
+                Topic Feedback - ({studentGroup.topicFeedback?.approveOrReject})
+              </BootstrapDialogTitle>
+              <DialogContent dividers>
+                <Typography sx={{ minWidth: 400 }} gutterBottom>
+                  {studentGroup.topicFeedback?.feedback}
+                </Typography>
+              </DialogContent>
+            </BootstrapDialog>
           </div>
         </div>
         <Box sx={{ maxWidth: 400 }}></Box>

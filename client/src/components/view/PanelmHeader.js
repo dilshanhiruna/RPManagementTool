@@ -5,9 +5,8 @@ import MenuItem from "@mui/material/MenuItem";
 import "./Header.css";
 import { useHistory } from "react-router-dom";
 
-export default function StudentHeader({ userType }) {
-  let history = useHistory();
-
+export default function PanelmHeader({ userType }) {
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -16,7 +15,6 @@ export default function StudentHeader({ userType }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return (
     <>
       <header>
@@ -37,28 +35,19 @@ export default function StudentHeader({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  history.push("/student");
+                  history.push("/staff/panelmember/topicReq");
                 }}
               >
-                Dashboard
+                Topic Req
               </Button>
               <Button
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  history.push("/student/topicreg");
+                  history.push("/staff/panelmember/studentSubmissions");
                 }}
               >
-                Our Topic
-              </Button>
-              <Button
-                variant="outlined"
-                className="header__button"
-                onClick={() => {
-                  history.push("/student/searchsupervisor");
-                }}
-              >
-                Supervisors
+                Submissions
               </Button>
             </div>
           </div>

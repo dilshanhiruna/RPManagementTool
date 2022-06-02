@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import "./StudentDashboard.css";
 import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -17,6 +16,7 @@ import Check from "@mui/icons-material/Check";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import TextSnippetRoundedIcon from "@mui/icons-material/TextSnippetRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import PeopleIcon from "@mui/icons-material/People";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
@@ -32,7 +32,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
 import Avatar from "@mui/material/Avatar";
@@ -59,7 +58,7 @@ const ItemStudent = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function StudentDashboard({ user }) {
+export default function StudentDashboard({ user, testLoad }) {
   const API = process.env.REACT_APP_API;
   const [studentGroup, setStudentGroup] = useState([]);
   const [Students, setStudents] = useState([]);
@@ -72,7 +71,7 @@ export default function StudentDashboard({ user }) {
   const [RemoveMember, setRemoveMember] = useState(false);
   const [SelectedMemeberRemove, setSelectedMemeberRemove] = useState("");
 
-  const [Loading, setLoading] = useState(true);
+  const [Loading, setLoading] = useState(testLoad === false ? false : true);
 
   const [addingMemberLoading, setaddingMemberLoading] = useState(false);
 
@@ -80,10 +79,10 @@ export default function StudentDashboard({ user }) {
   const fetchStudentGroup = async () => {
     try {
       axios.get(`${API}/studentgroups/${user.studentGroupID}`).then((res) => {
-        setStudentGroup(res.data.data);
-
         //set all students into a array
         let studentGroup = res.data.data;
+
+        setStudentGroup(studentGroup);
 
         setStudents([
           studentGroup.student1,
@@ -103,6 +102,9 @@ export default function StudentDashboard({ user }) {
         }
         if (studentGroup.cosupervisorStatus === "accepted") {
           setactiveStep(3);
+        }
+        if (studentGroup.panelmember) {
+          setactiveStep(4);
         }
         setLoading(false);
       });
@@ -174,6 +176,7 @@ export default function StudentDashboard({ user }) {
     "Topic Registration",
     "Supervisor",
     "Co-Supervisor",
+    "Panel Member",
   ];
 
   const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
@@ -277,6 +280,7 @@ export default function StudentDashboard({ user }) {
       2: <TextSnippetRoundedIcon />,
       3: <PersonRoundedIcon />,
       4: <PersonRoundedIcon />,
+      5: <PeopleIcon />,
     };
 
     return (
