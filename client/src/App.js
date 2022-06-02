@@ -28,13 +28,11 @@ function App() {
 
   const [userType, setUserType] = useState(role);
 
-  //const [userType, setuserType] = useState("student");
-
   return (
     <Router>
       <div className="App">
         {userType === "" ? <Signin /> : ""}
-        {userType === "student" ? <Student /> : ""}
+        {userType === "student" ? <Student user={userObj} /> : ""}
         {userType === "staff" ? <Staff user={userObj} /> : ""}
         {userType === "admin" ? <Admin /> : ""}
 
