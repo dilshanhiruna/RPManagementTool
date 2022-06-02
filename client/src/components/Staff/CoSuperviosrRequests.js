@@ -16,7 +16,9 @@ import {
   TablePagination,
   TableRow,
   LinearProgress,
+  IconButton,
 } from "@mui/material";
+import GroupIcon from "@mui/icons-material/Group";
 import "./SupervisorDashboard.css";
 import {
   BootstrapDialog,
@@ -173,7 +175,8 @@ export default function CoSuperviosrRequests({ user }) {
                                     key={column.id}
                                     align={column.align}
                                   >
-                                    <Button
+                                    <IconButton
+                                      color="primary"
                                       onClick={() => {
                                         handleClickOpenGroupMemberModal(
                                           row["groupID"],
@@ -181,8 +184,9 @@ export default function CoSuperviosrRequests({ user }) {
                                         );
                                       }}
                                     >
-                                      view
-                                    </Button>
+                                      <GroupIcon />
+                                      <Button>view</Button>
+                                    </IconButton>
                                   </TableCell>
                                 );
                               }

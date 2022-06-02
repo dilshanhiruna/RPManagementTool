@@ -16,13 +16,16 @@ import {
   TablePagination,
   TableRow,
   LinearProgress,
+  IconButton,
 } from "@mui/material";
+import GroupIcon from "@mui/icons-material/Group";
 import "./SupervisorDashboard.css";
 import {
   BootstrapDialog,
   BootstrapDialogTitle,
 } from "./utils/StudentDetailsPopUp";
 import { columns } from "./utils/sup-cosupRequestUtil";
+import NoData from "../Common/NoData";
 
 const API = process.env.REACT_APP_API;
 
@@ -171,7 +174,8 @@ export default function SuperviosrRequests({ user }) {
                                     key={column.id}
                                     align={column.align}
                                   >
-                                    <Button
+                                    <IconButton
+                                      color="primary"
                                       onClick={() => {
                                         handleClickOpenGroupMemberModal(
                                           row["groupID"],
@@ -179,11 +183,21 @@ export default function SuperviosrRequests({ user }) {
                                         );
                                       }}
                                     >
-                                      view
-                                    </Button>
+                                      <GroupIcon />
+                                      <Button>view</Button>
+                                    </IconButton>
                                   </TableCell>
                                 );
                               }
+                              // if (column.id == "reTopic") {
+                              //   return (
+                              //     <TableCell key={column.id} align={"left"}>
+                              //       {column.format && typeof value === "number"
+                              //         ? column.format(value)
+                              //         : value}
+                              //     </TableCell>
+                              //   );
+                              // }
                               if (column.id == "accept") {
                                 return (
                                   <TableCell
@@ -353,7 +367,8 @@ export default function SuperviosrRequests({ user }) {
       <div>
         {pageIsLoadig == false && rows.length == 0 ? (
           <div className="student__dashboard">
-            <div>No New Requests avaialable</div>{" "}
+            <NoData msg={"No New Requests avaialable"}></NoData>
+            {/* <div>No New Requests avaialable</div>{" "} */}
           </div>
         ) : (
           ""
