@@ -39,22 +39,28 @@ export default function ViewStudentSubmissions({ user }) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
   const [pageIsLoadig, setPageIsLoading] = useState(true);
+
   //modal varivales
   const [openAddModal, setopenAddModal] = useState(false);
   const [openEditModal, setopenEditModal] = useState(false);
+
   //validation hooks
   const [valError, setValError] = useState(false);
   const [helperText, setHelperText] = useState("");
+
   //hook to set new marks
   const [marks, setMarks] = useState(50);
+
   //submission details of selected row (cuurent context)
   const [currentSubmissionId, setcurrentSubmissionId] = useState();
   const [currentgroupId, setcurrentgroupId] = useState();
   const [currentsubmissionName, setcurrentsubmissionName] = useState();
   const [currentMarks, setcurrentMarks] = useState();
+
   //handle search vars
   const [searchByGroupId, setsearchByGroupId] = useState(null);
   const [searchBySubmissionName, setsearchBySubmissionName] = useState(null);
+
   //for confirmation snackbar
   const [openAlert, setopenAlert] = useState(false);
   const [showErrorr, setshowErrorr] = useState(false);
