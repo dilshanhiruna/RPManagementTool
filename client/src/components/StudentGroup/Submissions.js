@@ -288,6 +288,7 @@ export default function Submissions({ studentGroup }) {
   const onSubmitConfirm = async (submissionDetailsId) => {
     try {
       setFileIsLoading(true);
+      setExistingSubmissionName(false);
 
       const submissionObj = {
         file: studentSubmission,
@@ -320,6 +321,7 @@ export default function Submissions({ studentGroup }) {
   const handleModalClose = () => {
     setOpenConfirmModal(false);
     setFileIsLoading(true);
+    setExistingSubmissionName(false);
   };
 
   //function to handle open of submission modal
