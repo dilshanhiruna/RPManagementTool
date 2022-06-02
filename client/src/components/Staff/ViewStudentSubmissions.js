@@ -513,8 +513,8 @@ export default function ViewStudentSubmissions({ user }) {
                                         <Button
                                           onClick={() =>
                                             triggerBase64Download(
-                                              row["marking"],
-                                              `${row["submissionName"]} markig`
+                                              row["marking"].file,
+                                              `${row["marking"].name}`
                                             )
                                           }
                                         >

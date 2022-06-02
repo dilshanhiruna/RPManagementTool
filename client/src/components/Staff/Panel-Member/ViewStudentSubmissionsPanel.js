@@ -112,7 +112,7 @@ export default function ViewStudentSubmissionsPanel({ user }) {
   const getStudentSubmissions = async () => {
     try {
       let objArray = [];
-
+      console.log("userID:" + user._id);
       await axios
 
         .get(`${API}/studentSubmission/panel/${user._id}`)
@@ -151,6 +151,7 @@ export default function ViewStudentSubmissionsPanel({ user }) {
       submission: data.file,
       marks: data.obtainedMarks,
     };
+
     return obj;
   };
 
@@ -513,8 +514,8 @@ export default function ViewStudentSubmissionsPanel({ user }) {
                                         <Button
                                           onClick={() =>
                                             triggerBase64Download(
-                                              row["marking"],
-                                              `${row["submissionName"]} markig`
+                                              row["marking"].file,
+                                              `${row["marking"].name} `
                                             )
                                           }
                                         >
