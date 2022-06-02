@@ -1,57 +1,41 @@
-import * as React from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import { LinearProgress } from "@mui/material";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import axios, { Axios } from "axios";
-import { styled } from "@mui/material/styles";
-import PropTypes from "prop-types";
-import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
-import Divider from "@mui/material/Divider";
-
 import {
   Button,
-  Dialog,
-  DialogTitle,
   DialogContent,
-  DialogContentText,
-  DialogActions,
   Backdrop,
-  Stack,
   IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  LinearProgress,
 } from "@mui/material";
 import "./SupervisorDashboard.css";
 import ChatMenu from "../StudentGroup/ChatMenu";
+import {
+  columns,
+  createObjResponse,
+  BootstrapDialog,
+  BootstrapDialogTitle,
+} from "./utils/ViewMyStudentGroupsUtil";
 
 const API = process.env.REACT_APP_API;
 
-//table columns
-const columns = [
-  { id: "groupID", label: "Group ID", minWidth: 70, align: "center" },
-  { id: "reTopic", label: "Research Topic", minWidth: 100, align: "center" },
-
-  { id: "role", label: "Your Role", minWidth: 100, align: "center" },
-  {
-    id: "students",
-    label: "Members",
-    minWidth: 140,
-    align: "center",
-  },
-];
-
 export default function ViewMyStudentGroups({ user }) {
+  //hooks to manage table pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
-  const [openBackdrop, setOpenBackdrop] = React.useState(false);
+
+  //chat hooks
+  const [openBackdrop, setOpenBackdrop] = useState(false);
   const [pageIsLoadig, setPageIsLoading] = useState(true);
   const [openGroupMemberModal, setOpenGroupMemberModal] = useState(false);
   const [Students, setStudents] = useState([]);
@@ -59,7 +43,7 @@ export default function ViewMyStudentGroups({ user }) {
   //set group id and action for topic request accept and reject
   const [groupId, setGroupId] = useState();
   const [_id, set_id] = useState();
-  const [action, setAction] = useState();
+  // const [action, setAction] = useState();
 
   //calling server endpoint through use effect hook
   useEffect(() => {
@@ -71,6 +55,7 @@ export default function ViewMyStudentGroups({ user }) {
     try {
       let objArray = [];
 
+      //get groups you supervise
       await axios
         .get(`${API}/studentgroups/supervisor/accepted/${user._id}`)
         .then((res) => {
@@ -83,6 +68,7 @@ export default function ViewMyStudentGroups({ user }) {
             });
           }
         });
+      //get groups you co-supervise
       await axios
         .get(`${API}/studentgroups/cosupervisor/accepted/${user._id}`)
         .then((res) => {
@@ -102,68 +88,12 @@ export default function ViewMyStudentGroups({ user }) {
     }
   };
 
-  //function to create obj from server response
-  const createObjResponse = (res, data) => {
-    const studentsArray = [
-      data.student1,
-      data.student2 ? data.student2 : "",
-      data.student3 ? data.student3 : "",
-      data.student4 ? data.student4 : "",
-    ];
-
-    let obj = {
-      _id: data._id,
-      groupID: data.groupID,
-      reTopic: data.researchTopic,
-      role: res.data.type,
-      students: studentsArray,
-    };
-    return obj;
-  };
-  // show group memebrs dialog
-  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    "& .MuiDialogContent-root": {
-      padding: theme.spacing(2),
-    },
-    "& .MuiDialogActions-root": {
-      padding: theme.spacing(1),
-    },
-  }));
-
-  // create BootstrapDialogTitle component to display group name on chat
-  const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props;
-    return (
-      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-        {children}
-        {onClose ? (
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </DialogTitle>
-    );
-  };
-  BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-  };
-
   //function to open relevant student group chat
   const openStudentChat = (groupId, _id, action) => {
     handleToggle();
     setGroupId(groupId);
     set_id(_id);
-    setAction(action);
+    // setAction(action);
   };
   //suppoert functions for chat modal
   const handleCloseBackdrop = () => {
