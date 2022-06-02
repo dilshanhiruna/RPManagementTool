@@ -17,6 +17,7 @@ import {
   TableRow,
   LinearProgress,
 } from "@mui/material";
+import NoData from "../Common/NoData";
 import "./SupervisorDashboard.css";
 import ChatMenu from "../StudentGroup/ChatMenu";
 import { columns, createObjResponse } from "./utils/ViewMyStudentGroupsUtil";
@@ -120,11 +121,12 @@ export default function ViewMyStudentGroups({ user }) {
     <>
       <div>
         <div className="student__dashboard">
+          <h1 className="centerItems">Your Groups </h1>
+
           {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h1 className="centerItems">Your Groups </h1>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -307,7 +309,10 @@ export default function ViewMyStudentGroups({ user }) {
       <div>
         {pageIsLoadig == false && rows.length == 0 ? (
           <div className="student__dashboard">
-            <div>You are not assigned to any group yet</div>{" "}
+            <NoData
+              msg={"You are not a supervisor/co-supervisor of any group"}
+              type={"vmsg"}
+            ></NoData>{" "}
           </div>
         ) : (
           ""

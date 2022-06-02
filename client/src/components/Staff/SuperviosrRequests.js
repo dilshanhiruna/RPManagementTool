@@ -130,11 +130,12 @@ export default function SuperviosrRequests({ user }) {
     <>
       <div>
         <div className="student__dashboard">
+          <h1 className="centerItems">Supervioser Requests</h1>
+
           {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h1 className="centerItems">Supervioser Requests</h1>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -367,8 +368,10 @@ export default function SuperviosrRequests({ user }) {
       <div>
         {pageIsLoadig == false && rows.length == 0 ? (
           <div className="student__dashboard">
-            <NoData msg={"No New Requests avaialable"}></NoData>
-            {/* <div>No New Requests avaialable</div>{" "} */}
+            <NoData
+              msg={"Any student group has not requested you as supervisor"}
+              type={"sup_cosup"}
+            ></NoData>
           </div>
         ) : (
           ""

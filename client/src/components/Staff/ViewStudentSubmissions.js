@@ -24,6 +24,7 @@ import {
   LinearProgress,
   Grid,
 } from "@mui/material";
+import NoData from "../Common/NoData";
 import MuiAlert from "@mui/material/Alert";
 import { columns, createObjResponse } from "./utils/viewStudentSubmissionsUtil";
 
@@ -187,13 +188,13 @@ export default function ViewStudentSubmissions({ user }) {
   return (
     <>
       <div className="student__dashboard">
+        <h1 className="centerItems" style={{ marginBottom: "40px" }}>
+          Student Submissions
+        </h1>{" "}
         {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
       </div>
       {rows.length != 0 ? (
         <>
-          <h1 className="centerItems" style={{ marginBottom: "40px" }}>
-            Student Submissions
-          </h1>{" "}
           <div className="student__dashboard">
             <TextField
               style={{ backgroundColor: "#fcfcfc" }}
@@ -500,7 +501,7 @@ export default function ViewStudentSubmissions({ user }) {
 
       {pageIsLoadig == false && rows.length == 0 ? (
         <div className="student__dashboard">
-          <div>Oops no submision yet</div>{" "}
+          <NoData msg={"No any student submission yet"} type={"vss"}></NoData>{" "}
         </div>
       ) : (
         ""
