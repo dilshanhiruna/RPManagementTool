@@ -22,7 +22,7 @@ app.use(cookieParser());
 // Route files
 const studentGroups = require("./routes/StudentGroups");
 const user = require("./routes/User");
-const supervisorRequests = require("./routes/supervisorRequests");
+const supervisorRequests = require("./routes/SupervisorRequests");
 const cosupervisorRequests = require("./routes/CoSupervisorRequests");
 const submissions = require("./routes/Submissions");
 const studentSubmission = require("./routes/StudentSubmission");
