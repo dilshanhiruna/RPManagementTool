@@ -473,21 +473,25 @@ export default function Submissions({ studentGroup }) {
               </DialogTitle>
               <DialogContent>
                 <DialogContentText sx={{ marginBottom: 1 }}>
-                  <Chip label={`${selectedSubmissionDetail.sType}`} />
-                </DialogContentText>
-                <DialogContentText>
+                  <Chip label={`Type:${selectedSubmissionDetail.sType}`} />
                   <Chip
                     label={`Deadline: ${selectedSubmissionDetail.sDeadline}`}
                     color="warning"
+                    style={{ marginLeft: "15px" }}
                   />
                 </DialogContentText>
-                <br></br>
-                <DialogContentText id="alert-dialog-description">
+                <DialogContentText
+                  id="alert-dialog-description"
+                  style={{ padding: "5px" }}
+                >
                   {selectedSubmissionDetail.sDescription}
                 </DialogContentText>
               </DialogContent>
 
-              <DialogContent className="centerItems" sx={{ minWidth: "550px" }}>
+              <DialogContent
+                className="centerItems"
+                sx={{ minWidth: "550px", paddingTop: 0 }}
+              >
                 {fileIsLoadig ? (
                   <CircularProgress color="inherit" />
                 ) : (
