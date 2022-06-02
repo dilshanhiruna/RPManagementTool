@@ -22,7 +22,7 @@ import {
   BootstrapDialog,
   BootstrapDialogTitle,
 } from "./utils/StudentDetailsPopUp";
-import { columns } from "./utils/SuperviosrRequestsUtil";
+import { columns } from "./utils/sup-cosupRequestUtil";
 
 const API = process.env.REACT_APP_API;
 
@@ -45,6 +45,9 @@ export default function SuperviosrRequests({ user }) {
   const [_id, set_id] = useState();
   const [action, setAction] = useState();
 
+  useEffect(() => {
+    getTopicReqs();
+  }, []);
   //function to get topic requests of the relevant supervisor
   const getTopicReqs = async () => {
     try {
@@ -79,8 +82,6 @@ export default function SuperviosrRequests({ user }) {
 
   //functions to handle view student members
   const handleClickOpenGroupMemberModal = (groupId, students) => {
-    console.log(students);
-    console.log(groupId);
     setOpenGroupMemberModal(true);
     setStudents(students);
     setGroupId(groupId);
@@ -112,17 +113,7 @@ export default function SuperviosrRequests({ user }) {
     set_id(_id);
     setAction(action);
     setOpenConfirmModal(true);
-
-    if (confirmAction) {
-      console.log("true");
-    } else {
-      console.log("false");
-    }
   };
-
-  useEffect(() => {
-    getTopicReqs();
-  }, []);
 
   //functions to handle table
   const handleChangePage = (event, newPage) => {
@@ -137,6 +128,7 @@ export default function SuperviosrRequests({ user }) {
   const handleModalClose = () => {
     setOpenConfirmModal(false);
   };
+
   return (
     <>
       <div>
