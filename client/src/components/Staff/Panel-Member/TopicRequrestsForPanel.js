@@ -71,7 +71,6 @@ export default function TopicRequrestsForPanel({ user }) {
           if (res.data.data.length == 0) {
             console.log("No topic reqs");
           } else {
-            console.log(res.data.data);
             res.data.data.map((data) => {
               let obj = createObjResponse(res, data);
               if (obj) objArray.push(obj);

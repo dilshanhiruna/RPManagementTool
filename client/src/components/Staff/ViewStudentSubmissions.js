@@ -68,7 +68,6 @@ export default function ViewStudentSubmissions({ user }) {
           if (res.data.data.length == 0) {
             console.log("No topic reqs");
           } else {
-            console.log(res.data.data);
             res.data.data.map((data) => {
               let obj = createObjResponse(res, data);
               if (obj) objArray.push(obj);
@@ -93,15 +92,12 @@ export default function ViewStudentSubmissions({ user }) {
     if (marks < 0) {
       setHelperText("Marks cannot be a negetive value");
       setValError(true);
-      console.log(marks + "..." + 1);
     } else if (marks > 100) {
       setHelperText("Marks cannot exceed 100");
       setValError(true);
-      console.log(marks + "..." + 2);
     } else {
       setValError(false);
       setHelperText("");
-      console.log(marks + "..." + 3);
     }
   };
 
@@ -173,13 +169,11 @@ export default function ViewStudentSubmissions({ user }) {
   //function to search by group id
   const searchByGroupIdMethod = (e) => {
     setsearchByGroupId(e.target.value);
-    console.log(e.target.value);
   };
 
   //function to search by submission name
   const searchBySubmissionNameMethod = (e) => {
     setsearchBySubmissionName(e.target.value);
-    console.log(e.target.value);
   };
 
   //function to close confirmation snackbar

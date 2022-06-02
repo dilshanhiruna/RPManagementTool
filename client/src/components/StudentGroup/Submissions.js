@@ -97,7 +97,6 @@ export default function Submissions({ studentGroup }) {
     const onDrop = useCallback((acceptedFiles) => {
       const file = acceptedFiles[0];
       submissionObject.name = file.name;
-      console.log(submissionObject.name);
 
       const reader = new FileReader();
       reader.onabort = () => console.log("file reading was aborted");
@@ -105,7 +104,6 @@ export default function Submissions({ studentGroup }) {
       reader.onload = () => {
         // Do whatever you want with the file contents
         submissionObject.base64 = reader.result;
-        console.log(submissionObject.base64);
       };
       reader.readAsDataURL(file);
       setStudentSubmission(submissionObject);
@@ -279,8 +277,6 @@ export default function Submissions({ studentGroup }) {
         setBase64File(result.data.data.file.base64);
         setExistingSubmissionName(result.data.data.file.name);
       }
-      // console.log("olaaaaaaa" + result.data.data);
-      // setPageIsLoading(false);
     } catch (err) {
       console.error(err);
     }
