@@ -31,7 +31,7 @@ const supervisorRequests = require("./routes/SupervisorRequests");
 const cosupervisorRequests = require("./routes/CoSupervisorRequests");
 const submissions = require("./routes/Submissions");
 //const userRoutes = require('./routes/User');
-const authRoutes = require("./routes/Auth");
+const authRoutes = require("./routes/auth");
 const studentSubmission = require("./routes/StudentSubmission");
 
 // Mount routers
