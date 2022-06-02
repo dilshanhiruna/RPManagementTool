@@ -22,6 +22,7 @@ import {
   styled,
   IconButton,
   Snackbar,
+  Tooltip,
 } from "@mui/material";
 import "./Submissions.css";
 import PropTypes from "prop-types";
@@ -528,16 +529,18 @@ export default function Submissions({ studentGroup }) {
                   <div>
                     {existingSubmissionName ? (
                       <>
-                        <Button
-                          onClick={() => {
-                            deleteStudentSubmission();
-                          }}
-                          color="error"
-                          size="small"
-                          variant="contained"
-                        >
-                          Remove
-                        </Button>
+                        <Tooltip title="Submission will be deleted permanently">
+                          <Button
+                            onClick={() => {
+                              deleteStudentSubmission();
+                            }}
+                            color="error"
+                            size="small"
+                            variant="contained"
+                          >
+                            Remove
+                          </Button>
+                        </Tooltip>
                         <Button
                           style={{ textTransform: "none" }}
                           onClick={() => {
