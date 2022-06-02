@@ -1,20 +1,5 @@
-import * as React from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import { LinearProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
-import { styled } from "@mui/material/styles";
-import PropTypes from "prop-types";
-import ChatIcon from "@mui/icons-material/Chat";
-import CloseIcon from "@mui/icons-material/Close";
-
 import {
   Button,
   Dialog,
@@ -22,33 +7,36 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  LinearProgress,
 } from "@mui/material";
 import "./SupervisorDashboard.css";
+import {
+  BootstrapDialog,
+  BootstrapDialogTitle,
+} from "./utils/StudentDetailsPopUp";
+import { columns } from "./utils/SuperviosrRequestsUtil";
 
 const API = process.env.REACT_APP_API;
 
-//table columns
-const columns = [
-  { id: "groupID", label: "Group ID", minWidth: 100, align: "center" },
-  { id: "reTopic", label: "Research Topic", minWidth: 0, align: "center" },
-  {
-    id: "students",
-    label: "Members",
-    minWidth: 300,
-    align: "center",
-  },
-  { id: "accept", label: "", minWidth: 50, align: "center" },
-  { id: "reject", label: "", minWidth: 50, align: "center" },
-];
-
 export default function SuperviosrRequests({ user }) {
+  //hooks for table pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
+  //hooks for confirm modal
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [confirmAction, setConfirmAction] = useState();
+  //hook for loading component
   const [pageIsLoadig, setPageIsLoading] = useState(true);
+  //hooks for view members
   const [Students, setStudents] = useState([]);
   const [openGroupMemberModal, setOpenGroupMemberModal] = useState(false);
 
@@ -61,14 +49,10 @@ export default function SuperviosrRequests({ user }) {
   const getTopicReqs = async () => {
     try {
       let objArray = [];
-
       await axios.get(`${API}/supervisorRequests/${user._id}`).then((res) => {
         if (res.data.data.length == 0) {
           console.log("No topic reqs");
         } else {
-          // res.data.data.forEach((data) => {});
-          let student1, student2, student3, student4;
-
           res.data.data.map((data) => {
             const studentsArray = [
               data.student1,
@@ -93,49 +77,10 @@ export default function SuperviosrRequests({ user }) {
     }
   };
 
-  // show group memebrs dialog
-  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    "& .MuiDialogContent-root": {
-      padding: theme.spacing(2),
-    },
-    "& .MuiDialogActions-root": {
-      padding: theme.spacing(1),
-    },
-  }));
-
-  // create BootstrapDialogTitle component to display group name on chat
-  const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props;
-    return (
-      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-        {children}
-        {onClose ? (
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </DialogTitle>
-    );
-  };
-  BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-  };
-
   //functions to handle view student members
   const handleClickOpenGroupMemberModal = (groupId, students) => {
     console.log(students);
     console.log(groupId);
-
     setOpenGroupMemberModal(true);
     setStudents(students);
     setGroupId(groupId);
@@ -146,7 +91,6 @@ export default function SuperviosrRequests({ user }) {
 
   //function to accept/reject topic reqest
   const acceptOrReject = () => {
-    console.log(_id);
     let accRej = "";
     if (action == "Accept") {
       accRej = "accepted";
@@ -180,15 +124,16 @@ export default function SuperviosrRequests({ user }) {
     getTopicReqs();
   }, []);
 
+  //functions to handle table
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
+  //function to handle modal close
   const handleModalClose = () => {
     setOpenConfirmModal(false);
   };

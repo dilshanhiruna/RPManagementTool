@@ -19,12 +19,12 @@ import {
 } from "@mui/material";
 import "./SupervisorDashboard.css";
 import ChatMenu from "../StudentGroup/ChatMenu";
+import { columns, createObjResponse } from "./utils/ViewMyStudentGroupsUtil";
+
 import {
-  columns,
-  createObjResponse,
   BootstrapDialog,
   BootstrapDialogTitle,
-} from "./utils/ViewMyStudentGroupsUtil";
+} from "./utils/StudentDetailsPopUp";
 
 const API = process.env.REACT_APP_API;
 
