@@ -166,7 +166,7 @@ export default function Submissions({ studentGroup }) {
             {submissionDetail.sType}
           </Typography>
           <Typography sx={{ fontSize: 12 }}>
-            {submissionDetail.sDeadline}
+            {formatDate(submissionDetail.sDeadline)}
           </Typography>
           <Typography variant="body2">
             {submissionDetail.sDescription}
@@ -367,6 +367,19 @@ export default function Submissions({ studentGroup }) {
     }
     setopenAlert(false);
   };
+
+  //function to format js date
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   return (
     <>
       <div>
@@ -490,7 +503,9 @@ export default function Submissions({ studentGroup }) {
                 <DialogContentText sx={{ marginBottom: 1 }}>
                   <Chip label={`Type: ${selectedSubmissionDetail.sType}`} />
                   <Chip
-                    label={`Deadline: ${selectedSubmissionDetail.sDeadline}`}
+                    label={`Deadline: ${formatDate(
+                      selectedSubmissionDetail.sDeadline
+                    )}`}
                     color="warning"
                     style={{ marginLeft: "15px" }}
                   />
