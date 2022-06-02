@@ -30,16 +30,11 @@ export default function CoSuperviosrRequests({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
-  //hooks for confirm modal
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [confirmAction, setConfirmAction] = useState();
-  //hook for loading component
   const [pageIsLoadig, setPageIsLoading] = useState(true);
-  //hooks for view members
   const [Students, setStudents] = useState([]);
   const [openGroupMemberModal, setOpenGroupMemberModal] = useState(false);
-
-  //set group id and action for topic request accept and reject
   const [groupId, setGroupId] = useState();
   const [_id, set_id] = useState();
   const [action, setAction] = useState();
