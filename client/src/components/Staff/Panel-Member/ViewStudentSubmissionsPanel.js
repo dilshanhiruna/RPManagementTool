@@ -25,6 +25,7 @@ import {
   Grid,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import NoData from "../../Common/NoData";
 
 import {
   columns,
@@ -191,13 +192,13 @@ export default function ViewStudentSubmissionsPanel({ user }) {
   return (
     <>
       <div className="student__dashboard">
+        <h1 className="centerItems" style={{ marginBottom: "40px" }}>
+          Student Presentation Submissions
+        </h1>{" "}
         {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
       </div>
       {rows.length != 0 ? (
         <>
-          <h1 className="centerItems" style={{ marginBottom: "40px" }}>
-            Student Submissions
-          </h1>{" "}
           <div className="student__dashboard">
             <TextField
               style={{ backgroundColor: "#fcfcfc" }}
@@ -504,7 +505,10 @@ export default function ViewStudentSubmissionsPanel({ user }) {
 
       {pageIsLoadig == false && rows.length == 0 ? (
         <div className="student__dashboard">
-          <div>Oops no submision yet</div>{" "}
+          <NoData
+            msg={"No any presentation submissions yet"}
+            type={"vssp"}
+          ></NoData>{" "}
         </div>
       ) : (
         ""

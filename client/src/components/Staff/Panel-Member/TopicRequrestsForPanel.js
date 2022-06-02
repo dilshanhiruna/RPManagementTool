@@ -29,6 +29,7 @@ import {
 } from "@mui/material";
 import { columns, createObjResponse } from "./utils/TopicRequrestsForPanelUtil";
 import MuiAlert from "@mui/material/Alert";
+import NoData from "../../Common/NoData";
 
 const API = process.env.REACT_APP_API;
 
@@ -196,13 +197,13 @@ export default function TopicRequrestsForPanel({ user }) {
   return (
     <>
       <div className="student__dashboard">
+        <h1 className="centerItems" style={{ marginBottom: "40px" }}>
+          Topic Requests
+        </h1>{" "}
         {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
       </div>
       {rows.length != 0 ? (
         <>
-          <h1 className="centerItems" style={{ marginBottom: "40px" }}>
-            Topic Requests
-          </h1>{" "}
           <div className="student__dashboard">
             <TextField
               style={{ backgroundColor: "#fcfcfc" }}
@@ -481,7 +482,7 @@ export default function TopicRequrestsForPanel({ user }) {
 
       {pageIsLoadig == false && rows.length == 0 ? (
         <div className="student__dashboard">
-          <div>Oops no topic requests</div>{" "}
+          <NoData msg={"No any topic submissions yet"} type={"trfp"}></NoData>{" "}
         </div>
       ) : (
         ""

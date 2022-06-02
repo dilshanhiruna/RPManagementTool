@@ -189,7 +189,7 @@ export default function ViewStudentSubmissions({ user }) {
     <>
       <div className="student__dashboard">
         <h1 className="centerItems" style={{ marginBottom: "40px" }}>
-          Student Submissions
+          Student Document Submissions
         </h1>{" "}
         {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
       </div>

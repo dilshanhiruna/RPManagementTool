@@ -12,8 +12,8 @@ import { AlertTitle } from "@mui/material";
 import { columns as sup_cosup } from "../Staff/utils/sup-cosupRequestUtil";
 import { columns as vmsg } from "../Staff/utils/ViewMyStudentGroupsUtil";
 import { columns as vss } from "../Staff/utils/viewStudentSubmissionsUtil";
-import { columns as trfp } from "../Staff/utils/viewStudentSubmissionsUtil";
-import { columns as vssp } from "../Staff/utils/viewStudentSubmissionsUtil";
+import { columns as trfp } from "../Staff/Panel-Member/utils/TopicRequrestsForPanelUtil";
+import { columns as vssp } from "../Staff/Panel-Member/utils/ViewStudentSubmissionsPanelUtil";
 
 export default function NoData({ msg, type }) {
   console.log("..........................");
