@@ -1,42 +1,43 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./Submissions.css";
-import Box from "@mui/material/Box";
-import { Chip, Divider } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import SubmissionItem from "./SubmissionItem";
+import axios from "axios";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
-import { LinearProgress, CircularProgress } from "@mui/material";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
+  LinearProgress,
+  CircularProgress,
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  Box,
+  Typography,
+  Chip,
+  Divider,
+  styled,
+  IconButton,
+  Snackbar,
 } from "@mui/material";
-import FileBase64 from "react-file-base64";
 import "./Submissions.css";
 import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { triggerBase64Download } from "common-base64-downloader-react";
-import axios from "axios";
-import Dropzone from "react-dropzone";
-const API = process.env.REACT_APP_API;
-import React from "react";
 import { useDropzone } from "react-dropzone";
 import styledComponents from "styled-components";
-import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 
+//alert fot snackbar
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+const API = process.env.REACT_APP_API;
+
 //colors for dropzone
 const getColor = (props) => {
   if (props.isDragAccept) {
@@ -97,7 +98,6 @@ export default function Submissions({ studentGroup }) {
     const onDrop = useCallback((acceptedFiles) => {
       const file = acceptedFiles[0];
       submissionObject.name = file.name;
-      console.log(submissionObject.name);
 
       const reader = new FileReader();
       reader.onabort = () => console.log("file reading was aborted");
@@ -105,7 +105,6 @@ export default function Submissions({ studentGroup }) {
       reader.onload = () => {
         // Do whatever you want with the file contents
         submissionObject.base64 = reader.result;
-        console.log(submissionObject.base64);
       };
       reader.readAsDataURL(file);
       setStudentSubmission(submissionObject);
@@ -279,8 +278,6 @@ export default function Submissions({ studentGroup }) {
         setBase64File(result.data.data.file.base64);
         setExistingSubmissionName(result.data.data.file.name);
       }
-      // console.log("olaaaaaaa" + result.data.data);
-      // setPageIsLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -291,6 +288,7 @@ export default function Submissions({ studentGroup }) {
   const onSubmitConfirm = async (submissionDetailsId) => {
     try {
       setFileIsLoading(true);
+      setExistingSubmissionName(false);
 
       const submissionObj = {
         file: studentSubmission,
@@ -323,6 +321,7 @@ export default function Submissions({ studentGroup }) {
   const handleModalClose = () => {
     setOpenConfirmModal(false);
     setFileIsLoading(true);
+    setExistingSubmissionName(false);
   };
 
   //function to handle open of submission modal
@@ -348,11 +347,6 @@ export default function Submissions({ studentGroup }) {
     setExistingSubmission(null);
     setExistingSubmissionName(null);
   };
-
-  // // function to download uploaded student submissions
-  // const downloadStudentSubmission = async () => {
-  //   const base64File = existingSubmission.file.base64;
-  // };
 
   useEffect(() => {
     getSubmissionDetails();
@@ -542,11 +536,6 @@ export default function Submissions({ studentGroup }) {
                         </Button>
                       </>
                     ) : (
-                      // <FileBase64
-                      //   multiple={false}
-                      //   onDone={onFileUpload.bind()}
-                      // />
-
                       <StyledDropzone />
                     )}
                   </div>

@@ -38,32 +38,21 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function TopicRequrestsForPanel({ user }) {
-  //hooks for table pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
   const [pageIsLoadig, setPageIsLoading] = useState(true);
-
-  //modal varivales
   const [openAddModal, setopenAddModal] = useState(false);
-
-  //validation hooks
   const [valError, setValError] = useState(false);
   const [helperText, setHelperText] = useState("");
-
-  //submission details of selected row (cuurent context)
   const [currentSubmissionId, setcurrentSubmissionId] = useState();
   const [currentgroupId, setcurrentgroupId] = useState();
   const [currentgroupObjectID, setcurrentgroupObjectID] = useState();
   const [feedback, setFeedback] = useState("");
   const [approveOrReject, setapproveOrReject] = useState(false);
   const [selectTagError, setselectTagError] = useState(false);
-
-  //handle search vars
   const [searchByGroupId, setsearchByGroupId] = useState(null);
   const [searchByResearchTopic, setsearchByResearchTopic] = useState(null);
-
-  //for confirmation snackbar
   const [openAlert, setopenAlert] = useState(false);
   const [showErrorr, setshowErrorr] = useState(false);
 
@@ -82,7 +71,6 @@ export default function TopicRequrestsForPanel({ user }) {
           if (res.data.data.length == 0) {
             console.log("No topic reqs");
           } else {
-            console.log(res.data.data);
             res.data.data.map((data) => {
               let obj = createObjResponse(res, data);
               if (obj) objArray.push(obj);

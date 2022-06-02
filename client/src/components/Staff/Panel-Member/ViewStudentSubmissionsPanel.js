@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
 import { triggerBase64Download } from "common-base64-downloader-react";
+import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   Snackbar,
@@ -42,27 +43,17 @@ export default function ViewStudentSubmissionsPanel({ user }) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
   const [pageIsLoadig, setPageIsLoading] = useState(true);
-
-  //modal varivales
   const [openAddModal, setopenAddModal] = useState(false);
   const [openEditModal, setopenEditModal] = useState(false);
-
-  //balidation variables
   const [valError, setValError] = useState(false);
   const [helperText, setHelperText] = useState("");
   const [marks, setMarks] = useState(50);
-
-  //submission details of selected row (cuurent context)
   const [currentSubmissionId, setcurrentSubmissionId] = useState();
   const [currentgroupId, setcurrentgroupId] = useState();
   const [currentsubmissionName, setcurrentsubmissionName] = useState();
   const [currentMarks, setcurrentMarks] = useState();
-
-  //handle search vars
   const [searchByGroupId, setsearchByGroupId] = useState(null);
   const [searchBySubmissionName, setsearchBySubmissionName] = useState(null);
-
-  //for confirmation snackbar
   const [openAlert, setopenAlert] = useState(false);
   const [showErrorr, setshowErrorr] = useState(false);
 
@@ -75,15 +66,12 @@ export default function ViewStudentSubmissionsPanel({ user }) {
   const getStudentSubmissions = async () => {
     try {
       let objArray = [];
-      console.log("userID:" + user._id);
       await axios
-
         .get(`${API}/studentSubmission/panel/${user._id}`)
         .then((res) => {
           if (res.data.data.length == 0) {
             console.log("No topic reqs");
           } else {
-            console.log(res.data.data);
             res.data.data.map((data) => {
               let obj = createObjResponse(res, data);
               if (obj) objArray.push(obj);
@@ -108,15 +96,12 @@ export default function ViewStudentSubmissionsPanel({ user }) {
     if (marks < 0) {
       setHelperText("Marks cannot be a negetive value");
       setValError(true);
-      console.log(marks + "..." + 1);
     } else if (marks > 100) {
       setHelperText("Marks cannot exceed 100");
       setValError(true);
-      console.log(marks + "..." + 2);
     } else {
       setValError(false);
       setHelperText("");
-      console.log(marks + "..." + 3);
     }
   };
 
@@ -188,13 +173,11 @@ export default function ViewStudentSubmissionsPanel({ user }) {
   //function to search by group id
   const searchByGroupIdMethod = (e) => {
     setsearchByGroupId(e.target.value);
-    console.log(e.target.value);
   };
 
   //function to search by submission name
   const searchBySubmissionNameMethod = (e) => {
     setsearchBySubmissionName(e.target.value);
-    console.log(e.target.value);
   };
 
   //function to close confirmation snackbar

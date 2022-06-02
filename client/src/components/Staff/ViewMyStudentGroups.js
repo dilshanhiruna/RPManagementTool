@@ -29,21 +29,15 @@ import {
 const API = process.env.REACT_APP_API;
 
 export default function ViewMyStudentGroups({ user }) {
-  //hooks to manage table pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
-
-  //chat hooks
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [pageIsLoadig, setPageIsLoading] = useState(true);
   const [openGroupMemberModal, setOpenGroupMemberModal] = useState(false);
   const [Students, setStudents] = useState([]);
-
-  //set group id and action for topic request accept and reject
   const [groupId, setGroupId] = useState();
   const [_id, set_id] = useState();
-  // const [action, setAction] = useState();
 
   //calling server endpoint through use effect hook
   useEffect(() => {

@@ -33,9 +33,6 @@ export default function Staff({ user }) {
   //   studentGroupID: null,
   // };
 
-  console.log(user);
-  console.log("Halo......." + user._id);
-
   return (
     <div className="student__dashboard">
       <Router>
@@ -68,7 +65,11 @@ export default function Staff({ user }) {
           <Route exact path="/staff/panelmember/studentSubmissions">
             <ViewStudentSubmissionsPanel user={user} />
           </Route>
-          <Redirect to="/staff/mygroups" />
+          {user.staffType === "supervisor" ? (
+            <Redirect to="/staff/mygroups" />
+          ) : (
+            <Redirect to="/staff/panelmember/topicReq" />
+          )}
         </Switch>
       </Router>
 
