@@ -38,7 +38,7 @@ export default function PanelmHeader({ userType }) {
                   history.push("/staff/panelmember/topicReq");
                 }}
               >
-                Topic Req
+                Manage Topics
               </Button>
               <Button
                 variant="outlined"
