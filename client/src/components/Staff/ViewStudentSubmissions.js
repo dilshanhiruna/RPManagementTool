@@ -212,7 +212,7 @@ export default function ViewStudentSubmissions({ user }) {
                     variant="h1"
                     sx={{ fontWeight: "regular", fontSize: 80 }}
                   >
-                    Submisions
+                    Submissions
                   </Typography>
                 </ThemeProvider>
               </div>
