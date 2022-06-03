@@ -71,6 +71,7 @@ export default function SubmissionCard({
     setOpendownloadx(false);
   };
 
+  //view detials
   const viewDetails = () => {
     console.log("viewdeatils");
     history.push("/admin/getAllSubmissions");
