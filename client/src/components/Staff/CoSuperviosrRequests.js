@@ -16,8 +16,12 @@ import {
   TablePagination,
   TableRow,
   LinearProgress,
+  IconButton,
 } from "@mui/material";
+import GroupIcon from "@mui/icons-material/Group";
 import "./SupervisorDashboard.css";
+import NoData from "../Common/NoData";
+import { Grid, ThemeProvider, createTheme, Typography } from "@mui/material";
 import {
   BootstrapDialog,
   BootstrapDialogTitle,
@@ -25,6 +29,9 @@ import {
 import { columns } from "./utils/sup-cosupRequestUtil";
 
 const API = process.env.REACT_APP_API;
+
+//themes
+const theme = createTheme();
 
 export default function CoSuperviosrRequests({ user }) {
   const [page, setPage] = useState(0);
@@ -128,13 +135,62 @@ export default function CoSuperviosrRequests({ user }) {
     <>
       <div>
         <div className="student__dashboard">
+          <Grid container style={{ marginBottom: "70px" }}>
+            <Grid item xs={1}></Grid>
+            <Grid item xs={4}>
+              <div style={{ marginTop: "120px" }}>
+                <div className="centerHorizontal">
+                  <ThemeProvider theme={theme}>
+                    <Typography
+                      variant="h1"
+                      sx={{ fontWeight: "regular", fontSize: 64 }}
+                    >
+                      Co-Supervioser
+                    </Typography>
+                  </ThemeProvider>
+                </div>
+                <div className="centerHorizontal">
+                  <ThemeProvider theme={theme}>
+                    <Typography
+                      variant="h1"
+                      sx={{ fontWeight: "regular", fontSize: 64 }}
+                    >
+                      Requests
+                    </Typography>
+                  </ThemeProvider>
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div
+                style={{
+                  height: "400px",
+                  maxHeight: "400px",
+                  position: "relative",
+                }}
+              >
+                <img
+                  src={require("../../assets/images/studentGroup.gif")}
+                  alt="paper"
+                  style={{
+                    display: "block",
+                    width: " 100%",
+                    height: "auto",
+                    maxHeight: "550px",
+                    maxWidth: "650px",
+                    bottom: 0,
+                    position: "absolute",
+                  }}
+                />{" "}
+              </div>
+            </Grid>
+            <Grid item xs={1}></Grid>
+          </Grid>
           {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h1 className="centerItems">Co-Supervioser Requests</h1>
-
-            <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", marginBottom: 15 }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
@@ -173,7 +229,8 @@ export default function CoSuperviosrRequests({ user }) {
                                     key={column.id}
                                     align={column.align}
                                   >
-                                    <Button
+                                    <IconButton
+                                      color="primary"
                                       onClick={() => {
                                         handleClickOpenGroupMemberModal(
                                           row["groupID"],
@@ -181,8 +238,9 @@ export default function CoSuperviosrRequests({ user }) {
                                         );
                                       }}
                                     >
-                                      view
-                                    </Button>
+                                      <GroupIcon />
+                                      <Button>view</Button>
+                                    </IconButton>
                                   </TableCell>
                                 );
                               }
@@ -354,7 +412,10 @@ export default function CoSuperviosrRequests({ user }) {
       <div>
         {pageIsLoadig == false && rows.length == 0 ? (
           <div className="student__dashboard">
-            <div>No New Requests avaialable</div>{" "}
+            <NoData
+              msg={"Any student group has not requested you as co-supervisor"}
+              type={"sup_cosup"}
+            ></NoData>{" "}
           </div>
         ) : (
           ""

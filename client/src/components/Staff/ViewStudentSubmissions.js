@@ -24,8 +24,10 @@ import {
   LinearProgress,
   Grid,
 } from "@mui/material";
+import NoData from "../Common/NoData";
 import MuiAlert from "@mui/material/Alert";
 import { columns, createObjResponse } from "./utils/viewStudentSubmissionsUtil";
+import { Grid, ThemeProvider, createTheme, Typography } from "@mui/material";
 
 //alert for snackbar
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -33,6 +35,9 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const API = process.env.REACT_APP_API;
+
+//themes
+const theme = createTheme();
 
 export default function ViewStudentSubmissions({ user }) {
   const [page, setPage] = useState(0);
@@ -187,13 +192,61 @@ export default function ViewStudentSubmissions({ user }) {
   return (
     <>
       <div className="student__dashboard">
+        <Grid container style={{ marginBottom: "70px" }}>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={4}>
+            <div style={{ marginTop: "100px" }}>
+              <div className="centerHorizontal">
+                <ThemeProvider theme={theme}>
+                  <Typography
+                    variant="h1"
+                    sx={{ fontWeight: "regular", fontSize: 80 }}
+                  >
+                    Student
+                  </Typography>
+                </ThemeProvider>
+              </div>
+              <div className="centerHorizontal">
+                <ThemeProvider theme={theme}>
+                  <Typography
+                    variant="h1"
+                    sx={{ fontWeight: "regular", fontSize: 80 }}
+                  >
+                    Submisions
+                  </Typography>
+                </ThemeProvider>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <div
+              style={{
+                height: "400px",
+                maxHeight: "400px",
+                position: "relative",
+              }}
+            >
+              <img
+                src={require("../../assets/images/studentGroup.gif")}
+                alt="paper"
+                style={{
+                  display: "block",
+                  width: " 100%",
+                  height: "auto",
+                  maxHeight: "550px",
+                  maxWidth: "650px",
+                  bottom: 0,
+                  position: "absolute",
+                }}
+              />{" "}
+            </div>
+          </Grid>
+          <Grid item xs={1}></Grid>
+        </Grid>
         {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
       </div>
       {rows.length != 0 ? (
         <>
-          <h1 className="centerItems" style={{ marginBottom: "40px" }}>
-            Student Submissions
-          </h1>{" "}
           <div className="student__dashboard">
             <TextField
               style={{ backgroundColor: "#fcfcfc" }}
@@ -217,7 +270,7 @@ export default function ViewStudentSubmissions({ user }) {
 
             <Paper
               sx={{ width: "100%", overflow: "hidden" }}
-              style={{ marginTop: "10px" }}
+              style={{ marginTop: "10px", marginBottom: 15 }}
             >
               <TableContainer sx={{ maxHeight: 450 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -500,7 +553,7 @@ export default function ViewStudentSubmissions({ user }) {
 
       {pageIsLoadig == false && rows.length == 0 ? (
         <div className="student__dashboard">
-          <div>Oops no submision yet</div>{" "}
+          <NoData msg={"No any student submission yet"} type={"vss"}></NoData>{" "}
         </div>
       ) : (
         ""
