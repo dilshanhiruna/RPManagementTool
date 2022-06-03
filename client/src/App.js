@@ -35,7 +35,7 @@ function App() {
         {userType === "" ? <Signin /> : ""}
         {userType === "student" ? <Student /> : ""}
         {userType === "staff" ? <Staff /> : ""}
-        {userType === "admin" ? <Admin /> : ""}
+        {userType === "admin" ? <Home /> : ""}
 
         {/* {userType === "supervisor" ? <Supervisor /> : ""} */}
       </div>

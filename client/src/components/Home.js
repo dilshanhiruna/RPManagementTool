@@ -17,7 +17,7 @@ componentDidMount() {
 }
 
 retrieveUsers() {
-    axios.get("/users").then(res => {
+    axios.get("/users/allusers").then(res => {
         if(res.data.success) {
             this.setState({
                 users:res.data.existingUsers
@@ -29,7 +29,7 @@ retrieveUsers() {
 }
 
 onDelete = (id) => {
-    axios.delete(`/user/delete/${id}`).then((res) => {
+    axios.delete(`/users/user/delete/${id}`).then((res) => {
         alert("User deleted successfully");
         this.retrieveUsers();
     })
@@ -37,11 +37,13 @@ onDelete = (id) => {
 
 filterData(users, searchKey) {
     const result = users.filter((user) =>
+        user.uid.toLowerCase().includes(searchKey) ||
         user.name.toLowerCase().includes(searchKey) ||
-        user.type.toLowerCase().includes(searchKey) ||
+        user.staffType.toLowerCase().includes(searchKey) ||
         user.role.toLowerCase().includes(searchKey) ||
         user.interestedResearchField.toLowerCase().includes(searchKey) ||
         user.studentGrouped.toLowerCase().includes(searchKey) ||
+        user.studentGroupID.toLowerCase().includes(searchKey) ||
         user.email.toLowerCase().includes(searchKey) 
     )
 
@@ -51,7 +53,7 @@ filterData(users, searchKey) {
 handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("/users").then(res => {
+    axios.get("/users/allusers").then(res => {
         if(res.data.success) {
             this.filterData(res.data.existingUsers, searchKey)
         }
@@ -105,11 +107,13 @@ handleLogout = () => {
               <thead>
                   <tr>
                       <th scope="col">#</th>
+                      <th scope="col">UID</th>
                       <th scope="col">Name</th>
-                      <th scope="col">Type</th>
+                      <th scope="col">Staff Type</th>
                       <th scope="col">Role</th>
                       <th scope="col">Interested Research Field</th>
                       <th scope="col">Student Grouped</th>
+                      <th scope="col">Student Groupe ID</th>
                       <th scope="col">Email</th>
                       <th scope="col">Actions</th>
                   </tr>
@@ -119,18 +123,20 @@ handleLogout = () => {
                   {this.state.users.map((users, index) =>(
                       <tr key={index}>
                           <th scope="row">{index+1}</th>
+                          <td>{users.uid}</td>
                           <td>
-                              <a href={`/user/${users._id}`} style={{textDecoration:'none'}}>
+                              <a href={`/users/user/${users._id}`} style={{textDecoration:'none'}}>
                             {users.name}
                               </a>
                           </td>
-                          <td>{users.type}</td>
+                          <td>{users.staffType}</td>
                           <td>{users.role}</td>
                           <td>{users.interestedResearchField}</td>
                           <td>{users.studentGrouped}</td>
+                          <td>{users.studentGroupID}</td>
                           <td>{users.email}</td>
                           <td>
-                              <a className="btn btn-warning" href={`/edit/${users._id}`}>
+                              <a className="btn btn-warning" href={`/users/user/update/${users._id}`}>
                                   <i className="fas fa-edit"></i>&nbsp;Edit
                               </a>
                               &nbsp;

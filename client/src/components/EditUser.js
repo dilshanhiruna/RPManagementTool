@@ -6,11 +6,13 @@ export default class EditUser extends Component {
   constructor(props){
     super(props);
     this.state={
+      uid:"",
       name:"",
-      type:"",
+      staffType:"",
       role:"",
       interestedResearchField:"",
       studentGrouped:"",
+      studentGroupID:"",
       email:""
     }
   }
@@ -28,29 +30,33 @@ export default class EditUser extends Component {
     e.preventDefault();
     const id = this.props.match.params.id;
 
-    const {name, type, role, interestedResearchField, studentGrouped, email} = this.state;
+    const {uid, name, staffType, role, interestedResearchField, studentGrouped, studentGroupID, email} = this.state;
 
     const data = {
+      uid:uid,
       name:name,
-      type:type,
+      staffType:staffType,
       role:role,
       interestedResearchField:interestedResearchField,
       studentGrouped:studentGrouped,
+      studentGroupID:studentGroupID,
       email:email
     }
 
     console.log(data)
 
-    axios.put(`/user/update/${id}`, data).then((res) => {
+    axios.put(`/users/user/update/${id}`, data).then((res) => {
       if(res.data.success) {
         alert("Successfully updated the user")
         this.setState(
           {
+            uid:"",
             name:"",
-            type:"",
+            staffType:"",
             role:"",
             interestedResearchField:"",
             studentGrouped:"",
+            studentGroupID:"",
             email:""
           }
         )
@@ -61,14 +67,16 @@ export default class EditUser extends Component {
   componentDidMount() {
     const id = this.props.match.params.id;
   
-      axios.get(`/user/${id}`).then((res) => {
+      axios.get(`/users/user/${id}`).then((res) => {
         if(res.data.success) {
           this.setState({
+            uid:res.data.user.uid,
             name:res.data.user.name,
-            type:res.data.user.type,
+            staffType:res.data.user.staffType,
             role:res.data.user.role,
             interestedResearchField:res.data.user.interestedResearchField,
             studentGrouped:res.data.user.studentGrouped,
+            studentGroupID:res.data.user.studentGroupID,
             email:res.data.user.email
           });
   

@@ -12,6 +12,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
+import Axios from "axios";
+import { Link, BrowserRouter } from "react-router-dom";
+const API = process.env.REACT_APP_API;
 
 function Copyright(props) {
   return (
@@ -34,14 +38,53 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Signup() {
+
+	const [data, setData] = useState({
+    uid: "",
+		name: "",
+		staffType: "",
+    role: "",
+		interestedResearchField: "",
+		studentGrouped: "",
+    studentGroupID: "",
+		email: "",
+		password: "",
+	});
+	const [error, setError] = useState("");
+
+
+	const handleChange = ({ currentTarget: input }) => {
+		setData({ ...data, [input.name]: input.value });
+	};
+
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // event.preventDefault();
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
+
+	Axios.post(`${API}/users/usersignup`, data)
+		.then((res) => {
+		  alert("Registered");
+		localStorage.setItem("token", res.data.data);
+		window.location = "/";
+		console.log(res.data.data)
+		})
+		.catch((error) => {
+			if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {
+				setError(error.response.data.message);
+			}
+		  //console.log(err);
+		});
   };
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -74,25 +117,84 @@ export default function Signup() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+                  name="uid"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="uid"
+                  label="Uid"
+                  onChange={handleChange}
+                  value={data.uid}
                   autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  autoComplete="given-name"
+                  name="name"
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  id="name"
+                  label="Name"
+                  onChange={handleChange}
+                  value={data.name}
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="staffType"
+                  label="Staff Type"
+                  onChange={handleChange}
+                  value={data.staffType}
+                  name="staffType"
+                />
+              </Grid>
+			        <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="role"
+                  label="Role"
+                  onChange={handleChange}
+                  value={data.role}
+                  name="role"
+                />
+              </Grid>
+			        <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="interestedResearchField"
+                  label="Interested Research Field"
+                  onChange={handleChange}
+                  value={data.interestedResearchField}
+                  name="interestedResearchField"
+                />
+              </Grid>
+			        <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="studentGrouped"
+                  label="Student Grouped"
+                  onChange={handleChange}
+                  value={data.studentGrouped}
+                  name="studentGrouped"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="studentGroupID"
+                  label="Student Group ID"
+                  onChange={handleChange}
+                  value={data.studentGroupID}
+                  name="studentGroupID"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -101,6 +203,8 @@ export default function Signup() {
                   fullWidth
                   id="email"
                   label="Email Address"
+                  onChange={handleChange}
+                  value={data.email}
                   name="email"
                   autoComplete="email"
                 />
@@ -111,6 +215,8 @@ export default function Signup() {
                   fullWidth
                   name="password"
                   label="Password"
+                  onChange={handleChange}
+                  value={data.password}
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -135,7 +241,7 @@ export default function Signup() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/userlogin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
