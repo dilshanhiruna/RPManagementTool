@@ -16,7 +16,12 @@ import {
   TablePagination,
   TableRow,
   LinearProgress,
+  Grid,
+  Typography,
+  Item,
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import NoData from "../Common/NoData";
 import "./SupervisorDashboard.css";
 import ChatMenu from "../StudentGroup/ChatMenu";
 import { columns, createObjResponse } from "./utils/ViewMyStudentGroupsUtil";
@@ -27,6 +32,9 @@ import {
 } from "./utils/StudentDetailsPopUp";
 
 const API = process.env.REACT_APP_API;
+
+//themes
+const theme = createTheme();
 
 export default function ViewMyStudentGroups({ user }) {
   const [page, setPage] = useState(0);
@@ -120,12 +128,57 @@ export default function ViewMyStudentGroups({ user }) {
     <>
       <div>
         <div className="student__dashboard">
+          <Grid container style={{ marginBottom: "70px" }}>
+            <Grid item xs={1}></Grid>
+            <Grid item xs={4}>
+              <div style={{ marginTop: "78px" }}>
+                <div className="centerHorizontal">
+                  <ThemeProvider theme={theme}>
+                    <Typography variant="h1" sx={{ fontWeight: "regular" }}>
+                      Your
+                    </Typography>
+                  </ThemeProvider>
+                </div>
+                <div className="centerHorizontal">
+                  <ThemeProvider theme={theme}>
+                    <Typography variant="h1" sx={{ fontWeight: "regular" }}>
+                      Groups
+                    </Typography>
+                  </ThemeProvider>
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div
+                style={{
+                  height: "400px",
+                  maxHeight: "400px",
+                  position: "relative",
+                }}
+              >
+                <img
+                  src={require("../../assets/images/studentGroup.gif")}
+                  alt="paper"
+                  style={{
+                    display: "block",
+                    width: " 100%",
+                    height: "auto",
+                    maxHeight: "550px",
+                    maxWidth: "650px",
+                    bottom: 0,
+                    position: "absolute",
+                  }}
+                />{" "}
+              </div>
+            </Grid>
+            <Grid item xs={1}></Grid>
+          </Grid>
+
           {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <h1 className="centerItems">Your Groups </h1>
-            <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", marginBottom: 15 }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
@@ -307,7 +360,10 @@ export default function ViewMyStudentGroups({ user }) {
       <div>
         {pageIsLoadig == false && rows.length == 0 ? (
           <div className="student__dashboard">
-            <div>You are not assigned to any group yet</div>{" "}
+            <NoData
+              msg={"You are not a supervisor/co-supervisor of any group"}
+              type={"vmsg"}
+            ></NoData>{" "}
           </div>
         ) : (
           ""

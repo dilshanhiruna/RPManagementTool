@@ -3,10 +3,12 @@ import Axios from "axios";
 import SubmissionCard from "../Common/SubmissionCard";
 
 import { useParams } from "react-router-dom";
+import { Skeleton } from "@mui/material";
 
 export default function ViewSubmission() {
   let [submissions, setsubmissions] = useState([]);
   let [activate, setactivate] = useState([]);
+  const [loading, setloading] = useState(true);
   const API = process.env.REACT_APP_API;
   // id = useParams();
 
@@ -14,7 +16,7 @@ export default function ViewSubmission() {
   const getAllSubmissions = () => {
     Axios.get(`${API}/AssignmentSubmissions/`).then((res) => {
       setsubmissions(res.data.data);
-      console.log(res.data.data);
+      setloading(false);
     });
   };
 
@@ -22,7 +24,6 @@ export default function ViewSubmission() {
   const changeVisibility = (event, id) => {
     console.log(event.target.checked);
     activate = event.target.checked;
-    console.log(activate);
     const data = {
       sVisibility: activate,
     };
@@ -36,9 +37,9 @@ export default function ViewSubmission() {
     getAllSubmissions();
   }, []);
 
-  return (
+  return !loading ? (
     <div>
-      <div>
+      <div data-testid="RP_IT4010">
         {submissions.map((submission) => {
           return (
             <SubmissionCard
@@ -58,6 +59,18 @@ export default function ViewSubmission() {
           );
         })}
       </div>
+    </div>
+  ) : (
+    <div
+      style={{
+        margin: "50px",
+      }}
+    >
+      <Skeleton variant="rectangular" height={158} />
+      <br />
+      <Skeleton variant="rectangular" height={158} />
+      <br />
+      <Skeleton variant="rectangular" height={158} />
     </div>
   );
 }

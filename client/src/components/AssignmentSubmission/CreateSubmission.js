@@ -94,7 +94,7 @@ export default function CreateSubmission(getAllSubmissions) {
   };
 
   return (
-    <div>
+    <div data-testid="create_submission">
       <Collapse in={showError}>
         <Alert
           hidden
