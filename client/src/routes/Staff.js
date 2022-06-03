@@ -38,9 +38,9 @@ export default function Staff({ user }) {
       <Router>
         {" "}
         {user.staffType === "supervisor" ? (
-          <StaffHeader userType={"Staff"} />
+          <StaffHeader userType={"Staff"} user={user} />
         ) : (
-          <PanelmHeader userType={"Staff"} />
+          <PanelmHeader userType={"Staff"} user={user} />
         )}
         <Switch>
           <Route exact path="/staff"></Route>

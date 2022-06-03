@@ -3,9 +3,12 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import "./Header.css";
+import { Divider, ListItemIcon, ListItemText } from "@mui/material";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { useHistory } from "react-router-dom";
 
-export default function PanelmHeader({ userType }) {
+export default function PanelmHeader({ userType, user }) {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -77,14 +80,26 @@ export default function PanelmHeader({ userType }) {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem disabled>{user.uid}</MenuItem>
+              <MenuItem disabled>{user.name}</MenuItem>
+              <MenuItem disabled>{user.email}</MenuItem>
+              <Divider />
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <AccountCircleRoundedIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>My account</ListItemText>
+              </MenuItem>
               <MenuItem
                 onClick={() => {
                   localStorage.removeItem("token");
                   window.location.reload();
                 }}
               >
-                Logout
+                <ListItemIcon>
+                  <LogoutRoundedIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Logout</ListItemText>
               </MenuItem>
             </Menu>
           </div>
