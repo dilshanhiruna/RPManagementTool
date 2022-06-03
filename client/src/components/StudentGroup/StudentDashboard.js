@@ -528,8 +528,10 @@ export default function StudentDashboard({ user, testLoad }) {
                             <TableCell>
                               <Button
                                 //hide the button if your are no the  leader
-                                hidden={studentGroup.student1._id !== user._id}
-                                disabled={row._id === user._id}
+                                disabled={
+                                  row._id === user._id ||
+                                  studentGroup.student1._id !== user._id
+                                }
                                 size="small"
                                 // sx={{
                                 //   backgroundColor: "#fff",
