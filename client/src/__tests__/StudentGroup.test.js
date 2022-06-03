@@ -18,6 +18,7 @@ const user = {
   studentGrouped: true,
   studentGroupID: "628e55274a2760fe44048084",
 };
+
 const group = {
   _id: { $oid: "628e55274a2760fe44048084" },
   student1: { $oid: "628a4cd9c334a17636b35847" },

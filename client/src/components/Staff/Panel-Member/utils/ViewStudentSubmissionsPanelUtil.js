@@ -47,7 +47,7 @@ export const createObjResponse = (res, data) => {
     _id: data._id,
     groupID: data.studentGroupId.groupID,
     submissionName: data.submissionDetailsId.submissionName,
-    deadline: data.submissionDetailsId.sDeadline,
+    deadline: formatDate(data.submissionDetailsId.sDeadline),
     submittedOn: formatDate(data.submittedOn),
     marking: data.submissionDetailsId.sMarkingScheme,
     // marking: data.studentGroupId.groupID,
