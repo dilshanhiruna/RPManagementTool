@@ -16,7 +16,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import MuiAlert from "@mui/material/Alert";
 import { styled } from "@mui/material/styles";
-import { Snackbar } from "@mui/material";
+import { Chip, Divider, Snackbar, Stack } from "@mui/material";
+import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 
 import "../AssignmentSubmission/Submissioncard.css";
 import "../AssignmentSubmission/ViewSubmission.css";
@@ -118,17 +119,16 @@ export default function SubmissionCard({
     <Card
       sx={{
         maxWidth: 1350,
+        padding: "18px",
         marginTop: "25px",
         marginLeft: "80px",
-        backgroundColor: "white",
+        backgroundColor: sVisibility ? "#f5faff" : "white",
       }}
       data-testid="629876365a605575e4d0d63a"
     >
       <CardContent>
-        <CardActions>
-          <Typography gutterBottom variant="h5" component="div">
-            {submissionName}
-          </Typography>
+        <Stack direction="row" spacing={1}>
+          <Typography variant="h6">{submissionName}</Typography>
           <Switch
             checked={sVisibility}
             onChange={(e) => {
@@ -136,14 +136,17 @@ export default function SubmissionCard({
             }}
             inputProps={{ "aria-label": "controlled" }}
           />
-        </CardActions>
+        </Stack>
+
         <Typography variant="body2" color="red" style={{ textAlign: "left" }}>
-          {new Date(sDeadline).toLocaleDateString()}
+          <Chip
+            label={"Deadline: " + new Date(sDeadline).toLocaleDateString()}
+          />
         </Typography>
         <Typography
           variant="body2"
           color="text.secondary"
-          style={{ textAlign: "left" }}
+          style={{ textAlign: "left", marginTop: "20px" }}
         >
           {sDescription}
         </Typography>
@@ -154,8 +157,6 @@ export default function SubmissionCard({
           <Button
             size="small"
             variant="outlined"
-            color="success"
-            style={{ width: "85px" }}
             onClick={() => {
               if (sTemplate.name == "") {
                 downloadhandleClickOpenx();
@@ -166,6 +167,7 @@ export default function SubmissionCard({
                 );
               }
             }}
+            startIcon={<FileDownloadRoundedIcon />}
           >
             Template
           </Button>
@@ -190,8 +192,6 @@ export default function SubmissionCard({
           <Button
             size="small"
             variant="outlined"
-            color="success"
-            style={{ width: "85px" }}
             onClick={() => {
               if (sMarkingScheme.name == "") {
                 downloadhandleClickOpen();
@@ -202,9 +202,18 @@ export default function SubmissionCard({
                 );
               }
             }}
+            startIcon={<FileDownloadRoundedIcon />}
           >
             Marking
           </Button>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{
+              marginLeft: "16px",
+            }}
+          />
+
           <Dialog
             open={opendownload}
             onClose={downloadhandleClose}
@@ -236,6 +245,7 @@ export default function SubmissionCard({
           >
             {btn1}
           </Button>
+
           <Button
             size="small"
             variant="outlined"
