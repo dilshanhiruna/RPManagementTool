@@ -42,6 +42,7 @@ export default function SubmissionCard({
 }) {
   console.log(sVisibility);
   const [open, setOpen] = React.useState(false);
+  const [opendownload, setOpendownload] = React.useState(false);
   const [openAlert, setopenAlert] = useState(false);
   let history = useHistory();
 
@@ -51,6 +52,14 @@ export default function SubmissionCard({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const downloadhandleClickOpen = () => {
+    setOpendownload(true);
+  };
+
+  const downloadhandleClose = () => {
+    setOpendownload(false);
   };
 
   const viewDetails = () => {
@@ -157,7 +166,7 @@ export default function SubmissionCard({
             style={{ width: "85px" }}
             onClick={() => {
               if (sMarkingScheme.name == "") {
-                alert("not found");
+                downloadhandleClickOpen();
               } else {
                 triggerBase64Download(
                   sMarkingScheme.file,
@@ -168,31 +177,24 @@ export default function SubmissionCard({
           >
             Marking
           </Button>
-          {/* <div className="file_download">
-            <p>File Template</p>
-            <div>
-              <InsertDriveFileIcon
-                size="large"
-                variant="outlined"
-                color="primary"
-                style={{ width: "80px" }}
-                onClick={() => {}}
-              />
-              <h5>{sTemplate.file}</h5>
-            </div>
-
-            <div>
-              <p>Marking Rubric</p>
-              <InsertDriveFileIcon
-                size="large"
-                variant="outlined"
-                color="primary"
-                style={{ width: "80px" }}
-                onClick={() => {}}
-              />
-              <h5>{sMarkingScheme.file}</h5>
-            </div>
-          </div> */}
+          <Dialog
+            open={opendownload}
+            onClose={downloadhandleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Marking Rubric Not Found"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Still not uploaded the Marking rubric
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={downloadhandleClose}>Close</Button>
+            </DialogActions>
+          </Dialog>
         </CardActions>
 
         <CardActions>
