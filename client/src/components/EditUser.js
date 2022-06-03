@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+const API = process.env.REACT_APP_API;
 
 export default class EditUser extends Component {
 
@@ -45,7 +46,7 @@ export default class EditUser extends Component {
 
     console.log(data)
 
-    axios.put(`/user/update/${id}`, data).then((res) => {
+    axios.put(`${API}/user/update/${id}`, data).then((res) => {
       if(res.data.success) {
         alert("Successfully updated the user")
         this.setState(
@@ -67,7 +68,7 @@ export default class EditUser extends Component {
   componentDidMount() {
     const id = this.props.match.params.id;
   
-      axios.get(`/user/${id}`).then((res) => {
+      axios.get(`${API}/user/${id}`).then((res) => {
         if(res.data.success) {
           this.setState({
             uid:res.data.user.uid,

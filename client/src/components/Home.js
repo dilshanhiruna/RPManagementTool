@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 //import "./Header.css";
 //import Header from "./Supervisor/Header.css";
 import { useHistory } from "react-router-dom";
+const API = process.env.REACT_APP_API;
 
 export default class Home extends Component {
 constructor(props) {
@@ -22,7 +23,7 @@ componentDidMount() {
 }
 
 retrieveUsers() {
-    axios.get("/users").then(res => {
+    axios.get(`${API}/users`).then(res => {
         if(res.data.success) {
             this.setState({
                 users:res.data.existingUsers
@@ -34,7 +35,7 @@ retrieveUsers() {
 }
 
 onDelete = (id) => {
-    axios.delete(`/user/delete/${id}`).then((res) => {
+    axios.delete(`${API}/user/delete/${id}`).then((res) => {
         alert("User deleted successfully");
         this.retrieveUsers();
     })
@@ -58,7 +59,7 @@ filterData(users, searchKey) {
 handleSearchArea = (e) => {
     const searchKey = e.currentTarget.value;
 
-    axios.get("/users").then(res => {
+    axios.get(`${API}/users`).then(res => {
         if(res.data.success) {
             this.filterData(res.data.existingUsers, searchKey)
         }
@@ -159,7 +160,7 @@ handleLogout = () => {
                           <th scope="row">{index+1}</th>
                           <td>{users.uid}</td>
                           <td>
-                              <a href={`/user/${users._id}`} style={{textDecoration:'none'}}>
+                              <a href={`${API}/user/${users._id}`} style={{textDecoration:'none'}}>
                             {users.name}
                               </a>
                           </td>
@@ -170,7 +171,7 @@ handleLogout = () => {
                           <td>{users.studentGroupID}</td>
                           <td>{users.email}</td>
                           <td>
-                              <a className="btn btn-warning" href={`/edit/${users._id}`}>
+                              <a className="btn btn-warning" href={`${API}/edit/${users._id}`}>
                                   <i className="fas fa-edit"></i>&nbsp;Edit
                               </a>
                               &nbsp;

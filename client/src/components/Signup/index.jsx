@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import Axios from "axios";
 import { BrowserRouter } from "react-router-dom";
+const API = process.env.REACT_APP_API;
 
 function Copyright(props) {
   return (
@@ -64,7 +65,7 @@ export default function Signup() {
     //   password: data.get("password"),
     // });
 
-	Axios.post("/usersignup", data)
+	Axios.post(`${API}/usersignup`, data)
 		.then((res) => {
 		  alert("Registered");
 		localStorage.setItem("token", res.data.data);
@@ -220,62 +221,6 @@ export default function Signup() {
                   autoComplete="new-password"
                 />
               </Grid>
-              {/* <TextField
-							type="text"
-							placeholder="Full Name"
-							name="name"
-							onChange={handleChange}
-							value={data.name}
-							required
-						/> */}
-						{/* <TextField
-							type="text"
-							placeholder="Type"
-							name="type"
-							onChange={handleChange}
-							value={data.type}
-							required
-						/> */}
-            {/* <TextField
-							type="text"
-							placeholder="Role"
-							name="role"
-							onChange={handleChange}
-							value={data.role}
-							required
-						/> */}
-						{/* <TextField
-							type="text"
-							placeholder="Interested Research Field"
-							name="interestedResearchField"
-							onChange={handleChange}
-							value={data.interestedResearchField}
-							required
-						/> */}
-						{/* <TextField
-							type="text"
-							placeholder="Student Grouped"
-							name="studentGrouped"
-							onChange={handleChange}
-							value={data.studentGrouped}
-							required
-						/> */}
-						{/* <TextField
-							type="email"
-							placeholder="Email"
-							name="email"
-							onChange={handleChange}
-							value={data.email}
-							required
-						/> */}
-						{/* <TextField
-							type="password"
-							placeholder="Password"
-							name="password"
-							onChange={handleChange}
-							value={data.password}
-							required
-						/> */}
               <Grid item xs={12}>
                 <FormControlLabel
                   control={

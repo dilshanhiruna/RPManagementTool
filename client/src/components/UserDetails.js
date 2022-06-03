@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+const API = process.env.REACT_APP_API;
 
 export default class UserDetails extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ export default class UserDetails extends Component {
   componentDidMount() {
   const id = this.props.match.params.id;
 
-    axios.get(`/user/${id}`).then((res) => {
+    axios.get(`${API}/user/${id}`).then((res) => {
       if(res.data.success) {
         this.setState({
           user: res.data.user

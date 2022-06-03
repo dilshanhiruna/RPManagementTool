@@ -18,6 +18,7 @@ import Axios from "axios";
 //import styles from "./styles.module.css";
 import { useHistory } from 'react-router-dom';
 //const API = process.env.REACT_APP_API;
+const API = process.env.REACT_APP_API;
 
 function Copyright(props) {
   return (
@@ -62,7 +63,7 @@ export default function Signin() {
       password: data.get("password"),
     };
 
-    Axios.post("/userlogin", reqBody)
+    Axios.post(`${API}/userlogin`, reqBody)
 		.then((res) => {
 		  alert("Logged In");
 		localStorage.setItem("token", res.data.data);
