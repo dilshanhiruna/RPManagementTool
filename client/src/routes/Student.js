@@ -38,7 +38,7 @@ export default function Student({ user }) {
   }, []);
   return !Loading ? (
     <div className="student__dashboard">
-      <StudentHeader userType={"Student"} />
+      <StudentHeader userType={"Student"} user={User} />
 
       <Switch>
         <Route exact path="/student">
