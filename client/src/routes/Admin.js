@@ -5,7 +5,7 @@ import {
   Redirect,
   BrowserRouter as Router,
 } from "react-router-dom";
-import Header from "../components/view/Header";
+import Header from "../components/view/AdminHeader";
 import CreateSubmission from "../components/AssignmentSubmission/CreateSubmission";
 import ViewSubmission from "../components/AssignmentSubmission/ViewSubmission";
 import UpdateSubmission from "../components/AssignmentSubmission/UpdateSubmission";
@@ -16,7 +16,6 @@ export default function Admin() {
       <Header userType={"Admin"} />
       <Router>
         <Switch>
-          {/* <Route exact path="/admin"></Route> */}
           <Route exact path="/admin/createsubmission">
             <CreateSubmission />
           </Route>
