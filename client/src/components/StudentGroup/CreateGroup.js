@@ -84,7 +84,7 @@ export default function CreateGroup({ user }) {
       console.log(response);
 
       //direct to dashboard
-      history.push("/student");
+      window.location.href = "/student";
     } catch (err) {
       console.log(err);
     }

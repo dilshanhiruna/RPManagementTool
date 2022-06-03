@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import Axios from "axios";
-const API = process.env.REACT_APP_API;
 import { useHistory } from "react-router";
 import { triggerBase64Download } from "common-base64-downloader-react";
 import Dialog from "@mui/material/Dialog";
@@ -21,6 +20,7 @@ import { Snackbar } from "@mui/material";
 
 import "../AssignmentSubmission/Submissioncard.css";
 import "../AssignmentSubmission/ViewSubmission.css";
+const API = process.env.REACT_APP_API;
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
