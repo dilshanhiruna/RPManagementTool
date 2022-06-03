@@ -42,7 +42,7 @@ export default function NoData({ msg, type }) {
   }
   return (
     <>
-      <Paper sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", marginBottom: 15 }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>

@@ -24,10 +24,14 @@ import {
   BootstrapDialog,
   BootstrapDialogTitle,
 } from "./utils/StudentDetailsPopUp";
+import { Grid, ThemeProvider, createTheme, Typography } from "@mui/material";
 import { columns } from "./utils/sup-cosupRequestUtil";
 import NoData from "../Common/NoData";
 
 const API = process.env.REACT_APP_API;
+
+//themes
+const theme = createTheme();
 
 export default function SuperviosrRequests({ user }) {
   const [page, setPage] = useState(0);
@@ -130,13 +134,63 @@ export default function SuperviosrRequests({ user }) {
     <>
       <div>
         <div className="student__dashboard">
-          <h1 className="centerItems">Supervioser Requests</h1>
-
+          {/* <h1 className="centerItems">Supervioser Requests</h1> */}
+          <Grid container style={{ marginBottom: "70px" }}>
+            <Grid item xs={1}></Grid>
+            <Grid item xs={4}>
+              <div style={{ marginTop: "110px" }}>
+                <div className="centerHorizontal">
+                  <ThemeProvider theme={theme}>
+                    <Typography
+                      variant="h1"
+                      sx={{ fontWeight: "regular", fontSize: 75 }}
+                    >
+                      Supervioser
+                    </Typography>
+                  </ThemeProvider>
+                </div>
+                <div className="centerHorizontal">
+                  <ThemeProvider theme={theme}>
+                    <Typography
+                      variant="h1"
+                      sx={{ fontWeight: "regular", fontSize: 75 }}
+                    >
+                      Requests
+                    </Typography>
+                  </ThemeProvider>
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div
+                style={{
+                  height: "400px",
+                  maxHeight: "400px",
+                  position: "relative",
+                }}
+              >
+                <img
+                  src={require("../../assets/images/studentGroup.gif")}
+                  alt="paper"
+                  style={{
+                    display: "block",
+                    width: " 100%",
+                    height: "auto",
+                    maxHeight: "550px",
+                    maxWidth: "650px",
+                    bottom: 0,
+                    position: "absolute",
+                  }}
+                />{" "}
+              </div>
+            </Grid>
+            <Grid item xs={1}></Grid>
+          </Grid>
           {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", marginBottom: 15 }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>

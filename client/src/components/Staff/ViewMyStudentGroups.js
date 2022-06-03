@@ -36,16 +36,6 @@ const API = process.env.REACT_APP_API;
 //themes
 const theme = createTheme();
 
-theme.typography.h3 = {
-  fontSize: "1.2rem",
-  "@media (min-width:600px)": {
-    fontSize: "1.5rem",
-  },
-  [theme.breakpoints.up("md")]: {
-    fontSize: "2rem",
-  },
-};
-
 export default function ViewMyStudentGroups({ user }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -140,19 +130,18 @@ export default function ViewMyStudentGroups({ user }) {
         <div className="student__dashboard">
           <Grid container style={{ marginBottom: "70px" }}>
             <Grid item xs={1}></Grid>
-
             <Grid item xs={4}>
               <div style={{ marginTop: "78px" }}>
                 <div className="centerHorizontal">
                   <ThemeProvider theme={theme}>
-                    <Typography variant="h1" sx={{ fontWeight: "medium" }}>
+                    <Typography variant="h1" sx={{ fontWeight: "regular" }}>
                       Your
                     </Typography>
                   </ThemeProvider>
                 </div>
                 <div className="centerHorizontal">
                   <ThemeProvider theme={theme}>
-                    <Typography variant="h1" sx={{ fontWeight: "medium" }}>
+                    <Typography variant="h1" sx={{ fontWeight: "regular" }}>
                       Groups
                     </Typography>
                   </ThemeProvider>
