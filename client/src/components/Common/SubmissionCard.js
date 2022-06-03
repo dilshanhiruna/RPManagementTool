@@ -137,10 +137,14 @@ export default function SubmissionCard({
             color="success"
             style={{ width: "85px" }}
             onClick={() => {
-              triggerBase64Download(
-                sTemplate.file,
-                `${submissionName} template`
-              );
+              if (sTemplate.name == "") {
+                alert("not found");
+              } else {
+                triggerBase64Download(
+                  sTemplate.file,
+                  `${submissionName} template`
+                );
+              }
             }}
           >
             Template
