@@ -43,6 +43,7 @@ export default function SubmissionCard({
   console.log(sVisibility);
   const [open, setOpen] = React.useState(false);
   const [opendownload, setOpendownload] = React.useState(false);
+  const [opendownloadx, setOpendownloadx] = React.useState(false);
   const [openAlert, setopenAlert] = useState(false);
   let history = useHistory();
 
@@ -60,6 +61,14 @@ export default function SubmissionCard({
 
   const downloadhandleClose = () => {
     setOpendownload(false);
+  };
+
+  const downloadhandleClickOpenx = () => {
+    setOpendownloadx(true);
+  };
+
+  const downloadhandleClosex = () => {
+    setOpendownloadx(false);
   };
 
   const viewDetails = () => {
@@ -147,7 +156,7 @@ export default function SubmissionCard({
             style={{ width: "85px" }}
             onClick={() => {
               if (sTemplate.name == "") {
-                alert("not found");
+                downloadhandleClickOpenx();
               } else {
                 triggerBase64Download(
                   sTemplate.file,
@@ -158,6 +167,24 @@ export default function SubmissionCard({
           >
             Template
           </Button>
+          <Dialog
+            open={opendownloadx}
+            onClose={downloadhandleClosex}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Submission template Not Found"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Still not uploaded the Submission template
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={downloadhandleClosex}>Close</Button>
+            </DialogActions>
+          </Dialog>
           <Button
             onError={sMarkingScheme.file == ""}
             size="small"
