@@ -10,6 +10,7 @@ const { getStudentGroupById } = require("./StudentGroups");
 exports.createStudentSubmission = async (req, res) => {
   try {
     const submitionObject = req.body;
+    console.log(req.body);
 
     const submissionDetailsId = mongoose.Types.ObjectId(
       submitionObject.submissionDetailsId
