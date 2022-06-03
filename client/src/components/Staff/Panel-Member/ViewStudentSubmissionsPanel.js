@@ -26,6 +26,7 @@ import {
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import NoData from "../../Common/NoData";
+import { Grid, ThemeProvider, createTheme, Typography } from "@mui/material";
 
 import {
   columns,
@@ -33,6 +34,9 @@ import {
 } from "./utils/ViewStudentSubmissionsPanelUtil";
 
 const API = process.env.REACT_APP_API;
+
+//themes
+const theme = createTheme();
 
 //alert for snackbar
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -192,9 +196,59 @@ export default function ViewStudentSubmissionsPanel({ user }) {
   return (
     <>
       <div className="student__dashboard">
-        <h1 className="centerItems" style={{ marginBottom: "40px" }}>
-          Student Presentation Submissions
-        </h1>{" "}
+        <Grid container style={{ marginBottom: "70px" }}>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={4}>
+            <div style={{ marginTop: "125px" }}>
+              <div className="centerHorizontal">
+                <ThemeProvider theme={theme}>
+                  <Typography
+                    variant="h1"
+                    sx={{ fontWeight: "regular", fontSize: 80 }}
+                  >
+                    Student
+                  </Typography>
+                </ThemeProvider>
+              </div>
+              <div className="centerHorizontal">
+                <ThemeProvider theme={theme}>
+                  <Typography
+                    variant="h1"
+                    sx={{ fontWeight: "regular", fontSize: 80 }}
+                  >
+                    Submissions
+                  </Typography>
+                </ThemeProvider>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <div
+              style={{
+                height: "400px",
+                maxHeight: "400px",
+                position: "relative",
+                marginTop: "60px",
+                marginLeft: "90px",
+              }}
+            >
+              <img
+                src={require("../../../assets/images/panelMember.gif")}
+                alt="paper"
+                style={{
+                  display: "block",
+                  width: " 100%",
+                  height: "auto",
+                  maxHeight: "450px",
+                  maxWidth: "500px",
+                  bottom: 0,
+                  position: "absolute",
+                }}
+              />{" "}
+            </div>
+          </Grid>
+          <Grid item xs={1}></Grid>
+        </Grid>
         {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
       </div>
       {rows.length != 0 ? (
@@ -221,7 +275,7 @@ export default function ViewStudentSubmissionsPanel({ user }) {
             />
 
             <Paper
-              sx={{ width: "100%", overflow: "hidden" }}
+              sx={{ width: "100%", overflow: "hidden", marginBottom: 15 }}
               style={{ marginTop: "10px" }}
             >
               <TableContainer sx={{ maxHeight: 450 }}>

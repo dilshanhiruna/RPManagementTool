@@ -30,8 +30,12 @@ import {
 import { columns, createObjResponse } from "./utils/TopicRequrestsForPanelUtil";
 import MuiAlert from "@mui/material/Alert";
 import NoData from "../../Common/NoData";
+import { Grid, ThemeProvider, createTheme, Typography } from "@mui/material";
 
 const API = process.env.REACT_APP_API;
+
+//themes
+const theme = createTheme();
 
 //alert for snackbar
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -197,9 +201,60 @@ export default function TopicRequrestsForPanel({ user }) {
   return (
     <>
       <div className="student__dashboard">
-        <h1 className="centerItems" style={{ marginBottom: "40px" }}>
-          Topic Requests
-        </h1>{" "}
+        <Grid container style={{ marginBottom: "70px" }}>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={4}>
+            <div style={{ marginTop: "125px" }}>
+              <div className="centerHorizontal">
+                <ThemeProvider theme={theme}>
+                  <Typography
+                    variant="h1"
+                    sx={{ fontWeight: "regular", fontSize: 90 }}
+                  >
+                    Topic
+                  </Typography>
+                </ThemeProvider>
+              </div>
+              <div className="centerHorizontal">
+                <ThemeProvider theme={theme}>
+                  <Typography
+                    variant="h1"
+                    sx={{ fontWeight: "regular", fontSize: 90 }}
+                  >
+                    Requests
+                  </Typography>
+                </ThemeProvider>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <div
+              style={{
+                height: "400px",
+                maxHeight: "400px",
+                position: "relative",
+                marginTop: "60px",
+                marginLeft: "90px",
+              }}
+            >
+              <img
+                src={require("../../../assets/images/panelMember.gif")}
+                alt="paper"
+                style={{
+                  display: "block",
+                  width: " 100%",
+                  height: "auto",
+                  maxHeight: "450px",
+                  maxWidth: "500px",
+                  bottom: 0,
+                  position: "absolute",
+                }}
+              />{" "}
+            </div>
+          </Grid>
+          <Grid item xs={1}></Grid>
+        </Grid>
+
         {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
       </div>
       {rows.length != 0 ? (
@@ -226,7 +281,7 @@ export default function TopicRequrestsForPanel({ user }) {
             />
 
             <Paper
-              sx={{ width: "100%", overflow: "hidden" }}
+              sx={{ width: "100%", overflow: "hidden", marginBottom: 15 }}
               style={{ marginTop: "10px" }}
             >
               <TableContainer sx={{ maxHeight: 450 }}>
