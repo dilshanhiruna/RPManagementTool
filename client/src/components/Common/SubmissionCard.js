@@ -122,6 +122,7 @@ export default function SubmissionCard({
         marginLeft: "80px",
         backgroundColor: "white",
       }}
+      data-testid="629876365a605575e4d0d63a"
     >
       <CardContent>
         <CardActions>
@@ -187,7 +188,6 @@ export default function SubmissionCard({
             </DialogActions>
           </Dialog>
           <Button
-            onError={sMarkingScheme.file == ""}
             size="small"
             variant="outlined"
             color="success"

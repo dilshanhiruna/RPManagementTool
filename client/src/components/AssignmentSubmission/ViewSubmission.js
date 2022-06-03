@@ -38,7 +38,7 @@ export default function ViewSubmission() {
 
   return (
     <div>
-      <div>
+      <div data-testid="RP_IT4010">
         {submissions.map((submission) => {
           return (
             <SubmissionCard
