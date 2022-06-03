@@ -11,6 +11,15 @@
   justify-content: center;
   align-items: center;
 }
+.centerVertical {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.centerHorizontal {
+  display: flex;
+  justify-content: center;
+}
 
 .supervisor__chat {
   z-index: 2;
@@ -26,4 +35,17 @@
 .supervisor__chat h1 {
   color: rgb(65, 65, 65);
   margin: 10px;
+}
+
+.hash-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.hash-box > *:first-child {
+  align-self: stretch;
+}
+.hash-box .selected {
+  align-self: center;
 }

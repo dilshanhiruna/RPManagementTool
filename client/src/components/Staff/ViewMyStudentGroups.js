@@ -16,7 +16,11 @@ import {
   TablePagination,
   TableRow,
   LinearProgress,
+  Grid,
+  Typography,
+  Item,
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NoData from "../Common/NoData";
 import "./SupervisorDashboard.css";
 import ChatMenu from "../StudentGroup/ChatMenu";
@@ -28,6 +32,19 @@ import {
 } from "./utils/StudentDetailsPopUp";
 
 const API = process.env.REACT_APP_API;
+
+//themes
+const theme = createTheme();
+
+theme.typography.h3 = {
+  fontSize: "1.2rem",
+  "@media (min-width:600px)": {
+    fontSize: "1.5rem",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "2rem",
+  },
+};
 
 export default function ViewMyStudentGroups({ user }) {
   const [page, setPage] = useState(0);
@@ -121,13 +138,58 @@ export default function ViewMyStudentGroups({ user }) {
     <>
       <div>
         <div className="student__dashboard">
-          <h1 className="centerItems">Your Groups </h1>
+          <Grid container style={{ marginBottom: "70px" }}>
+            <Grid item xs={1}></Grid>
+
+            <Grid item xs={4}>
+              <div style={{ marginTop: "78px" }}>
+                <div className="centerHorizontal">
+                  <ThemeProvider theme={theme}>
+                    <Typography variant="h1" sx={{ fontWeight: "medium" }}>
+                      Your
+                    </Typography>
+                  </ThemeProvider>
+                </div>
+                <div className="centerHorizontal">
+                  <ThemeProvider theme={theme}>
+                    <Typography variant="h1" sx={{ fontWeight: "medium" }}>
+                      Groups
+                    </Typography>
+                  </ThemeProvider>
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div
+                style={{
+                  height: "400px",
+                  maxHeight: "400px",
+                  position: "relative",
+                }}
+              >
+                <img
+                  src={require("../../assets/images/studentGroup.gif")}
+                  alt="paper"
+                  style={{
+                    display: "block",
+                    width: " 100%",
+                    height: "auto",
+                    maxHeight: "550px",
+                    maxWidth: "650px",
+                    bottom: 0,
+                    position: "absolute",
+                  }}
+                />{" "}
+              </div>
+            </Grid>
+            <Grid item xs={1}></Grid>
+          </Grid>
 
           {pageIsLoadig ? <LinearProgress color="inherit" /> : ""}
         </div>
         {rows.length != 0 ? (
           <div className="student__dashboard">
-            <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <Paper sx={{ width: "100%", overflow: "hidden", marginBottom: 15 }}>
               <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
