@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import "./Header.css";
 import { useHistory } from "react-router-dom";
 
-export default function StudentHeader({ userType }) {
+export default function StudentHeader({ userType, user }) {
   let history = useHistory();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -33,33 +33,37 @@ export default function StudentHeader({ userType }) {
               <p>{userType} Portal</p>
             </div>
             <div className="header__buttonGroup">
-              <Button
-                variant="outlined"
-                className="header__button"
-                onClick={() => {
-                  history.push("/student");
-                }}
-              >
-                Dashboard
-              </Button>
-              <Button
-                variant="outlined"
-                className="header__button"
-                onClick={() => {
-                  history.push("/student/topicreg");
-                }}
-              >
-                Our Topic
-              </Button>
-              <Button
-                variant="outlined"
-                className="header__button"
-                onClick={() => {
-                  history.push("/student/searchsupervisor");
-                }}
-              >
-                Supervisors
-              </Button>
+              {user.studentGrouped && (
+                <>
+                  <Button
+                    variant="outlined"
+                    className="header__button"
+                    onClick={() => {
+                      history.push("/student");
+                    }}
+                  >
+                    Dashboard
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    className="header__button"
+                    onClick={() => {
+                      history.push("/student/topicreg");
+                    }}
+                  >
+                    Our Topic
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    className="header__button"
+                    onClick={() => {
+                      history.push("/student/searchsupervisor");
+                    }}
+                  >
+                    Supervisors
+                  </Button>
+                </>
+              )}
             </div>
           </div>
           <div className="header__right">
