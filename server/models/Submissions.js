@@ -22,7 +22,7 @@ const SubmissionDetails = new Schema({
     type: Object,
   },
   sDeadline: {
-    type: String,
+    type: Date,
   },
   sVisibility: {
     type: Boolean,

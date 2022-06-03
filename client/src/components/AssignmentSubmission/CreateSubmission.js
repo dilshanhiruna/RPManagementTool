@@ -15,18 +15,21 @@ import {
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { useHistory } from "react-router";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function CreateSubmission() {
-  const [sType, setsType] = useState("");
-  const [submissionName, setsubmissionName] = useState("");
+export default function CreateSubmission(getAllSubmissions) {
+  const [sType, setsType] = useState("Document");
+  const [submissionName, setsubmissionName] = useState("Project Proposal");
   const [sDescription, setsDescription] = useState("");
   const [sTemplate, setsTemplate] = useState();
   const [sMarkingScheme, setsMarkingScheme] = useState();
-  const [sDeadline, setsDeadline] = useState("");
+  const [sDeadline, setsDeadline] = useState(new Date());
   const [sVisibility, setsVisibility] = useState(false);
   const [tempName, settempName] = useState("");
   const [markingName, setmarkingName] = useState("");
@@ -48,7 +51,7 @@ export default function CreateSubmission() {
       setshowError(true);
       setTimeout(() => {
         setshowError(false);
-      }, 5000);
+      }, 3000);
       return;
     }
     const tempobj = {
@@ -71,6 +74,8 @@ export default function CreateSubmission() {
       .then((res) => {
         setopenAlert(true);
         history.push("/admin/getAllSubmissions");
+
+        //getAllSubmissions();
       })
       .catch((err) => {
         console.log(err);
@@ -90,6 +95,23 @@ export default function CreateSubmission() {
 
   return (
     <div>
+      <Collapse in={showError}>
+        <Alert
+          hidden
+          severity="error"
+          variant="outlined"
+          sx={{
+            width: "52%",
+            marginTop: "1rem",
+            marginLeft: "22rem",
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          Error, please filled the required details!
+        </Alert>
+      </Collapse>
+
       <div className="createsubmission__form">
         <div>
           <p>Submission Type </p>
@@ -126,10 +148,10 @@ export default function CreateSubmission() {
               }}
               style={{ width: "350px" }}
             >
+              <MenuItem value={"Project Proposal"}>Project Proposal</MenuItem>
               <MenuItem value={"Topic Assignment Form"}>
                 Topic Assignment Form
               </MenuItem>
-              <MenuItem value={"Project Proposal"}>Project Proposal</MenuItem>
               <MenuItem value={"Research Paper"}>Research Paper</MenuItem>
               <MenuItem value={"Final Paper"}>Final Paper</MenuItem>
               <MenuItem value={"Research LogBook"}>Research LogBook</MenuItem>
@@ -143,16 +165,18 @@ export default function CreateSubmission() {
           <p>Description</p>
           <FormControl fullWidth>
             <TextField
+              error={sDescription.length > 1000}
               id="outlined-multiline-static"
               label="Info"
               multiline
-              rows={2}
+              rows={3}
               variant="outlined"
               style={{ width: "760px" }}
               value={sDescription}
               onChange={(event) => {
                 setsDescription(event.target.value);
               }}
+              helperText={sDescription.length > 1000 ? "Incorrect entry" : ""}
             />
           </FormControl>
         </div>
@@ -229,36 +253,20 @@ export default function CreateSubmission() {
         <div className="dat">
           <p>Deadline</p>
           <FormControl fullWidth>
-            <TextField
-              id="date"
-              label="Date"
-              type="date"
-              value={sDeadline}
-              sx={{ width: 350 }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={(event) => {
-                setsDeadline(event.target.value);
-              }}
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Deadline"
+                value={sDeadline}
+                onChange={(newValue) => {
+                  setsDeadline(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+                minDate={new Date()}
+              />
+            </LocalizationProvider>
           </FormControl>
         </div>
-        <Collapse in={showError}>
-          <Alert
-            hidden
-            severity="error"
-            color="error"
-            sx={{
-              width: "100%",
-              marginTop: "1rem",
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
-            Error, please filled the required details!
-          </Alert>
-        </Collapse>
+
         <div className="Btn">
           <div>
             <FormControl fullWidth>
@@ -269,7 +277,7 @@ export default function CreateSubmission() {
                   height: "60px",
                   width: "200px",
                   borderRadius: "40px",
-                  marginTop: "35px",
+                  marginTop: "2px",
                 }}
                 onClick={sendNewSubmissionTypeToAPI}
               >

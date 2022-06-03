@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./CreateSubmission.css";
 import { styled } from "@mui/material/styles";
+import Collapse from "@mui/material/Collapse";
 import Axios from "axios";
 import {
   FormControl,
@@ -14,6 +15,9 @@ import {
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { useHistory, useLocation } from "react-router";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -21,7 +25,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function UpdateSubmission() {
   const location = useLocation();
-  // console.log(location.id);
   const [sType, setsType] = useState(location.sType);
   const [submissionName, setsubmissionName] = useState(location.submissionName);
   const [sDescription, setsDescription] = useState(location.sDescription);
@@ -34,38 +37,45 @@ export default function UpdateSubmission() {
   const [markingName, setmarkingName] = useState(location.sMarkingScheme.name);
 
   const [openAlert, setopenAlert] = useState(false);
+  const [showError, setshowError] = useState(false);
   const API = process.env.REACT_APP_API;
 
-  const updateSubmissionTypeToAPI = () => {
+  const updateSubmissionTypeToAPI = (e) => {
+    e.preventDefault();
+    if (
+      submissionName == null ||
+      sType == null ||
+      sDescription.length < 1 ||
+      sDeadline == null
+    ) {
+      setshowError(true);
+      setTimeout(() => {
+        setshowError(false);
+      }, 3000);
+      return;
+    }
     const tempobj = {
       file: sTemplate,
       name: tempName,
     };
-    console.log("tempobj : ");
-    console.log(tempobj);
-    console.log("tempName : ");
-    console.log(tempName);
-    // console.log("sTemplate : "+sTemplate);
+
     const markingobj = {
       file: sMarkingScheme,
       name: markingName,
     };
-    console.log("markingobj : " + markingobj);
-    console.log("markingName : " + markingobj.markingName);
-    // console.log("sMarkingScheme : "+sMarkingScheme);
+
     const data = {
       sDescription,
       sTemplate: tempobj,
       sMarkingScheme: markingobj,
       sDeadline,
     };
-    console.log("data : ");
-    console.log(data);
 
-    //update theater details
+    //update submission type details
     Axios.put(`${API}/AssignmentSubmissions/${location.id}`, data)
       .then((res) => {
         setopenAlert(true);
+        //getAllSubmissions();
       })
       .catch((err) => {
         console.log(err);
@@ -85,6 +95,22 @@ export default function UpdateSubmission() {
 
   return (
     <div>
+      <Collapse in={showError}>
+        <Alert
+          hidden
+          severity="error"
+          variant="outlined"
+          sx={{
+            width: "52%",
+            marginTop: "1rem",
+            marginLeft: "22rem",
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          Error, please update the required details!
+        </Alert>
+      </Collapse>
       <div className="createsubmission__form">
         <div>
           <p>Submission Type </p>
@@ -103,6 +129,7 @@ export default function UpdateSubmission() {
             >
               <MenuItem value={"Document"}>Document</MenuItem>
               <MenuItem value={"Presentation"}>Presentation</MenuItem>
+              <MenuItem value={"Topic"}>Topic</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -122,10 +149,10 @@ export default function UpdateSubmission() {
               style={{ width: "350px" }}
               disabled
             >
+              <MenuItem value={"Project Proposal"}>Project Proposal</MenuItem>
               <MenuItem value={"Topic Assignment Form"}>
                 Topic Assignment Form
               </MenuItem>
-              <MenuItem value={"Project Proposal"}>Project Proposal</MenuItem>
               <MenuItem value={"Research Paper"}>Research Paper</MenuItem>
               <MenuItem value={"Final Paper"}>Final Paper</MenuItem>
               <MenuItem value={"Research LogBook"}>Research LogBook</MenuItem>
@@ -139,16 +166,18 @@ export default function UpdateSubmission() {
           <p>Description</p>
           <FormControl fullWidth>
             <TextField
+              error={sDescription.length > 1000}
               id="outlined-multiline-static"
               label="Info"
               multiline
-              rows={2}
+              rows={3}
               variant="outlined"
               style={{ width: "760px" }}
               value={sDescription}
               onChange={(event) => {
                 setsDescription(event.target.value);
               }}
+              helperText={sDescription.length > 1000 ? "Incorrect entry" : ""}
             />
           </FormControl>
         </div>
@@ -225,19 +254,17 @@ export default function UpdateSubmission() {
         <div className="dat">
           <p>Deadline</p>
           <FormControl fullWidth>
-            <TextField
-              id="date"
-              label="Date"
-              type="date"
-              value={sDeadline}
-              sx={{ width: 350 }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={(event) => {
-                setsDeadline(event.target.value);
-              }}
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Deadline"
+                value={sDeadline}
+                onChange={(newValue) => {
+                  setsDeadline(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+                minDate={new Date()}
+              />
+            </LocalizationProvider>
           </FormControl>
         </div>
 
@@ -251,7 +278,7 @@ export default function UpdateSubmission() {
                   height: "60px",
                   width: "200px",
                   borderRadius: "40px",
-                  marginTop: "35px",
+                  marginTop: "2px",
                 }}
                 onClick={updateSubmissionTypeToAPI}
               >

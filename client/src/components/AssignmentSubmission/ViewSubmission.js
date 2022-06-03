@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import SubmissionCard from "../Common/SubmissionCard";
+
 import { useParams } from "react-router-dom";
 
 export default function ViewSubmission() {
@@ -50,6 +51,7 @@ export default function ViewSubmission() {
               sMarkingScheme={submission.sMarkingScheme}
               sVisibility={submission.sVisibility}
               changeVisibility={changeVisibility}
+              getAllSubmissions={getAllSubmissions}
               btn1="Update"
               btn2="Delete"
             />

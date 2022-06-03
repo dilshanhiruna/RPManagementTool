@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -6,13 +6,25 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
-// import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import Axios from "axios";
 const API = process.env.REACT_APP_API;
 import { useHistory } from "react-router";
+import { triggerBase64Download } from "common-base64-downloader-react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import MuiAlert from "@mui/material/Alert";
+import { styled } from "@mui/material/styles";
+import { Snackbar } from "@mui/material";
 
 import "../AssignmentSubmission/Submissioncard.css";
 import "../AssignmentSubmission/ViewSubmission.css";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function SubmissionCard({
   submissionName,
@@ -23,27 +35,30 @@ export default function SubmissionCard({
   sVisibility,
   sMarkingScheme,
   changeVisibility,
+  getAllSubmissions,
   id,
   btn1,
   btn2,
 }) {
   console.log(sVisibility);
-
+  const [open, setOpen] = React.useState(false);
+  const [openAlert, setopenAlert] = useState(false);
   let history = useHistory();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const viewDetails = () => {
     console.log("viewdeatils");
     history.push("/admin/getAllSubmissions");
   };
 
-  //get all theaters from the database
-  const getAllSubmissions = () => {
-    Axios.get(`${API}/AssignmentSubmissions/`).then((res) => {
-      setsubmissions(res.data.data);
-      console.log(res.data.data);
-    });
-  };
-
+  //pass data to update componenet
   const updateSubmission = () => {
     console.log(id);
     history.push({
@@ -59,13 +74,25 @@ export default function SubmissionCard({
     });
   };
 
+  //delete submission function
   const DeleteSubmission = (id) => {
     console.log("delete.....");
-    console.log(id);
     Axios.delete(`${API}/AssignmentSubmissions/${id}`).then((res) => {
-      alert("success");
+      setopenAlert(true);
+      handleClose();
       getAllSubmissions();
     });
+  };
+
+  const Input = styled("input")({
+    display: "none",
+  });
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setopenAlert(false);
   };
 
   return (
@@ -74,7 +101,7 @@ export default function SubmissionCard({
         maxWidth: 1350,
         marginTop: "25px",
         marginLeft: "80px",
-        backgroundColor: "#edf4fa",
+        backgroundColor: "white",
       }}
     >
       <CardContent>
@@ -91,7 +118,7 @@ export default function SubmissionCard({
           />
         </CardActions>
         <Typography variant="body2" color="red" style={{ textAlign: "left" }}>
-          {sDeadline}
+          {new Date(sDeadline).toLocaleDateString()}
         </Typography>
         <Typography
           variant="body2"
@@ -110,18 +137,29 @@ export default function SubmissionCard({
             color="success"
             style={{ width: "85px" }}
             onClick={() => {
-              updateSubmission();
+              triggerBase64Download(
+                sTemplate.file,
+                `${submissionName} template`
+              );
             }}
           >
             Template
           </Button>
           <Button
+            onError={sMarkingScheme.file == ""}
             size="small"
             variant="outlined"
             color="success"
             style={{ width: "85px" }}
             onClick={() => {
-              updateSubmission();
+              if (sMarkingScheme.name == "") {
+                alert("not found");
+              } else {
+                triggerBase64Download(
+                  sMarkingScheme.file,
+                  `${submissionName} marking`
+                );
+              }
             }}
           >
             Marking
@@ -169,12 +207,45 @@ export default function SubmissionCard({
             variant="outlined"
             color="error"
             style={{ width: "85px" }}
-            onClick={() => {
-              DeleteSubmission(id);
-            }}
+            onClick={handleClickOpen}
           >
             {btn2}
           </Button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                You won't be able to revert this submission type
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Disagree</Button>
+              <Button
+                color="error"
+                onClick={() => {
+                  DeleteSubmission(id);
+                }}
+                autoFocus
+              >
+                Agree
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={openAlert}
+            autoHideDuration={4000}
+            onClose={handleAlertClose}
+          >
+            <Alert severity="success" sx={{ width: "100%" }}>
+              Submission type deleted successfully!
+            </Alert>
+          </Snackbar>
         </CardActions>
       </div>
     </Card>
