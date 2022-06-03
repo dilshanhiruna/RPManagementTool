@@ -1,33 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./Submissions.css";
-import Box from "@mui/material/Box";
-import { Chip, Divider } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import SubmissionItem from "./SubmissionItem";
+import axios from "axios";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
-import { LinearProgress, CircularProgress } from "@mui/material";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
+  LinearProgress,
+  CircularProgress,
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  Box,
+  Typography,
+  Chip,
+  Divider,
+  styled,
+  IconButton,
+  Snackbar,
 } from "@mui/material";
-import FileBase64 from "react-file-base64";
 import "./Submissions.css";
 import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { triggerBase64Download } from "common-base64-downloader-react";
-import axios from "axios";
+import { useDropzone } from "react-dropzone";
+import styledComponents from "styled-components";
+import MuiAlert from "@mui/material/Alert";
+
+//alert fot snackbar
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const API = process.env.REACT_APP_API;
+
+//colors for dropzone
+const getColor = (props) => {
+  if (props.isDragAccept) {
+    return "#00e676";
+  }
+  if (props.isDragReject) {
+    return "#ff1744";
+  }
+  if (props.isFocused) {
+    return "#2196f3";
+  }
+  return "#eeeeee";
+};
+
+//styles for dropzone
+const Container = styledComponents.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-width: 2px;
+  border-radius: 2px;
+  border-color: ${(props) => getColor(props)};
+  border-style: dashed;
+  background-color: #fafafa;
+  color: #bdbdbd;
+  outline: none;
+  transition: border 0.24s ease-in-out;
+`;
 
 export default function Submissions({ studentGroup }) {
   const [Group, setGroup] = useState(studentGroup);
@@ -38,9 +78,60 @@ export default function Submissions({ studentGroup }) {
     useState(false);
   const [studentSubmission, setStudentSubmission] = useState({});
   const [existingSubmission, setExistingSubmission] = useState(null);
+  const [existingSubmissionName, setExistingSubmissionName] = useState(null);
+
   const [base64File, setBase64File] = useState();
   const [fileIsLoadig, setFileIsLoading] = useState(true);
   const [viewFeedbackModal, setviewFeedbackModal] = useState(false);
+
+  //for confirmation snackbar
+  const [openAlert, setopenAlert] = useState(false);
+  const [showErrorr, setshowErrorr] = useState(false);
+  //new styled dropzone component
+  function StyledDropzone(props) {
+    let submissionObject = {
+      name: "",
+      base64: "",
+    };
+
+    //callback function to handle dropzone inputs
+    const onDrop = useCallback((acceptedFiles) => {
+      const file = acceptedFiles[0];
+      submissionObject.name = file.name;
+
+      const reader = new FileReader();
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.onload = () => {
+        // Do whatever you want with the file contents
+        submissionObject.base64 = reader.result;
+      };
+      reader.readAsDataURL(file);
+      setStudentSubmission(submissionObject);
+      setExistingSubmissionName(submissionObject.name);
+    }, []);
+    const {
+      getRootProps,
+      getInputProps,
+      isFocused,
+      isDragAccept,
+      isDragReject,
+    } = useDropzone({
+      // accept: {
+      //   "application/pdf": [],
+      // },
+      onDrop,
+    });
+
+    return (
+      <div className="container">
+        <Container {...getRootProps({ isFocused, isDragAccept, isDragReject })}>
+          <input {...getInputProps()} />
+          <p>Drag and drop some files here, or click to select files</p>
+        </Container>
+      </div>
+    );
+  }
 
   // Submission Types
   // TopicAssesmentForm
@@ -183,9 +274,10 @@ export default function Submissions({ studentGroup }) {
         submissionObj
       );
       setExistingSubmission(result.data.data);
-      setBase64File(result.data.data.file.base64);
-      // console.log("olaaaaaaa" + result.data.data);
-      // setPageIsLoading(false);
+      if (result.data.data) {
+        setBase64File(result.data.data.file.base64);
+        setExistingSubmissionName(result.data.data.file.name);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -196,6 +288,7 @@ export default function Submissions({ studentGroup }) {
   const onSubmitConfirm = async (submissionDetailsId) => {
     try {
       setFileIsLoading(true);
+      setExistingSubmissionName(false);
 
       const submissionObj = {
         file: studentSubmission,
@@ -207,10 +300,16 @@ export default function Submissions({ studentGroup }) {
         submissionObj
       );
       if (result.data.success) {
-        alert("submission success");
+        // alert("submission success");
+        setopenAlert(true);
+        setshowErrorr(false);
+
         setOpenConfirmModal(false);
       } else {
-        alert("error");
+        // alert("error");
+        setopenAlert(true);
+        setshowErrorr(true);
+
         setOpenConfirmModal(false);
       }
     } catch (err) {
@@ -222,6 +321,7 @@ export default function Submissions({ studentGroup }) {
   const handleModalClose = () => {
     setOpenConfirmModal(false);
     setFileIsLoading(true);
+    setExistingSubmissionName(false);
   };
 
   //function to handle open of submission modal
@@ -234,22 +334,19 @@ export default function Submissions({ studentGroup }) {
   //function to upload file
   const onFileUpload = (file) => {
     setStudentSubmission(file);
-    console.log(file);
   };
 
   //function to delete student submission from db
   const deleteStudentSubmission = async () => {
     setFileIsLoading(true);
-    const id = existingSubmission._id;
-    const result = await axios.delete(`${API}/studentSubmission/${id}`);
+    if (existingSubmission) {
+      const id = existingSubmission._id;
+      const result = await axios.delete(`${API}/studentSubmission/${id}`);
+    }
     setFileIsLoading(false);
     setExistingSubmission(null);
+    setExistingSubmissionName(null);
   };
-
-  //function to download uploaded student submissions
-  // const downloadStudentSubmission = async () => {
-  //   const base64File = existingSubmission.file.base64;
-  // };
 
   useEffect(() => {
     getSubmissionDetails();
@@ -263,6 +360,13 @@ export default function Submissions({ studentGroup }) {
     }
   };
 
+  //function to close confirmation snackbar
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setopenAlert(false);
+  };
   return (
     <>
       <div>
@@ -384,26 +488,30 @@ export default function Submissions({ studentGroup }) {
               </DialogTitle>
               <DialogContent>
                 <DialogContentText sx={{ marginBottom: 1 }}>
-                  <Chip label={`${selectedSubmissionDetail.sType}`} />
-                </DialogContentText>
-                <DialogContentText>
+                  <Chip label={`Type: ${selectedSubmissionDetail.sType}`} />
                   <Chip
                     label={`Deadline: ${selectedSubmissionDetail.sDeadline}`}
                     color="warning"
+                    style={{ marginLeft: "15px" }}
                   />
                 </DialogContentText>
-                <br></br>
-                <DialogContentText id="alert-dialog-description">
+                <DialogContentText
+                  id="alert-dialog-description"
+                  style={{ padding: "5px" }}
+                >
                   {selectedSubmissionDetail.sDescription}
                 </DialogContentText>
               </DialogContent>
 
-              <DialogContent className="centerItems" sx={{ minWidth: "550px" }}>
+              <DialogContent
+                className="centerItems"
+                sx={{ minWidth: "550px", paddingTop: 0 }}
+              >
                 {fileIsLoadig ? (
                   <CircularProgress color="inherit" />
                 ) : (
                   <div>
-                    {existingSubmission ? (
+                    {existingSubmissionName ? (
                       <>
                         <Button
                           onClick={() => {
@@ -420,18 +528,15 @@ export default function Submissions({ studentGroup }) {
                           onClick={() => {
                             triggerBase64Download(
                               base64File,
-                              existingSubmission.file.name
+                              existingSubmissionName
                             );
                           }}
                         >
-                          {existingSubmission.file.name}
+                          {existingSubmissionName}
                         </Button>
                       </>
                     ) : (
-                      <FileBase64
-                        multiple={false}
-                        onDone={onFileUpload.bind()}
-                      />
+                      <StyledDropzone />
                     )}
                   </div>
                 )}
@@ -477,6 +582,22 @@ export default function Submissions({ studentGroup }) {
             </BootstrapDialog>
           </div>
         </div>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={openAlert}
+          autoHideDuration={5000}
+          onClose={handleAlertClose}
+        >
+          {showErrorr ? (
+            <Alert severity="error" sx={{ width: "100%" }}>
+              Error Ocuured!
+            </Alert>
+          ) : (
+            <Alert severity="success" sx={{ width: "100%" }}>
+              Submission success!
+            </Alert>
+          )}
+        </Snackbar>
         <Box sx={{ maxWidth: 400 }}></Box>
       </div>
     </>
