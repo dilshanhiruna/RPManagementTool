@@ -67,6 +67,7 @@ exports.getAllSupervisors = async (req, res) => {
   }
 };
 
+//Register a new user
 exports.signup = async (req, res) => {
   try {
 		//Validate details
@@ -95,6 +96,7 @@ exports.signup = async (req, res) => {
 	}
 }
 
+//Get all users
 exports.allusers = async (req, res) => {
   try {
     console.log("String");
@@ -119,6 +121,7 @@ exports.allusers = async (req, res) => {
   } 
 }
 
+//Update user
 exports.update = async (req, res) => {
   User.findByIdAndUpdate(
     req.params.id, 
@@ -136,6 +139,7 @@ exports.update = async (req, res) => {
 );
 }
 
+//Delete user
 exports.deleteuser = async (req, res) => {
   User.findByIdAndRemove(req.params.id).exec((err, deletedUser) => {
     if(err) return res.status(400).json({

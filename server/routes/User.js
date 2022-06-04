@@ -15,7 +15,7 @@ router.get("/students/:keyword", getStudentsByKeyword);
 router.get("/supervisors", getAllSupervisors);
 router.get("/:id", getUserById);
 router.post("/usersignup", signup);
-router.post("/allusers", allusers);
+router.get("/allusers", allusers);
 router.put("/user/update/:id", update);
 router.delete("/user/delete/:id", deleteuser);
 
