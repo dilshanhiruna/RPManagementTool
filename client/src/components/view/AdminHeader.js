@@ -36,19 +36,19 @@ export default function Header({ userType }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  history.push("/admin/createsubmission");
+                  history.push("/admin/getAllSubmissions");
                 }}
               >
-                Create Submission
+                All Submissions
               </Button>
               <Button
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  history.push("/admin/getAllSubmissions");
+                  history.push("/admin/createsubmission");
                 }}
               >
-                All Submissions
+                Create Submission
               </Button>
             </div>
           </div>
