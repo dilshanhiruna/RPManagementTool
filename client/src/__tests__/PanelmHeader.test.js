@@ -9,12 +9,12 @@ import { Router } from "react-router";
 const user = {
   _id: "628d0363cec8f51cfb6dd746",
   uid: "ST22000001",
-  name: "Nuwan Kodagoda (SE, HPC, PC,PL, ADD)",
-  email: "st22000001@sliit.lk",
+  name: "Vishan Jayasinghearachchi (SE, PL)",
+  email: "st22000012@sliit.lk",
   password: "password",
   role: "Staff",
   interestedResearchField: "Artificial Intelligence and Machine Learning",
-  staffType: "supervisor",
+  staffType: "panelM",
   studentGrouped: null,
   studentGroupID: null,
 };
