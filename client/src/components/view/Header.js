@@ -30,7 +30,7 @@ export default function Header({ userType }) {
               <p>{userType} Portal</p>
             </div>
             <div className="header__buttonGroup">
-              <Button variant="outlined" className="header__button">
+              {/* <Button variant="outlined" className="header__button">
                 Click
               </Button>
               <Button variant="outlined" className="header__button">
@@ -41,7 +41,7 @@ export default function Header({ userType }) {
               </Button>
               <Button variant="outlined" className="header__button">
                 Click
-              </Button>
+              </Button> */}
             </div>
           </div>
           <div className="header__right">

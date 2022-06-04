@@ -3,12 +3,9 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import "./Header.css";
-import { Divider, ListItemIcon, ListItemText } from "@mui/material";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { useHistory } from "react-router-dom";
 
-export default function PanelmHeader({ userType, user }) {
+export default function Header({ userType }) {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -18,6 +15,7 @@ export default function PanelmHeader({ userType, user }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <>
       <header>
@@ -38,19 +36,19 @@ export default function PanelmHeader({ userType, user }) {
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  history.push("/staff/panelmember/topicReq");
+                  history.push("/admin/createsubmission");
                 }}
               >
-                Manage Topics
+                Create Submission
               </Button>
               <Button
                 variant="outlined"
                 className="header__button"
                 onClick={() => {
-                  history.push("/staff/panelmember/studentSubmissions");
+                  history.push("/admin/getAllSubmissions");
                 }}
               >
-                Submissions
+                All Submissions
               </Button>
             </div>
           </div>
@@ -80,26 +78,14 @@ export default function PanelmHeader({ userType, user }) {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem disabled>{user.uid}</MenuItem>
-              <MenuItem disabled>{user.name}</MenuItem>
-              <MenuItem disabled>{user.email}</MenuItem>
-              <Divider />
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <AccountCircleRoundedIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>My account</ListItemText>
-              </MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
               <MenuItem
                 onClick={() => {
                   localStorage.removeItem("token");
                   window.location.reload();
                 }}
               >
-                <ListItemIcon>
-                  <LogoutRoundedIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Logout</ListItemText>
+                Logout
               </MenuItem>
             </Menu>
           </div>

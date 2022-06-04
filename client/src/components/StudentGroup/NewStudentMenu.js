@@ -112,7 +112,7 @@ export default function NewStudentMenu() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button variant="outlined" size="small" onClick={handleClickOpen}>
+            <Button variant="outlined" size="small">
               {"View"}
             </Button>
           </CardActions>
@@ -140,7 +140,7 @@ export default function NewStudentMenu() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button variant="outlined" size="small" onClick={handleClickOpen}>
+            <Button variant="outlined" size="small">
               {"View"}
             </Button>
           </CardActions>

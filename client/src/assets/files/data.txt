@@ -165,3 +165,139 @@
   "studentGrouped": null,
   "studentGroupID": null
 }
+
+
+// //student data
+// IT20128036	Kumarasinghe K.M.K.D
+// IT20131456	Mendis T.C.U
+// IT20125202	Herath G.G.T.K
+// IT20012106	De Silva H.L.D.P.
+// IT20077488	Risina Rasmith R.K.A.
+// IT20385064	Abeywickrama C.P.
+// IT20142896	Chamindu Hansana K.G.
+// IT20252236	Ekanayake J.S.M.R.N.W.I.U
+// IT20135898	Arachchi A.G.S.C
+// IT20137014	Lanka P.A.C
+// IT20135720	Nandakumara K.S.S
+// IT20221850	S.W.L.P. de Silva
+// IT20129958	A.A.Akeel
+// IT20127800	M.A.P.M. Perera
+// IT20222772	Jayawardhana S.A
+// IT20031602	Buddheesha Induwara W.L.
+// IT20028732	K.O.R.P. Karunanayake
+// IT20009472	Bhanuka A.G.H.
+// IT20032906	W.V.Hasith Kovinda
+// IT20246778	N.M.M.C. Navaratne
+// IT20085858	S. Mary Lucia
+// IT20252540	D.M.R.B. Daswaththa
+// IT20103040	P.M.M. Pathirana
+// IT20026448	Fernando D.E
+
+---------------------------------------------------------------------------------------------------------------------
+// IT20405090	R.L.Vanhoff
+// IT20147778	Jayawickrama N.D.D
+// IT20156374	Fernando A.P
+// It20202972	Jayasundara J.M.O.K
+// IT20236182 	Bandara P.M.G.R.I
+// IT20263058 	H.C.M Silva
+// IT20168254 	P.A L.N.Weerasinghe
+// IT20240042	W.H. Dilsha Thathsarani
+// IT20253530	I.G. Sanjula Dulshan
+// IT20140120	P.P. Yasantha Mihiran
+// IT20265892	H.A.D. Lakshan
+// IT20032838	Devsrini Savidya A.S.
+// IT20260460	Piumika Saranga H.A.
+// IT20236014	Ravindu Yasith T.K
+// IT20260910	Vishwa J.W.P
+// IT20139476	Kavinda W.W.H
+// IT20233358	Diunugala M.W
+// IT20152482	Kottawa K.I.J.O
+// IT20132200	Imalsha R.C
+// IT20272104	Dissanayaka D.D.D
+// IT20116606	Fernando W.H.K
+// IT20136710	K.M.K.R Kariyapperuma
+// IT20258030	Gunawardhana H.P.M.N
+// IT20204648	Nethu Nipuna M
+// IT20046552	Abeywardhanage S.R.D
+// IT20186906	Tharuka Gayashan F.
+// IT20068578	V.G.A.P. Kumara
+// IT20117146	Perera P.L.D.N
+// IT20016616	Fernando M.I.N
+// IT20386436	Gunasekara P.T.E.W
+// IT20175252	Munasinghe M.H.M
+// IT20221928	Nirojan.Y
+// IT20223458	Arivaran.T
+// It20202422	lavaniyah.L
+// IT20118822	Sayanthan.K
+// IT20245092	S.M.T.N.Samarakoon
+// IT20205638	U.M.D.B. Alahakoon
+// IT20274252	Y.G.I.S.Wickramanayake
+// IT20231682	S.M.K.P.K. Sakalasooriya
+// IT20022488	M.D.T Saparamadu
+// IT20083328	Dewpura D.A.I.U
+// IT20166038	A.S.De Silva
+// IT20163068	Jayasundera P.S
+// IT20149994	Piyumantha H. P. A. H.
+// IT20144012	Prabhash D. V. S.
+// IT20148768	Weerasinghe T. K.
+// IT20143718	Weerasiri R. T. K.
+// IT20013332	Dissanayake M.C.Y.D
+// IT20025908	Abineshh U
+// IT20032388	Zihara M.I.F
+// IT20061302	Kuruppu S.G
+// IT20133672	C.D. Adhihetty
+// IT20133818	Perera M.P.M
+// IT20135966	Gunnesekara A.M.P.P
+// IT20133122	R.A.E. Wijenayake
+// IT20264666	W.K.Fernando
+// IT20277086	H.E.Meregngnage
+// IT20271350	Punsala S.M.P.
+// IT20225056	Benthara B.W.H.T.
+// IT20228408	T.H.C.Heshan
+// IT20034740	J.M.S.U.Jayasinghe
+// IT20007188	T.O.M.Dharmarathna
+// IT20162696	D.K.Hiththatiyage
+// it20021320	vidanage k.h
+// IT20047306	Navinindu L.D
+// IT20019136	W.P.S.W.Weerasinghe
+// IT20002824	Malshika M. D. J
+// IT20065294	Prasadi W.V.C
+// IT20095062	S R J Gamage
+// IT20075408	Nandasiri K.G.N.D.
+//  IT20013950	Lakshani N.V.M.
+// IT20207236	Balasooriya B.M.D.D.
+// IT20190798	Rathnayaka R.M.S.Y.
+// IT20491994	Dilshani M.G.S.U.
+// IT20905422	Perera K.S.C.
+// IT20222604	Hapukotuwa H.H.M.S.D.B.
+// IT20227722	Jayasundara J.M.M.D.
+// IT20184162	Jayasinghe L. S.
+// IT20226350	Amarakoon L. M. N.
+// IT20173722	Dahanayake M.U.
+// IT20167882	Perera W.A.M.K.
+// IT20175498	Jayasekara N.S.
+// IT20260224	Insaf N.M.
+// IT20226282	K.D.H.N.D.A.T.Divarathna
+// IT20279370	Y.M.W.H.C.Samarasekara
+// IT20256814	P.M.Kakulandara
+// IT20255824	S M D N S Senarath
+// IT20244170	Wijegunarathna K.P.S.G.G.
+// IT19003160 	Kumarasiri R.D.S.R.
+// IT20015558	Herath A.M.T.N
+// IT20264352 	Amarasinghe P.P.S
+// IT20249816	Ananthan Y.
+// IT19063324	Theebanraj U.
+// IT20218980	C.D Gunathilake
+// IT20226732	R.Kanishkar
+// IT20001384	Jeyaseelan S
+// IT20167578	Abiramy R
+// IT20002206	Tharmithan N
+// IT20785642	Nirushan P
+// IT20219420	Senadeera S.A.V.J
+// IT20236250	Perera G.U.L.K
+// IT20218744	Wanigasinghe W W L K G
+// IT20106874	G.A.H.A.Nethmini
+// IT20120634	Ariyarathna H.M.M.M
+// IT20248994	Mudannayake M.A.P.H.N.
+// IT20132064	Wijesinghe S.D
+
