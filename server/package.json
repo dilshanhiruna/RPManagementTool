@@ -4,6 +4,7 @@
   "description": "research-project-management-tool-server",
   "main": "server.js",
   "scripts": {
+    "test": "jest",
     "start": "node server",
     "dev": "nodemon server"
   },
