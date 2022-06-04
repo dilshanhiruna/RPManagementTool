@@ -14,20 +14,18 @@ export default function Admin() {
   return (
     <div className="admin__dashboard">
       <Header userType={"Admin"} />
-      <Router>
-        <Switch>
-          <Route exact path="/admin/createsubmission">
-            <CreateSubmission />
-          </Route>
-          <Route exact path="/admin/getAllSubmissions">
-            <ViewSubmission />
-          </Route>
-          <Route exact path="/admin/updatesubmission">
-            <UpdateSubmission />
-          </Route>
-          <Redirect to="/admin/getAllSubmissions" />
-        </Switch>
-      </Router>
+      <Switch>
+        <Route exact path="/admin/createsubmission">
+          <CreateSubmission />
+        </Route>
+        <Route exact path="/admin/getAllSubmissions">
+          <ViewSubmission />
+        </Route>
+        <Route exact path="/admin/updatesubmission">
+          <UpdateSubmission />
+        </Route>
+        <Redirect to="/admin/getAllSubmissions" />
+      </Switch>
       <footer />
     </div>
   );
